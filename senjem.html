@@ -173,11 +173,14 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .qbdy{padding:24px 22px;display:flex;flex-direction:column;align-items:center}
 
 /* Lifeline bar in question */
-.q-llbar{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
-.q-llbtn{font-size:12px;padding:8px 14px;border-radius:10px;font-weight:700;display:flex;align-items:center;gap:6px;transition:all .2s;border:1.5px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:rgba(255,255,255,.6)}
+.q-llbar{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;width:100%}
+.q-ll-team{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:var(--r);background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)}
+.q-ll-title{font-size:11px;font-weight:800;text-align:center;margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:6px}
+.q-llbtn{font-size:12px;padding:8px 12px;border-radius:10px;font-weight:700;display:flex;align-items:center;gap:6px;transition:all .2s;border:1.5px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:rgba(255,255,255,.6);width:100%;justify-content:center}
 .q-llbtn:hover:not(:disabled){background:rgba(255,255,255,.07);color:#fff;border-color:rgba(255,255,255,.15);transform:translateY(-1px)}
 .q-llbtn.active{border-color:var(--gold);color:var(--gold);background:rgba(246,201,14,.06);animation:dblGlow 1.5s infinite}
 .q-llbtn:disabled{opacity:.2}
+.q-ll-none{font-size:11px;color:rgba(255,255,255,.15);text-align:center;padding:6px}
 
 .tmr{display:flex;align-items:center;gap:16px;margin-bottom:24px}
 .tv{font-family:var(--fd);font-size:48px;font-weight:700;color:var(--gold);min-width:130px;text-align:center;letter-spacing:4px;font-variant-numeric:tabular-nums}.tv.on{animation:tmGlow 1.5s infinite}
@@ -410,21 +413,27 @@ if(scr==="question"&&aq){const{cat,q}=aq;const nw=cat.type==="no_words",lt=cat.t
 return<div className="qov"><div className="qmod">
 <div className="qhdr" style={{background:`linear-gradient(135deg,${cat.color},${cat.color}CC)`}}>
   <span>{cat.icon}</span><span>{cat.name}</span>
-  {isGolden&&<span className="qh-special qh-gold">🌟 ذهبي ×3</span>}
-  {isTrap&&<span className="qh-special qh-trap">💣 فخ</span>}
   {activeDbl>0&&<span className="qh-special qh-gold">⚡ ×2</span>}
   {randMult>1&&<span className="qh-special qh-gold">🎲 ×{randMult}</span>}
-  <span className="qhpts">{pts}</span>
+  <span className="qhpts">{sa?(isGolden?pts+" 🌟":isTrap?pts+" 💣":pts):aq.q.pts}</span>
 </div>
 <div className="qbdy">
-  {/* Lifelines before answer */}
-  {!sa&&<div className="q-llbar">
-    {ll[1].dbl&&<button className={`q-llbtn ${activeDbl===1?"active":""}`} onClick={()=>useDbl(1)}>⚡ مضاعفة — {t1.emoji}</button>}
-    {ll[2].dbl&&<button className={`q-llbtn ${activeDbl===2?"active":""}`} onClick={()=>useDbl(2)}>⚡ مضاعفة — {t2.emoji}</button>}
-    {ll[1].sw&&<button className="q-llbtn" onClick={()=>useSwitch(1)}>🔄 تبديل — {t1.emoji}</button>}
-    {ll[2].sw&&<button className="q-llbtn" onClick={()=>useSwitch(2)}>🔄 تبديل — {t2.emoji}</button>}
-    {ll[1].shield&&<button className="q-llbtn" onClick={()=>useShield(1)}>🛡️ حماية — {t1.emoji}</button>}
-    {ll[2].shield&&<button className="q-llbtn" onClick={()=>useShield(2)}>🛡️ حماية — {t2.emoji}</button>}
+  {/* Lifelines — split by team, blocked on golden/trap */}
+  {!sa&&!isGolden&&!isTrap&&(ll[1].dbl||ll[1].sw||ll[1].shield||ll[2].dbl||ll[2].sw||ll[2].shield)&&<div className="q-llbar">
+    <div className="q-ll-team" style={{borderColor:t1.color.c+"25"}}>
+      <div className="q-ll-title" style={{color:t1.color.l}}>{t1.emoji} {t1.name}</div>
+      {ll[1].dbl&&<button className={`q-llbtn ${activeDbl===1?"active":""}`} onClick={()=>useDbl(1)}>⚡ مضاعفة</button>}
+      {ll[1].sw&&<button className="q-llbtn" onClick={()=>useSwitch(1)}>🔄 تبديل</button>}
+      {ll[1].shield&&<button className="q-llbtn" onClick={()=>useShield(1)}>🛡️ حماية</button>}
+      {!ll[1].dbl&&!ll[1].sw&&!ll[1].shield&&<div className="q-ll-none">لا توجد وسائل</div>}
+    </div>
+    <div className="q-ll-team" style={{borderColor:t2.color.c+"25"}}>
+      <div className="q-ll-title" style={{color:t2.color.l}}>{t2.emoji} {t2.name}</div>
+      {ll[2].dbl&&<button className={`q-llbtn ${activeDbl===2?"active":""}`} onClick={()=>useDbl(2)}>⚡ مضاعفة</button>}
+      {ll[2].sw&&<button className="q-llbtn" onClick={()=>useSwitch(2)}>🔄 تبديل</button>}
+      {ll[2].shield&&<button className="q-llbtn" onClick={()=>useShield(2)}>🛡️ حماية</button>}
+      {!ll[2].dbl&&!ll[2].sw&&!ll[2].shield&&<div className="q-ll-none">لا توجد وسائل</div>}
+    </div>
   </div>}
 
   <div className="tmr"><button className="tb" onClick={tm.toggle}>{tm.on?"⏸":"▶"}</button><div className={`tv ${tm.on?"on":""}`}>{tm.fmt}</div><button className="tb" onClick={tm.reset}>↻</button></div>
@@ -442,14 +451,16 @@ return<div className="qov"><div className="qmod">
   {!sa?<button className="btn btn-gold" style={{fontSize:19,padding:"15px 40px"}} onClick={()=>{setSa(true);tm.stop()}}>🔍 كشف الإجابة</button>
   :<div className="answ">
     <div className="ansc"><div className="ansl">الإجابة</div><p className="ansv">{q.a}</p></div>
-    <div className="anst">⏱️ {tm.fmt}{isGolden?" • 🌟 ذهبي ×3":""}{isTrap?" • 💣 فخ":""}{activeDbl?" • ⚡ مضاعفة":""}</div>
+    <div className="anst">⏱️ {tm.fmt}{activeDbl?" • ⚡ مضاعفة":""}{randMult>1?` • 🎲 ×${randMult}`:""}</div>
+    {isGolden&&<div style={{textAlign:"center",marginBottom:12,animation:"bonusPop .5s var(--eb)"}}><span style={{background:"rgba(246,201,14,.12)",color:"var(--gold)",padding:"6px 18px",borderRadius:10,fontSize:15,fontWeight:800}}>🌟 سؤال ذهبي! النقاط ×3</span></div>}
+    {isTrap&&<div style={{textAlign:"center",marginBottom:12,animation:"bonusPop .5s var(--eb)"}}><span style={{background:"rgba(239,68,68,.12)",color:"var(--red)",padding:"6px 18px",borderRadius:10,fontSize:15,fontWeight:800}}>💣 سؤال فخ! الخطأ يخصم نقاط</span></div>}
     <p style={{textAlign:"center",fontSize:13,color:"var(--dim)",marginBottom:12,fontWeight:600}}>من أجاب صح؟</p>
     <div className="ans-btns">
       <button className="ans-team-btn" style={{background:`linear-gradient(135deg,${t1.color.c},${t1.color.l})`,boxShadow:`0 4px 20px ${t1.color.c}30`}} onClick={()=>award(1)}>{t1.emoji} {t1.name}</button>
       <button className="ans-team-btn" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.l})`,boxShadow:`0 4px 20px ${t2.color.c}30`}} onClick={()=>award(2)}>{t2.emoji} {t2.name}</button>
       <button className="ans-skip-btn" onClick={noOne}>لا أحد أجاب</button>
     </div>
-    {(ll[1].steal||ll[2].steal)&&<div style={{display:"flex",gap:6,marginTop:10,justifyContent:"center"}}>
+    {!isGolden&&!isTrap&&(ll[1].steal||ll[2].steal)&&<div style={{display:"flex",gap:6,marginTop:10,justifyContent:"center"}}>
       {ll[1].steal&&<button className="q-llbtn" onClick={()=>useSteal(1)}>🏴 سرقة — {t1.emoji} {t1.name}</button>}
       {ll[2].steal&&<button className="q-llbtn" onClick={()=>useSteal(2)}>🏴 سرقة — {t2.emoji} {t2.name}</button>}
     </div>}
@@ -470,7 +481,6 @@ const rows=[[0,1],[2,3],[4,5]];const anN=Object.keys(ans).length;const totQ=gc.l
 const cBg=(ci,qi)=>{const k=`${ci}-${qi}`;const a=ans[k];if(!a)return null;const tc=a.team===1?t1.color.c:a.team===2?t2.color.c:null;return tc?`linear-gradient(135deg,${tc}20,${tc}08)`:"rgba(255,255,255,.015)"};
 const cPts=(ci,qi)=>{const k=`${ci}-${qi}`;const a=ans[k];if(!a)return{cls:"gld",sty:{}};const tc=a.team===1?t1.color.l:a.team===2?t2.color.l:"rgba(255,255,255,.08)";return{cls:"tm",sty:{color:tc}}};
 const tier=p=>p<=200?"t2":p<=400?"t4":"t6";
-const isSpecial=(ci,qi)=>{const k=`${ci}-${qi}`;if(k===goldenKey&&!ans[k])return"golden";if(k===trapKey&&!ans[k])return"trap";return""};
 
 return<div className="board"><div className="bbg"/>
 {flash&&<div className="flash-ov" key={Date.now()} style={{background:flash}}/>}
@@ -487,21 +497,17 @@ return<div className="board"><div className="bbg"/>
 <div className="bgrd">{gc.map((cat,ci)=><div key={cat.id} className="cblk" style={{animationDelay:`${ci*.07}s`}}>
   <style>{`.cblk:nth-child(${ci+1})::before{background:linear-gradient(90deg,transparent,${cat.color},transparent)}.cblk:nth-child(${ci+1}) .qc::after{background:linear-gradient(90deg,transparent,${cat.color},transparent)!important}.cblk:nth-child(${ci+1}) .qc:not(.done):hover{border-color:${cat.color}20}`}</style>
 
-  {rows.map(([li],ri)=>{const k=`${ci}-${li}`;const d=!!ans[k];const cp=cPts(ci,li);const bg=cBg(ci,li);const pts=cat.questions[li].pts;const sp=isSpecial(ci,li);
-    return<button key={`l${ri}`} className={`qc ${tier(pts)} ${d?"done":""} ${sp}`} style={{gridColumn:1,gridRow:ri+1}} onClick={()=>openQ(ci,li)} disabled={d}>
+  {rows.map(([li],ri)=>{const k=`${ci}-${li}`;const d=!!ans[k];const cp=cPts(ci,li);const bg=cBg(ci,li);const pts=cat.questions[li].pts;
+    return<button key={`l${ri}`} className={`qc ${tier(pts)} ${d?"done":""}`} style={{gridColumn:1,gridRow:ri+1}} onClick={()=>openQ(ci,li)} disabled={d}>
       <div className="qbg" style={{background:bg||"transparent"}}/>
-      {sp==="golden"&&!d&&<span className="qbadge qb-gold">🌟</span>}
-      {sp==="trap"&&!d&&<span className="qbadge qb-trap">💣</span>}
       <span className={`qv ${cp.cls}`} style={cp.sty}>{pts}</span>
     </button>})}
 
   <div className="bmid" style={{background:cat.color+"06"}}><div className="bm-ring" style={{borderColor:cat.color+"30",background:cat.color+"0A"}}>{cat.icon}</div><span className="bm-nm">{cat.name}</span>{cat.type!=="regular"&&<span className="bm-tp">{{no_words:"تمثيل",letters:"حروف",guess_photo:"صور"}[cat.type]}</span>}</div>
 
-  {rows.map(([,ri2],ri)=>{const k=`${ci}-${ri2}`;const d=!!ans[k];const cp=cPts(ci,ri2);const bg=cBg(ci,ri2);const pts=cat.questions[ri2].pts;const sp=isSpecial(ci,ri2);
-    return<button key={`r${ri}`} className={`qc ${tier(pts)} ${d?"done":""} ${sp}`} style={{gridColumn:3,gridRow:ri+1}} onClick={()=>openQ(ci,ri2)} disabled={d}>
+  {rows.map(([,ri2],ri)=>{const k=`${ci}-${ri2}`;const d=!!ans[k];const cp=cPts(ci,ri2);const bg=cBg(ci,ri2);const pts=cat.questions[ri2].pts;
+    return<button key={`r${ri}`} className={`qc ${tier(pts)} ${d?"done":""}`} style={{gridColumn:3,gridRow:ri+1}} onClick={()=>openQ(ci,ri2)} disabled={d}>
       <div className="qbg" style={{background:bg||"transparent"}}/>
-      {sp==="golden"&&!d&&<span className="qbadge qb-gold">🌟</span>}
-      {sp==="trap"&&!d&&<span className="qbadge qb-trap">💣</span>}
       <span className={`qv ${cp.cls}`} style={cp.sty}>{pts}</span>
     </button>})}
 </div>)}</div>
