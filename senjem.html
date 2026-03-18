@@ -128,19 +128,33 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .qbadge{position:absolute;top:3px;right:3px;font-size:9px;z-index:2;padding:1px 5px;border-radius:4px;font-weight:800}
 .qb-gold{background:rgba(246,201,14,.15);color:var(--gold)}.qb-trap{background:rgba(239,68,68,.15);color:var(--red)}.qb-dbl{background:rgba(246,201,14,.1);color:var(--gold)}
 
-/* ═══ SCOREBOARD ═══ */
-.scb{display:flex;align-items:stretch;justify-content:center;gap:10px;padding:8px 0;position:relative;z-index:1;flex-wrap:wrap}
-.scc{display:flex;align-items:center;gap:12px;padding:12px 20px;border-radius:var(--rl);transition:all .3s;min-width:170px;position:relative;overflow:hidden}
-.sce{font-size:26px;position:relative;z-index:1}.sci{display:flex;flex-direction:column;position:relative;z-index:1}
-.scn{font-size:12px;font-weight:700;opacity:.5}.scv{font-family:var(--fd);font-size:34px;font-weight:700;line-height:1;transition:all .2s}
-.scv.pop{animation:scorePop .4s var(--eb)}
-.scm{font-family:var(--fd);font-size:14px;color:rgba(255,255,255,.04);font-weight:700;align-self:center;letter-spacing:4px}
+/* ═══ SCOREBOARD — PREMIUM ═══ */
+.scb{display:flex;align-items:stretch;justify-content:center;gap:16px;padding:10px 6px;position:relative;z-index:1;flex-wrap:wrap}
 
-/* Lifeline buttons in scoreboard */
-.llrow{display:flex;gap:4px;margin-top:6px;position:relative;z-index:1}
-.llbtn{font-size:10px;padding:3px 7px;border-radius:6px;font-weight:700;display:flex;align-items:center;gap:3px;transition:all .15s;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:rgba(255,255,255,.5)}
-.llbtn:hover:not(:disabled){background:rgba(255,255,255,.08);color:#fff;transform:scale(1.05)}
-.llbtn.used{opacity:.2;text-decoration:line-through;cursor:default}
+.scc{flex:1;max-width:400px;min-width:240px;border-radius:var(--rl);transition:all .3s;position:relative;overflow:hidden;padding:0}
+.sc-top{display:flex;align-items:center;gap:14px;padding:14px 18px 10px}
+.sc-emo{font-size:32px}
+.sc-info{display:flex;flex-direction:column;flex:1}
+.sc-name{font-size:14px;font-weight:800;opacity:.6;margin-bottom:2px}
+.sc-score{font-family:var(--fd);font-size:40px;font-weight:700;line-height:1;transition:all .2s}
+.sc-score.pop{animation:scorePop .4s var(--eb)}
+
+.sc-lls{display:flex;gap:6px;padding:8px 18px 12px;flex-wrap:wrap}
+.ll-chip{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:10px;font-weight:700;transition:all .2s;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:rgba(255,255,255,.55)}
+.ll-chip .ll-icon{font-size:12px}
+.ll-chip .ll-label{font-size:9px;letter-spacing:.5px}
+.ll-chip.avail{background:rgba(255,255,255,.05);color:rgba(255,255,255,.7)}
+.ll-chip.avail:hover{background:rgba(255,255,255,.08);color:#fff}
+.ll-chip.used{opacity:.2;background:rgba(255,255,255,.01);border-color:rgba(255,255,255,.03)}
+.ll-chip.used .ll-label{text-decoration:line-through}
+
+.sc-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 4px;align-self:center}
+.sc-vs{font-family:var(--fd);font-size:16px;color:rgba(255,255,255,.06);font-weight:700;letter-spacing:4px}
+
+/* Tooltip for lifeline explanation */
+.ll-tip{position:relative}
+.ll-tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) scale(.9);opacity:0;pointer-events:none;transition:all .2s;background:#1a1e35;color:rgba(255,255,255,.8);font-size:10px;font-weight:600;padding:6px 12px;border-radius:8px;white-space:nowrap;border:1px solid rgba(255,255,255,.08);box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:10}
+.ll-tip:hover::after{opacity:1;transform:translateX(-50%) scale(1)}
 
 /* Flash + bonus popup */
 .flash-ov{position:fixed;inset:0;pointer-events:none;z-index:500;opacity:0;animation:flash .5s ease forwards}
@@ -185,17 +199,21 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .ansl{font-size:10px;font-weight:800;color:var(--green);letter-spacing:3px;margin-bottom:5px}
 .ansv{font-size:22px;font-weight:800;color:var(--green);line-height:1.5}
 .anst{text-align:center;font-size:12px;color:var(--dim);margin-bottom:12px}
-.tbtns{display:flex;gap:6px;flex-wrap:wrap}
-.btn-aw{font-size:14px;padding:12px 16px;border-radius:var(--r);flex:1;min-width:100px;color:#fff;font-weight:800;transition:all .25s var(--e)}
-.btn-aw:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
-.btn-wr{font-size:13px;padding:12px 14px;border-radius:var(--r);flex:1;min-width:90px;color:#fff;font-weight:700;opacity:.7;transition:all .2s}
-.btn-wr:hover{opacity:1}
-.btn-no{background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);padding:12px 14px;border-radius:var(--r);font-weight:700;font-size:12px;border:1px solid rgba(255,255,255,.04)}
 
-/* Steal phase */
-.steal-box{width:100%;padding:16px;border-radius:var(--r);border:2px solid rgba(168,85,247,.3);background:rgba(168,85,247,.05);text-align:center;margin-top:12px;animation:stealGlow 1s infinite,reveal .3s var(--e)}
-.steal-title{font-family:var(--fd);font-size:16px;font-weight:700;color:#C084FC;margin-bottom:10px}
-.steal-btns{display:flex;gap:8px;justify-content:center}
+.ans-btns{display:flex;gap:10px;flex-wrap:wrap}
+.ans-team-btn{flex:1;min-width:140px;padding:16px 20px;border-radius:var(--r);color:#fff;font-size:17px;font-weight:800;font-family:var(--fb);transition:all .25s var(--e);display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.5px}
+.ans-team-btn:hover{transform:translateY(-3px);filter:brightness(1.1)}
+.ans-team-btn:active{transform:scale(.96)!important}
+.ans-skip-btn{width:100%;margin-top:6px;padding:12px 20px;border-radius:var(--r);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.35);font-size:14px;font-weight:700;font-family:var(--fb);transition:all .2s}
+.ans-skip-btn:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5)}
+
+/* QR Code display for ولا كلمة */
+.qr-show{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:28px;animation:scaleIn .4s var(--eb)}
+.qr-frame{background:#fff;padding:16px;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.qr-frame img{width:220px;height:220px;display:block}
+.qr-label{font-size:14px;color:var(--dim);font-weight:600;text-align:center}
+.qr-sublabel{font-size:11px;color:rgba(255,255,255,.15);text-align:center}
+.qr-answer-hint{font-size:13px;color:rgba(255,255,255,.2);background:rgba(255,255,255,.03);padding:6px 14px;border-radius:8px;margin-top:4px}
 
 /* Domination banner */
 .dom-banner{position:fixed;top:20%;left:50%;transform:translateX(-50%);z-index:600;pointer-events:none;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a0a0a;padding:12px 32px;border-radius:var(--rl);font-family:var(--fd);font-size:20px;font-weight:700;animation:bonusPop .6s var(--eb) forwards;box-shadow:0 8px 40px rgba(246,201,14,.3)}
@@ -229,7 +247,7 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .meb:hover{background:rgba(255,255,255,.08)}.meb.sel{background:rgba(246,201,14,.1);border-color:var(--gold)}
 .mbtns{display:flex;gap:8px;margin-top:16px}
 
-@media(max-width:680px){.scard{padding:28px 16px}.logo-m{font-size:50px}.tc{min-width:240px;padding:18px}.qv{font-size:18px}.qc{padding:14px 4px;margin:3px;border-radius:8px}.bm-nm{font-size:9px}.scv{font-size:26px}.scc{padding:10px 14px;min-width:130px}.qtxt{font-size:19px}.tv{font-size:36px}.goti{font-size:34px}.gos{font-size:44px}.cg{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.nwi{width:240px;height:240px}}
+@media(max-width:680px){.scard{padding:28px 16px}.logo-m{font-size:50px}.tc{min-width:240px;padding:18px}.qv{font-size:18px}.qc{padding:14px 4px;margin:3px;border-radius:8px}.bm-nm{font-size:9px}.sc-score{font-size:28px}.scc{min-width:200px}.sc-top{padding:10px 14px 6px}.sc-lls{padding:6px 14px 10px}.ll-chip{padding:3px 6px}.ll-label{font-size:8px}.qtxt{font-size:19px}.tv{font-size:36px}.goti{font-size:34px}.gos{font-size:44px}.cg{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.nwi{width:240px;height:240px}}
 </style>
 </head>
 <body>
@@ -258,8 +276,8 @@ const CATS=[
   {id:"tf",name:"صح / غلط",icon:"✅",color:"#38B000",type:"regular",questions:[{pts:200,q:"الهند أكبر سكاناً؟",a:"صح"},{pts:200,q:"القمر يُصدر ضوء؟",a:"غلط"},{pts:400,q:"سور الصين من الفضاء؟",a:"غلط"},{pts:400,q:"النعامة تدفن رأسها؟",a:"غلط"},{pts:600,q:"الماء النقي عازل؟",a:"صح"},{pts:600,q:"الزهرة يدور عكسياً؟",a:"صح"}]},
   {id:"wai",name:"من أنا؟",icon:"🎭",color:"#9B5DE5",type:"regular",questions:[{pts:200,q:"ملك الإنسانية",a:"فيصل"},{pts:200,q:"أرجنتين 2022",a:"ميسي"},{pts:400,q:"رحّالة مغربي",a:"ابن بطوطة"},{pts:400,q:"تيسلا+سبيس إكس",a:"ماسك"},{pts:600,q:"النسبية",a:"أينشتاين"},{pts:600,q:"ملكة مصرية",a:"كليوباترا"}]},
   {id:"letters",name:"حروف",icon:"🔤",color:"#D4A373",type:"letters",questions:[{pts:200,q:"عروس البحر الأحمر",a:"جدة",letter:"ج"},{pts:200,q:"فاكهة صفراء",a:"موز",letter:"م"},{pts:400,q:"أبو الطب",a:"ابن سينا",letter:"ا"},{pts:400,q:"أكبر صحراء عربية",a:"الربع الخالي",letter:"ر"},{pts:600,q:"مخترع المصباح",a:"إديسون",letter:"ت"},{pts:600,q:"عملة اليابان",a:"ين",letter:"ي"}]},
-  {id:"nw",name:"ولا كلمة",icon:"🤫",color:"#E76F51",type:"no_words",questions:[{pts:200,image:"no-words/q1.png",a:"طيّار"},{pts:200,image:"no-words/q2.png",a:"طبّاخ"},{pts:400,image:"no-words/q3.png",a:"غوّاص"},{pts:400,image:"no-words/q4.png",a:"مصوّر"},{pts:600,image:"no-words/q5.png",a:"رائد فضاء"},{pts:600,image:"no-words/q6.png",a:"ساحر"}]},
-  {id:"gp",name:"خمن الصورة",icon:"🧩",color:"#264653",type:"guess_photo",questions:[{pts:200,image:"guess/q1.png",a:"—"},{pts:200,image:"guess/q2.png",a:"—"},{pts:400,image:"guess/q3.png",a:"—"},{pts:400,image:"guess/q4.png",a:"—"},{pts:600,image:"guess/q5.png",a:"—"},{pts:600,image:"guess/q6.png",a:"—"}]},
+  {id:"nw",name:"ولا كلمة",icon:"🤫",color:"#E76F51",type:"no_words",questions:[{pts:200,image:"No Words/q1.png",a:"طيّار"},{pts:200,image:"No Words/q2.png",a:"طبّاخ"},{pts:400,image:"No Words/q3.png",a:"غوّاص"},{pts:400,image:"No Words/q4.png",a:"مصوّر"},{pts:600,image:"No Words/q5.png",a:"رائد فضاء"},{pts:600,image:"No Words/q6.png",a:"ساحر"}]},
+  {id:"gp",name:"خمن الصورة",icon:"🧩",color:"#264653",type:"guess_photo",questions:[{pts:200,image:"Guess/q1.png",a:"—"},{pts:200,image:"Guess/q2.png",a:"—"},{pts:400,image:"Guess/q3.png",a:"—"},{pts:400,image:"Guess/q4.png",a:"—"},{pts:600,image:"Guess/q5.png",a:"—"},{pts:600,image:"Guess/q6.png",a:"—"}]},
 ];
 
 function useTimer(){const[s,setS]=useState(0);const[on,setOn]=useState(false);const r=useRef(null);useEffect(()=>{if(on)r.current=setInterval(()=>setS(p=>p+1),1000);else clearInterval(r.current);return()=>clearInterval(r.current)},[on]);return{s,on,fmt:`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`,toggle:()=>setOn(p=>!p),reset:()=>{setS(0);setOn(false)},stop:()=>setOn(false)};}
@@ -274,7 +292,7 @@ return<div className="mbg" onClick={e=>e.target===e.currentTarget&&onClose()}><d
 <div style={{marginTop:14}}><label className="ml">6 أسئلة</label>{qs.map((q,i)=><div key={i} className="mqb"><div className="mqp">{q.pts}</div>
 {ty==="regular"&&<><div className="mqr"><input className="mi" placeholder="السؤال" value={q.q} onChange={e=>up(i,"q",e.target.value)}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
 {ty==="letters"&&<><div className="mqr"><input className="mi" placeholder="السؤال" value={q.q} onChange={e=>up(i,"q",e.target.value)}/><input className="mi" placeholder="حرف" value={q.letter} onChange={e=>up(i,"letter",e.target.value)} style={{maxWidth:50,textAlign:"center",fontWeight:900}}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
-{(ty==="no_words"||ty==="guess_photo")&&<><div className="mqr"><input className="mi" placeholder="مسار الصورة" value={q.image} onChange={e=>up(i,"image",e.target.value)}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
+{(ty==="no_words"||ty==="guess_photo")&&<><div className="mqr"><input className="mi" placeholder={ty==="no_words"?"مسار الصورة: No Words/image.png":"مسار الصورة: Guess/image.png"} value={q.image} onChange={e=>up(i,"image",e.target.value)}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
 </div>)}</div>
 <div className="mbtns"><button className="btn btn-gold" style={{flex:1}} disabled={!ok} onClick={()=>onSave({id:"c_"+Date.now(),name:nm,icon:ic,color:co,type:ty,questions:qs})}>💾 حفظ</button><button className="btn btn-ghost" onClick={onClose}>إلغاء</button></div></div></div>;}
 
@@ -290,8 +308,7 @@ const[e1,setE1]=useState(false);const[e2,setE2]=useState(false);
 const[ll,setLl]=useState({1:{dbl:true,sw:true,shield:true,steal:true},2:{dbl:true,sw:true,shield:true,steal:true}});
 const[activeDbl,setActiveDbl]=useState(0); // which team activated double (0=none)
 const[flash,setFlash]=useState(null);const[rand,setRand]=useState(false);
-const[bonusMsg,setBonusMsg]=useState(null); // {text,color}
-const[stealPhase,setStealPhase]=useState(null); // {stealingTeam, pts}
+const[bonusMsg,setBonusMsg]=useState(null);
 const[domBanner,setDomBanner]=useState(null);
 // Special questions
 const[goldenKey,setGoldenKey]=useState(null);const[trapKey,setTrapKey]=useState(null);
@@ -339,52 +356,17 @@ const award=(team)=>{
   fin({team,pts});
 };
 
-const wrong=(team)=>{
-  // Trap question — deduct points
-  if(aq.k===trapKey){
-    const ded=aq.q.pts;
-    if(team===1)setS1(v=>Math.max(0,v-ded));else setS2(v=>Math.max(0,v-ded));
-    showBonus(`💣 سؤال فخ! -${ded}`,"#EF4444");doFlash("#EF4444");
-  }
-  // Check if wrong team has shield
-  if(ll[team].shield){
-    // Don't close — let host decide to use shield
-  }
-  // Check if other team can steal
-  const other=team===1?2:1;
-  if(ll[other].steal){
-    setStealPhase({stealingTeam:other,pts:calcPts()});
-    return; // Don't close yet
-  }
+// Shield: protects team from trap deduction (used before reveal)
+const useShield=(team)=>{setLl(p=>({...p,[team]:{...p[team],shield:false}}));showBonus(`🛡️ ${team===1?t1.name:t2.name} — حماية من الفخ!`,"#10B981")};
+// Steal: auto-awards points to team if they use it (used after reveal)
+const useSteal=(team)=>{setLl(p=>({...p,[team]:{...p[team],steal:false}}));award(team);showBonus(`🏴 ${team===1?t1.name:t2.name} — سرقة!`,"#A855F7")};
+
+const noOne=()=>{
+  // Trap: show message if trap question
+  if(aq.k===trapKey)showBonus("💣 سؤال فخ! محد أجاب","#EF4444");
   fin({team:0,pts:0});
 };
-
-const useShield=(team)=>{
-  setLl(p=>({...p,[team]:{...p[team],shield:false}}));
-  showBonus("🛡️ حماية! السؤال مستمر","#10B981");
-  // Reset answer state — question stays open
-  setSa(false);setStealPhase(null);
-};
-
-const doSteal=(success)=>{
-  const st=stealPhase.stealingTeam;
-  setLl(p=>({...p,[st]:{...p[st],steal:false}}));
-  if(success){
-    const pts=stealPhase.pts;
-    if(st===1){setS1(v=>v+pts);setPop(1)}else{setS2(v=>v+pts);setPop(2)}
-    doFlash(st===1?t1.color.c:t2.color.c);
-    showBonus(`🏴 سرقة ناجحة! +${pts}`,"#A855F7");
-    setTimeout(()=>setPop(0),500);
-    const csKey=`${aq.ci}-${st}`;setCatScore(p=>({...p,[csKey]:(p[csKey]||0)+1}));
-    fin({team:st,pts});
-  } else {
-    if(aq.k===trapKey){const ded=aq.q.pts;if(st===1)setS1(v=>Math.max(0,v-ded));else setS2(v=>Math.max(0,v-ded));showBonus(`💣 فخ! -${ded}`,"#EF4444");}
-    fin({team:0,pts:0});
-  }
-};
-
-const noOne=()=>fin({team:0,pts:0});
-const fin=res=>{tm.stop();setActiveDbl(0);setStealPhase(null);const na={...ans,[aq.k]:res};setAns(na);Object.keys(na).length>=gc.length*6?setTimeout(()=>setScr("gameover"),400):setScr("board")};
+const fin=res=>{tm.stop();setActiveDbl(0);const na={...ans,[aq.k]:res};setAns(na);Object.keys(na).length>=gc.length*6?setTimeout(()=>setScr("gameover"),400):setScr("board")};
 
 // Lifeline: Double
 const useDbl=(team)=>{setLl(p=>({...p,[team]:{...p[team],dbl:false}}));setActiveDbl(team);showBonus(`⚡ ${team===1?t1.name:t2.name} — نقاط مضاعفة!`,"#F6C90E")};
@@ -437,15 +419,22 @@ return<div className="qov"><div className="qmod">
 <div className="qbdy">
   {/* Lifelines before answer */}
   {!sa&&<div className="q-llbar">
-    {ll[1].dbl&&<button className={`q-llbtn ${activeDbl===1?"active":""}`} onClick={()=>useDbl(1)}>⚡ مضاعفة — {t1.emoji}{t1.name}</button>}
-    {ll[2].dbl&&<button className={`q-llbtn ${activeDbl===2?"active":""}`} onClick={()=>useDbl(2)}>⚡ مضاعفة — {t2.emoji}{t2.name}</button>}
+    {ll[1].dbl&&<button className={`q-llbtn ${activeDbl===1?"active":""}`} onClick={()=>useDbl(1)}>⚡ مضاعفة — {t1.emoji}</button>}
+    {ll[2].dbl&&<button className={`q-llbtn ${activeDbl===2?"active":""}`} onClick={()=>useDbl(2)}>⚡ مضاعفة — {t2.emoji}</button>}
     {ll[1].sw&&<button className="q-llbtn" onClick={()=>useSwitch(1)}>🔄 تبديل — {t1.emoji}</button>}
     {ll[2].sw&&<button className="q-llbtn" onClick={()=>useSwitch(2)}>🔄 تبديل — {t2.emoji}</button>}
+    {ll[1].shield&&<button className="q-llbtn" onClick={()=>useShield(1)}>🛡️ حماية — {t1.emoji}</button>}
+    {ll[2].shield&&<button className="q-llbtn" onClick={()=>useShield(2)}>🛡️ حماية — {t2.emoji}</button>}
   </div>}
 
   <div className="tmr"><button className="tb" onClick={tm.toggle}>{tm.on?"⏸":"▶"}</button><div className={`tv ${tm.on?"on":""}`}>{tm.fmt}</div><button className="tb" onClick={tm.reset}>↻</button></div>
 
-  {nw&&!sa&&<div className="nws"><img className="nwi" src={`images/${q.image}`} alt={q.image} onError={e=>{e.target.style.background="#111";e.target.alt=q.image}}/><div className="nwn">🤫 يشرح بلا كلام!</div></div>}
+  {nw&&!sa&&<div className="qr-show">
+          <div className="qr-frame"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent("https://ianasx.github.io/games/images/"+q.image)}`} alt="QR"/></div>
+          <div className="qr-label">📱 امسح الكود بجوالك</div>
+          <div className="qr-sublabel">اللاعب يشوف الصورة ويشرحها بدون كلام</div>
+          <div className="qr-answer-hint">🤫 الجواب: {q.a}</div>
+        </div>}
   {ph&&!sa&&<div className="phs"><img className="phi" src={`images/${q.image}`} alt={q.image} onError={e=>{e.target.style.background="#111";e.target.alt=q.image}}/></div>}
   {lt&&<><div className="lta"><span className="ltl">يبدأ بحرف</span><div className="ltb">{q.letter}</div></div><p className="qtxt">{q.q}</p></>}
   {!nw&&!lt&&!ph&&<p className="qtxt">{q.q}</p>}
@@ -453,31 +442,16 @@ return<div className="qov"><div className="qmod">
   {!sa?<button className="btn btn-gold" style={{fontSize:19,padding:"15px 40px"}} onClick={()=>{setSa(true);tm.stop()}}>🔍 كشف الإجابة</button>
   :<div className="answ">
     <div className="ansc"><div className="ansl">الإجابة</div><p className="ansv">{q.a}</p></div>
-    <div className="anst">⏱️ {tm.fmt}{isGolden?" • 🌟 ذهبي":""}{isTrap?" • 💣 فخ":""}</div>
-
-    {!stealPhase?<>
-      <div className="tbtns">
-        <button className="btn-aw" style={{background:`linear-gradient(135deg,${t1.color.c},${t1.color.l})`}} onClick={()=>award(1)}>✓ {t1.emoji} {t1.name}</button>
-        <button className="btn-aw" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.l})`}} onClick={()=>award(2)}>✓ {t2.emoji} {t2.name}</button>
-      </div>
-      <div className="tbtns" style={{marginTop:8}}>
-        <button className="btn-wr" style={{background:`${t1.color.c}30`,border:`1px solid ${t1.color.c}40`}} onClick={()=>wrong(1)}>✗ {t1.emoji} خطأ</button>
-        <button className="btn-wr" style={{background:`${t2.color.c}30`,border:`1px solid ${t2.color.c}40`}} onClick={()=>wrong(2)}>✗ {t2.emoji} خطأ</button>
-        <button className="btn btn-no" onClick={noOne}>لا أحد</button>
-      </div>
-      {/* Shield buttons */}
-      <div className="tbtns" style={{marginTop:8}}>
-        {ll[1].shield&&<button className="q-llbtn" onClick={()=>useShield(1)}>🛡️ حماية — {t1.emoji}</button>}
-        {ll[2].shield&&<button className="q-llbtn" onClick={()=>useShield(2)}>🛡️ حماية — {t2.emoji}</button>}
-      </div>
-    </>
-    :<div className="steal-box">
-      <div className="steal-title">🏴 {stealPhase.stealingTeam===1?t1.name:t2.name} — فرصة سرقة!</div>
-      <div className="steal-btns">
-        <button className="btn-aw" style={{background:`linear-gradient(135deg,${stealPhase.stealingTeam===1?t1.color.c:t2.color.c},${stealPhase.stealingTeam===1?t1.color.l:t2.color.l})`}} onClick={()=>doSteal(true)}>✓ صحيحة!</button>
-        <button className="btn btn-ghost" onClick={()=>doSteal(false)}>✗ خاطئة</button>
-        <button className="btn btn-no" onClick={()=>{setStealPhase(null);fin({team:0,pts:0})}}>تخطي</button>
-      </div>
+    <div className="anst">⏱️ {tm.fmt}{isGolden?" • 🌟 ذهبي ×3":""}{isTrap?" • 💣 فخ":""}{activeDbl?" • ⚡ مضاعفة":""}</div>
+    <p style={{textAlign:"center",fontSize:13,color:"var(--dim)",marginBottom:12,fontWeight:600}}>من أجاب صح؟</p>
+    <div className="ans-btns">
+      <button className="ans-team-btn" style={{background:`linear-gradient(135deg,${t1.color.c},${t1.color.l})`,boxShadow:`0 4px 20px ${t1.color.c}30`}} onClick={()=>award(1)}>{t1.emoji} {t1.name}</button>
+      <button className="ans-team-btn" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.l})`,boxShadow:`0 4px 20px ${t2.color.c}30`}} onClick={()=>award(2)}>{t2.emoji} {t2.name}</button>
+      <button className="ans-skip-btn" onClick={noOne}>لا أحد أجاب</button>
+    </div>
+    {(ll[1].steal||ll[2].steal)&&<div style={{display:"flex",gap:6,marginTop:10,justifyContent:"center"}}>
+      {ll[1].steal&&<button className="q-llbtn" onClick={()=>useSteal(1)}>🏴 سرقة — {t1.emoji} {t1.name}</button>}
+      {ll[2].steal&&<button className="q-llbtn" onClick={()=>useSteal(2)}>🏴 سرقة — {t2.emoji} {t2.name}</button>}
     </div>}
   </div>}
 </div></div></div>;}
@@ -533,20 +507,40 @@ return<div className="board"><div className="bbg"/>
 </div>)}</div>
 
 <div className="scb">
-  <div className="scc" style={{borderColor:t1.color.c+"40",background:t1.color.c+"06",border:`1.5px solid ${t1.color.c}40`}}>
-    <div className="sce">{t1.emoji}</div><div className="sci"><div className="scn">{t1.name}</div><div className={`scv ${pop===1?"pop":""}`} style={{color:t1.color.c}}>{s1}</div>
-    <div className="llrow">
-      {ll[1].dbl&&<span className="llbtn">⚡</span>}{ll[1].sw&&<span className="llbtn">🔄</span>}{ll[1].shield&&<span className="llbtn">🛡️</span>}{ll[1].steal&&<span className="llbtn">🏴</span>}
-      {!ll[1].dbl&&<span className="llbtn used">⚡</span>}{!ll[1].sw&&<span className="llbtn used">🔄</span>}{!ll[1].shield&&<span className="llbtn used">🛡️</span>}{!ll[1].steal&&<span className="llbtn used">🏴</span>}
-    </div></div>
+  {/* Team 1 */}
+  <div className="scc" style={{border:`1.5px solid ${t1.color.c}35`,background:`linear-gradient(160deg,${t1.color.c}08,${t1.color.c}03)`}}>
+    <div className="sc-top">
+      <div className="sc-emo">{t1.emoji}</div>
+      <div className="sc-info">
+        <div className="sc-name" style={{color:t1.color.l}}>{t1.name}</div>
+        <div className={`sc-score ${pop===1?"pop":""}`} style={{color:t1.color.c}}>{s1}</div>
+      </div>
+    </div>
+    <div className="sc-lls">
+      <div className={`ll-chip ll-tip ${ll[1].dbl?"avail":"used"}`} data-tip="نقاط مضاعفة ×2 لسؤال واحد"><span className="ll-icon">⚡</span><span className="ll-label">مضاعفة</span></div>
+      <div className={`ll-chip ll-tip ${ll[1].sw?"avail":"used"}`} data-tip="استبدال السؤال بسؤال آخر عشوائي"><span className="ll-icon">🔄</span><span className="ll-label">تبديل</span></div>
+      <div className={`ll-chip ll-tip ${ll[1].shield?"avail":"used"}`} data-tip="حماية من خصم النقاط عند الخطأ"><span className="ll-icon">🛡️</span><span className="ll-label">حماية</span></div>
+      <div className={`ll-chip ll-tip ${ll[1].steal?"avail":"used"}`} data-tip="سرقة السؤال إذا أخطأ الفريق الآخر"><span className="ll-icon">🏴</span><span className="ll-label">سرقة</span></div>
+    </div>
   </div>
-  <div className="scm">VS</div>
-  <div className="scc" style={{borderColor:t2.color.c+"40",background:t2.color.c+"06",border:`1.5px solid ${t2.color.c}40`}}>
-    <div className="sce">{t2.emoji}</div><div className="sci"><div className="scn">{t2.name}</div><div className={`scv ${pop===2?"pop":""}`} style={{color:t2.color.c}}>{s2}</div>
-    <div className="llrow">
-      {ll[2].dbl&&<span className="llbtn">⚡</span>}{ll[2].sw&&<span className="llbtn">🔄</span>}{ll[2].shield&&<span className="llbtn">🛡️</span>}{ll[2].steal&&<span className="llbtn">🏴</span>}
-      {!ll[2].dbl&&<span className="llbtn used">⚡</span>}{!ll[2].sw&&<span className="llbtn used">🔄</span>}{!ll[2].shield&&<span className="llbtn used">🛡️</span>}{!ll[2].steal&&<span className="llbtn used">🏴</span>}
-    </div></div>
+
+  <div className="sc-divider"><div className="sc-vs">VS</div></div>
+
+  {/* Team 2 */}
+  <div className="scc" style={{border:`1.5px solid ${t2.color.c}35`,background:`linear-gradient(160deg,${t2.color.c}08,${t2.color.c}03)`}}>
+    <div className="sc-top">
+      <div className="sc-emo">{t2.emoji}</div>
+      <div className="sc-info">
+        <div className="sc-name" style={{color:t2.color.l}}>{t2.name}</div>
+        <div className={`sc-score ${pop===2?"pop":""}`} style={{color:t2.color.c}}>{s2}</div>
+      </div>
+    </div>
+    <div className="sc-lls">
+      <div className={`ll-chip ll-tip ${ll[2].dbl?"avail":"used"}`} data-tip="نقاط مضاعفة ×2 لسؤال واحد"><span className="ll-icon">⚡</span><span className="ll-label">مضاعفة</span></div>
+      <div className={`ll-chip ll-tip ${ll[2].sw?"avail":"used"}`} data-tip="استبدال السؤال بسؤال آخر عشوائي"><span className="ll-icon">🔄</span><span className="ll-label">تبديل</span></div>
+      <div className={`ll-chip ll-tip ${ll[2].shield?"avail":"used"}`} data-tip="حماية من خصم النقاط عند الخطأ"><span className="ll-icon">🛡️</span><span className="ll-label">حماية</span></div>
+      <div className={`ll-chip ll-tip ${ll[2].steal?"avail":"used"}`} data-tip="سرقة السؤال إذا أخطأ الفريق الآخر"><span className="ll-icon">🏴</span><span className="ll-label">سرقة</span></div>
+    </div>
   </div>
 </div></div>;}
 
