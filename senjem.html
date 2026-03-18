@@ -291,8 +291,8 @@ const CATS=[
   {id:"tf",name:"صح / غلط",icon:"✅",color:"#38B000",type:"regular",questions:[{pts:200,q:"الهند أكبر سكاناً؟",a:"صح"},{pts:200,q:"القمر يُصدر ضوء؟",a:"غلط"},{pts:400,q:"سور الصين من الفضاء؟",a:"غلط"},{pts:400,q:"النعامة تدفن رأسها؟",a:"غلط"},{pts:600,q:"الماء النقي عازل؟",a:"صح"},{pts:600,q:"الزهرة يدور عكسياً؟",a:"صح"}]},
   {id:"wai",name:"من أنا؟",icon:"🎭",color:"#9B5DE5",type:"regular",questions:[{pts:200,q:"ملك الإنسانية",a:"فيصل"},{pts:200,q:"أرجنتين 2022",a:"ميسي"},{pts:400,q:"رحّالة مغربي",a:"ابن بطوطة"},{pts:400,q:"تيسلا+سبيس إكس",a:"ماسك"},{pts:600,q:"النسبية",a:"أينشتاين"},{pts:600,q:"ملكة مصرية",a:"كليوباترا"}]},
   {id:"letters",name:"حروف",icon:"🔤",color:"#D4A373",type:"letters",questions:[{pts:200,q:"عروس البحر الأحمر",a:"جدة",letter:"ج"},{pts:200,q:"فاكهة صفراء",a:"موز",letter:"م"},{pts:400,q:"أبو الطب",a:"ابن سينا",letter:"ا"},{pts:400,q:"أكبر صحراء عربية",a:"الربع الخالي",letter:"ر"},{pts:600,q:"مخترع المصباح",a:"إديسون",letter:"ت"},{pts:600,q:"عملة اليابان",a:"ين",letter:"ي"}]},
-  {id:"nw",name:"ولا كلمة",icon:"🤫",color:"#E76F51",type:"no_words",questions:[{pts:200,image:"No Words/q1.png",a:"طيّار"},{pts:200,image:"No Words/q2.png",a:"طبّاخ"},{pts:400,image:"No Words/q3.png",a:"غوّاص"},{pts:400,image:"No Words/q4.png",a:"مصوّر"},{pts:600,image:"No Words/q5.png",a:"رائد فضاء"},{pts:600,image:"No Words/q6.png",a:"ساحر"}]},
-  {id:"gp",name:"خمن الصورة",icon:"🧩",color:"#264653",type:"guess_photo",questions:[{pts:200,image:"Guess/q1.png",a:"—"},{pts:200,image:"Guess/q2.png",a:"—"},{pts:400,image:"Guess/q3.png",a:"—"},{pts:400,image:"Guess/q4.png",a:"—"},{pts:600,image:"Guess/q5.png",a:"—"},{pts:600,image:"Guess/q6.png",a:"—"}]},
+  {id:"nw",name:"ولا كلمة",icon:"🤫",color:"#E76F51",type:"no_words",questions:[{pts:200,image:"no-words/pilot.png",a:"طيّار"},{pts:200,image:"no-words/chef.png",a:"طبّاخ"},{pts:200,image:"no-words/cat.png",a:"قطة"},{pts:200,image:"no-words/elephant.png",a:"فيل"},{pts:400,image:"no-words/diver.png",a:"غوّاص"},{pts:400,image:"no-words/photographer.png",a:"مصوّر"},{pts:400,image:"no-words/penguin.png",a:"بطريق"},{pts:400,image:"no-words/snake.png",a:"ثعبان"},{pts:600,image:"no-words/astronaut.png",a:"رائد فضاء"},{pts:600,image:"no-words/magician.png",a:"ساحر"},{pts:600,image:"no-words/octopus.png",a:"أخطبوط"},{pts:600,image:"no-words/chameleon.png",a:"حرباء"}]},
+  {id:"gp",name:"خمن الصورة",icon:"🧩",color:"#264653",type:"guess_photo",questions:[{pts:200,image:"guess/q1.png",a:"—"},{pts:200,image:"guess/q2.png",a:"—"},{pts:400,image:"guess/q3.png",a:"—"},{pts:400,image:"guess/q4.png",a:"—"},{pts:600,image:"guess/q5.png",a:"—"},{pts:600,image:"guess/q6.png",a:"—"}]},
 ];
 
 function useTimer(){const[s,setS]=useState(0);const[on,setOn]=useState(false);const r=useRef(null);useEffect(()=>{if(on)r.current=setInterval(()=>setS(p=>p+1),1000);else clearInterval(r.current);return()=>clearInterval(r.current)},[on]);return{s,on,fmt:`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`,toggle:()=>setOn(p=>!p),reset:()=>{setS(0);setOn(false)},stop:()=>setOn(false)};}
@@ -307,7 +307,7 @@ return<div className="mbg" onClick={e=>e.target===e.currentTarget&&onClose()}><d
 <div style={{marginTop:14}}><label className="ml">6 أسئلة</label>{qs.map((q,i)=><div key={i} className="mqb"><div className="mqp">{q.pts}</div>
 {ty==="regular"&&<><div className="mqr"><input className="mi" placeholder="السؤال" value={q.q} onChange={e=>up(i,"q",e.target.value)}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
 {ty==="letters"&&<><div className="mqr"><input className="mi" placeholder="السؤال" value={q.q} onChange={e=>up(i,"q",e.target.value)}/><input className="mi" placeholder="حرف" value={q.letter} onChange={e=>up(i,"letter",e.target.value)} style={{maxWidth:50,textAlign:"center",fontWeight:900}}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
-{(ty==="no_words"||ty==="guess_photo")&&<><div className="mqr"><input className="mi" placeholder={ty==="no_words"?"مسار الصورة: No Words/image.png":"مسار الصورة: Guess/image.png"} value={q.image} onChange={e=>up(i,"image",e.target.value)}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
+{(ty==="no_words"||ty==="guess_photo")&&<><div className="mqr"><input className="mi" placeholder={ty==="no_words"?"مسار الصورة: no-words/image.png":"مسار الصورة: guess/image.png"} value={q.image} onChange={e=>up(i,"image",e.target.value)}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
 </div>)}</div>
 <div className="mbtns"><button className="btn btn-gold" style={{flex:1}} disabled={!ok} onClick={()=>onSave({id:"c_"+Date.now(),name:nm,icon:ic,color:co,type:ty,questions:qs})}>💾 حفظ</button><button className="btn btn-ghost" onClick={onClose}>إلغاء</button></div></div></div>;}
 
@@ -338,17 +338,17 @@ const togCat=id=>setSel(p=>{if(p.includes(id))return p.filter(c=>c!==id);return 
 const startGame=()=>{
   const g=pool.filter(c=>sel.includes(c.id)).map(cat=>{
     const qs=cat.questions;
-    // If exactly 6 already, use as-is
     if(qs.length<=6)return cat;
-    // Randomly pick 2×200 + 2×400 + 2×600 from the pool
-    const pick=(arr,n)=>{const s=[...arr].sort(()=>Math.random()-.5);return s.slice(0,n)};
+    const pick=(arr,n)=>{const s=[...arr].sort(()=>Math.random()-.5);return s.slice(0,Math.min(n,s.length))};
     const q200=pick(qs.filter(q=>q.pts===200),2);
     const q400=pick(qs.filter(q=>q.pts===400),2);
     const q600=pick(qs.filter(q=>q.pts===600),2);
-    return{...cat,questions:[...q200,...q400,...q600]};
+    let picked=[...q200,...q400,...q600];
+    // Fill gaps if any tier had <2 questions
+    if(picked.length<6){const remaining=qs.filter(q=>!picked.includes(q));const extra=pick(remaining,6-picked.length);picked=[...picked,...extra]}
+    return{...cat,questions:picked};
   });
   setGc(g);
-  // Assign golden + trap randomly
   const allKeys=[];g.forEach((c,ci)=>c.questions.forEach((q,qi)=>allKeys.push(`${ci}-${qi}`)));
   const shuffled=[...allKeys].sort(()=>Math.random()-.5);
   setGoldenKey(shuffled[0]||null);setTrapKey(shuffled[1]||null);
