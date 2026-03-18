@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Buzz! - حروف مع أنس</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Tajawal',sans-serif;background:#0a0e27;color:#fff;direction:rtl;user-select:none;-webkit-tap-highlight-color:transparent}
+.container{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.setup-panel{width:100%;max-width:400px;text-align:center}
+.setup-panel h1{font-size:28px;font-weight:900;color:#f5c842;margin-bottom:8px}
+.setup-panel .sub{color:#8892b0;font-size:13px;margin-bottom:24px}
+.conn-status{font-size:12px;margin-bottom:16px;padding:6px 14px;border-radius:8px;display:inline-block}
+.conn-off{background:rgba(239,68,68,.15);color:#ef4444}
+.conn-on{background:rgba(34,197,94,.15);color:#22c55e}
+.setup-panel input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 18px;color:#fff;font-size:20px;font-family:'Tajawal',sans-serif;text-align:center;outline:none;margin-bottom:16px;direction:rtl}
+.setup-panel input:focus{border-color:#f5c842}
+.setup-panel input::placeholder{color:rgba(255,255,255,.3)}
+.team-pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.team-opt{padding:16px;border-radius:14px;border:3px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);cursor:pointer;font-size:16px;font-weight:700;transition:all .2s}
+.team-opt.sel{transform:scale(1.03)}
+.join-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,#f5c842,#f59e0b);color:#0a0e27;border:none;font-size:22px;font-weight:800;font-family:'Tajawal',sans-serif;cursor:pointer;transition:opacity .2s}
+.join-btn:disabled{opacity:.4;cursor:default}
+.error-msg{color:#ef4444;font-size:13px;margin-top:12px;display:none}
+.buzzer-panel{width:100%;max-width:420px;text-align:center;display:none}
+.player-info{margin-bottom:16px}
+.player-name-display{font-size:22px;font-weight:800;margin-bottom:4px}
+.player-team-display{font-size:14px;color:#8892b0}
+.ping-display{font-size:11px;color:#555;margin-top:4px}
+.status-bar{padding:12px 20px;border-radius:12px;margin-bottom:20px;font-size:16px;font-weight:600;transition:all .3s}
+.status-waiting{background:rgba(255,255,255,.06);color:#8892b0}
+.status-ready{background:rgba(34,197,94,.15);color:#22c55e;animation:pulseS 1s infinite}
+.status-buzzed{background:rgba(245,200,66,.15);color:#f5c842}
+.status-won{background:rgba(34,197,94,.2);color:#22c55e}
+.status-locked{background:rgba(239,68,68,.15);color:#ef4444}
+.status-muted{background:rgba(239,68,68,.1);color:#ef4444}
+@keyframes pulseS{0%,100%{opacity:1}50%{opacity:.6}}
+.q-card{display:none;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;margin-bottom:20px;text-align:center}
+.q-card.visible{display:block}
+.q-card-letter{font-size:14px;color:#f5c842;margin-bottom:8px;font-weight:700}
+.q-card-text{font-size:20px;font-weight:600;line-height:1.7;color:#fff}
+.q-card-cat{font-size:12px;color:#8892b0;margin-top:8px}
+.buzz-btn{width:240px;height:240px;border-radius:50%;border:none;cursor:pointer;font-size:44px;font-weight:900;font-family:'Tajawal',sans-serif;color:#fff;transition:all .15s;margin:0 auto;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.buzz-btn:active:not(:disabled){transform:scale(.9)}
+.buzz-btn:disabled{cursor:default;opacity:.5}
+.buzz-btn .buzz-sub{font-size:15px;font-weight:500;opacity:.8;margin-top:4px}
+.buzz-btn-idle{background:rgba(255,255,255,.08);box-shadow:none}
+.buzz-btn-ready{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 0 60px rgba(34,197,94,.4),0 0 120px rgba(34,197,94,.15);animation:btnP 1.2s infinite}
+.buzz-btn-pressed{background:linear-gradient(135deg,#f5c842,#f59e0b);box-shadow:0 0 60px rgba(245,200,66,.5)}
+.buzz-btn-locked{background:rgba(239,68,68,.15);box-shadow:0 0 40px rgba(239,68,68,.15)}
+@keyframes btnP{0%,100%{box-shadow:0 0 60px rgba(34,197,94,.3)}50%{box-shadow:0 0 80px rgba(34,197,94,.5)}}
+.kicked-msg{text-align:center;padding:40px;font-size:20px;color:#ef4444;display:none}
+.rejoin-btn{margin-top:16px;padding:12px 24px;border-radius:12px;background:rgba(245,200,66,.15);color:#f5c842;border:1px solid rgba(245,200,66,.3);font-size:16px;font-weight:700;font-family:'Tajawal',sans-serif;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="setup-panel" id="setup-panel">
+    <h1>⬡ حروف مع أنس</h1>
+    <div class="sub">ادخل اسمك واختر فريقك</div>
+    <div class="conn-status conn-off" id="conn-status">⏳ جاري الاتصال...</div>
+    <input type="text" id="player-name" placeholder="اكتب اسمك..." maxlength="20">
+    <div class="team-pick">
+      <div class="team-opt" id="team-opt-1" onclick="pickTeam(1)"><span id="t1label">الفريق ١</span></div>
+      <div class="team-opt" id="team-opt-2" onclick="pickTeam(2)"><span id="t2label">الفريق ٢</span></div>
+    </div>
+    <button class="join-btn" id="join-btn" onclick="joinGame()" disabled>انضم للعبة</button>
+    <p class="error-msg" id="error-msg"></p>
+  </div>
+  <div class="buzzer-panel" id="buzzer-panel">
+    <div class="player-info">
+      <div class="player-name-display" id="p-name"></div>
+      <div class="player-team-display" id="p-team"></div>
+      <div class="ping-display" id="ping-display"></div>
+    </div>
+    <div class="status-bar status-waiting" id="status-bar">في انتظار السؤال...</div>
+    <div class="q-card" id="q-card"><div class="q-card-letter" id="qc-letter"></div><div class="q-card-text" id="qc-text"></div><div class="q-card-cat" id="qc-cat"></div></div>
+    <button class="buzz-btn buzz-btn-idle" id="buzz-btn" onclick="doBuzz()" disabled><span>🔔</span><span class="buzz-sub">في الانتظار</span></button>
+  </div>
+  <div class="kicked-msg" id="kicked-msg">تم إخراجك من اللعبة<br><button class="rejoin-btn" onclick="clearAndRejoin()">انضم مرة أخرى</button></div>
+</div>
+<script>
+var FC={apiKey:"AIzaSyDGs9ZC57R1yaGfyCtFDnj8_VciLEjGFoQ",authDomain:"blockbusters-buzz.firebaseapp.com",databaseURL:"https://blockbusters-buzz-default-rtdb.europe-west1.firebasedatabase.app",projectId:"blockbusters-buzz",storageBucket:"blockbusters-buzz.firebasestorage.app",messagingSenderId:"307733370745",appId:"1:307733370745:web:9506fd3c2ba745fb1141a8"};
+
+var app,db,bRef;
+try{app=firebase.initializeApp(FC);db=firebase.database();bRef=db.ref('buzzer')}
+catch(e){document.getElementById('conn-status').textContent='❌ '+e.message}
+
+var myId=null,myName='',myTeam=0,selectedTeam=0,isMuted=false;
+var t1Color='#0ea5e9',t2Color='#ef4444',t1Name='الفريق ١',t2Name='الفريق ٢';
+var connected=false,serverOffset=0,kicked=false;
+var audioCtx=null;
+
+function playBell(){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type='sine';o.frequency.setValueAtTime(880,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(1200,audioCtx.currentTime+.05);o.frequency.exponentialRampToValueAtTime(880,audioCtx.currentTime+.1);g.gain.setValueAtTime(.4,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.01,audioCtx.currentTime+.4);o.start();o.stop(audioCtx.currentTime+.4)}catch(e){}}
+
+// ═══ SERVER TIME + CONNECTION ═══
+if(db){
+  db.ref('.info/serverTimeOffset').on('value',function(snap){
+    serverOffset=snap.val()||0;
+    var el=document.getElementById('ping-display');
+    if(el)el.textContent='تأخير: '+Math.abs(serverOffset)+'ms';
+  });
+  db.ref('.info/connected').on('value',function(snap){
+    connected=snap.val()===true;
+    var el=document.getElementById('conn-status');
+    if(connected){el.className='conn-status conn-on';el.textContent='✅ متصل بالخادم'}
+    else{el.className='conn-status conn-off';el.textContent='⏳ جاري الاتصال...'}
+    checkReady();
+    // If reconnected and we have an active session, mark online again
+    if(connected&&myId&&!kicked){
+      bRef.child('players/'+myId).update({online:true});
+      bRef.child('players/'+myId).onDisconnect().update({online:false});
+    }
+  });
+}
+
+// ═══ TEAM INFO SYNC ═══
+if(bRef){
+  bRef.child('teamInfo').on('value',function(snap){
+    var d=snap.val();if(!d)return;
+    if(d.t1Name){t1Name=d.t1Name;document.getElementById('t1label').textContent=t1Name}
+    if(d.t2Name){t2Name=d.t2Name;document.getElementById('t2label').textContent=t2Name}
+    if(d.t1Color){t1Color=d.t1Color;document.getElementById('team-opt-1').style.borderColor=selectedTeam===1?t1Color:'rgba(255,255,255,.1)'}
+    if(d.t2Color){t2Color=d.t2Color;document.getElementById('team-opt-2').style.borderColor=selectedTeam===2?t2Color:'rgba(255,255,255,.1)'}
+    if(myId){document.getElementById('p-name').style.color=myTeam===1?t1Color:t2Color;document.getElementById('p-team').textContent=myTeam===1?t1Name:t2Name}
+  });
+}
+
+function pickTeam(t){
+  selectedTeam=t;
+  document.getElementById('team-opt-1').classList.toggle('sel',t===1);
+  document.getElementById('team-opt-2').classList.toggle('sel',t===2);
+  document.getElementById('team-opt-1').style.borderColor=t===1?t1Color:'rgba(255,255,255,.1)';
+  document.getElementById('team-opt-2').style.borderColor=t===2?t2Color:'rgba(255,255,255,.1)';
+  document.getElementById('team-opt-1').style.background=t===1?t1Color+'22':'rgba(255,255,255,.04)';
+  document.getElementById('team-opt-2').style.background=t===2?t2Color+'22':'rgba(255,255,255,.04)';
+  checkReady();
+}
+document.getElementById('player-name').addEventListener('input',checkReady);
+function checkReady(){document.getElementById('join-btn').disabled=!document.getElementById('player-name').value.trim()||!selectedTeam||!connected}
+function showError(msg){var el=document.getElementById('error-msg');el.style.display='block';el.textContent=msg}
+
+// ═══ SESSION PERSISTENCE ═══
+function saveSession(){try{localStorage.setItem('buzz_session',JSON.stringify({id:myId,name:myName,team:myTeam}))}catch(e){}}
+function loadSession(){try{var s=localStorage.getItem('buzz_session');return s?JSON.parse(s):null}catch(e){return null}}
+function clearSession(){try{localStorage.removeItem('buzz_session')}catch(e){}}
+
+// ═══ AUTO-REJOIN on page load ═══
+function tryAutoRejoin(){
+  if(!bRef)return;
+  var session=loadSession();
+  if(!session||!session.id)return;
+  // Check if this player still exists in Firebase
+  bRef.child('players/'+session.id).once('value').then(function(snap){
+    var d=snap.val();
+    if(!d){
+      // Player was kicked/removed — clear session, show setup
+      clearSession();
+      return;
+    }
+    // Player exists — reclaim the session
+    myId=session.id;
+    myName=session.name||d.name;
+    myTeam=d.team||session.team;
+    isMuted=d.muted||false;
+    // Mark online
+    bRef.child('players/'+myId).update({online:true,name:myName});
+    bRef.child('players/'+myId).onDisconnect().update({online:false});
+    // Switch to buzzer panel
+    document.getElementById('setup-panel').style.display='none';
+    document.getElementById('buzzer-panel').style.display='block';
+    document.getElementById('p-name').textContent=myName;
+    document.getElementById('p-name').style.color=myTeam===1?t1Color:t2Color;
+    document.getElementById('p-team').textContent=myTeam===1?t1Name:t2Name;
+    listenState();
+    listenMyPlayer();
+  }).catch(function(){clearSession()});
+}
+
+function joinGame(){
+  myName=document.getElementById('player-name').value.trim();myTeam=selectedTeam;
+  if(!myName||!myTeam||!bRef)return;
+  kicked=false;
+  var ref=bRef.child('players').push();
+  myId=ref.key;
+  ref.set({name:myName,team:myTeam,online:true,muted:false}).then(function(){
+    ref.onDisconnect().update({online:false});
+    saveSession();
+    document.getElementById('setup-panel').style.display='none';
+    document.getElementById('buzzer-panel').style.display='block';
+    document.getElementById('p-name').textContent=myName;
+    document.getElementById('p-name').style.color=myTeam===1?t1Color:t2Color;
+    document.getElementById('p-team').textContent=myTeam===1?t1Name:t2Name;
+    listenState();listenMyPlayer();
+  }).catch(function(e){showError('فشل الانضمام: '+e.message);myId=null});
+}
+
+function clearAndRejoin(){
+  clearSession();kicked=false;
+  document.getElementById('kicked-msg').style.display='none';
+  document.getElementById('setup-panel').style.display='block';
+  myId=null;
+}
+
+function listenMyPlayer(){
+  bRef.child('players/'+myId).on('value',function(snap){
+    var d=snap.val();
+    if(!d){
+      // Kicked by host
+      kicked=true;clearSession();
+      document.getElementById('buzzer-panel').style.display='none';
+      document.getElementById('kicked-msg').style.display='block';
+      return;
+    }
+    isMuted=d.muted||false;
+    if(d.team!==myTeam){
+      myTeam=d.team;
+      saveSession();
+      document.getElementById('p-name').style.color=myTeam===1?t1Color:t2Color;
+      document.getElementById('p-team').textContent=myTeam===1?t1Name:t2Name;
+    }
+  });
+}
+
+function listenState(){
+  bRef.on('value',function(snap){
+    var d=snap.val()||{},state=d.state||'idle',winner=d.winner||null,lockedTeam=d.lockedTeam||null,question=d.currentQuestion||null;
+    lastKnownState=state;
+    var qc=document.getElementById('q-card');
+    if(question&&question.text&&state!=='idle'){qc.classList.add('visible');document.getElementById('qc-letter').textContent='حرف «'+question.letter+'»';document.getElementById('qc-text').textContent=question.text;document.getElementById('qc-cat').textContent=question.cat?'التصنيف: '+question.cat:''}else{qc.classList.remove('visible')}
+    if(isMuted){setBtn('locked','🔇','تم كتمك',true);setStatus('muted','🔇 تم كتمك');return}
+    if(state==='idle'){setBtn('idle','🔔','في الانتظار',true);setStatus('waiting','في انتظار السؤال...')}
+    else if(state==='open'){setBtn('ready','🔴','اضغط!',false);setStatus('ready','❗ السؤال مطروح — اضغط!')}
+    else if(state==='buzzed'){
+      if(winner&&winner.id===myId){setBtn('pressed','⭐','أنت!',true);setStatus('won','🎉 ضغطت أولاً!')}
+      else{setBtn('idle','🔔','انتظر',true);setStatus('buzzed','🔔 '+(winner?winner.name:'?')+' ضغط أولاً')}
+    }else if(state==='team_chance'){
+      if(myTeam==lockedTeam){setBtn('locked','🚫','محظور',true);setStatus('locked','⏳ فرصة للفريق الآخر...')}
+      else{setBtn('ready','🔴','اضغط!',false);setStatus('ready','⚡ فرصة لفريقك — اضغط!')}
+    }else if(state==='open_all'){setBtn('ready','🔴','اضغط!',false);setStatus('ready','❗ مفتوح للجميع — اضغط!')}
+  });
+}
+
+function setBtn(type,icon,sub,disabled){var b=document.getElementById('buzz-btn');b.className='buzz-btn buzz-btn-'+type;b.innerHTML='<span>'+icon+'</span><span class="buzz-sub">'+sub+'</span>';b.disabled=disabled}
+function setStatus(type,text){var e=document.getElementById('status-bar');e.className='status-bar status-'+type;e.textContent=text}
+
+var lastKnownState='idle';
+function doBuzz(){
+  if(!myId||isMuted||!bRef)return;
+  if(lastKnownState!=='open'&&lastKnownState!=='team_chance'&&lastKnownState!=='open_all')return;
+  document.getElementById('buzz-btn').disabled=true;
+  playBell();
+  // ATOMIC: transaction on winner — first write wins, all others abort
+  bRef.child('winner').transaction(function(current){
+    if(current===null){
+      return {id:myId,name:myName,team:myTeam};
+    }
+    return; // abort — someone already won
+  }).catch(function(e){console.error(e)});
+}
+
+if(bRef){bRef.child('winner').on('value',function(snap){var w=snap.val();if(w&&w.id&&w.id!==myId)playBell()})}
+if(bRef){bRef.child('state').on('value',function(snap){var s=snap.val();if(s==='open'||s==='team_chance'||s==='open_all'){if(navigator.vibrate)navigator.vibrate(200)}})}
+window.addEventListener('beforeunload',function(){if(myId&&bRef)bRef.child('players/'+myId+'/online').set(false)});
+
+// Try auto-rejoin on load (wait for connection)
+if(db){
+  var _tried=false;
+  db.ref('.info/connected').on('value',function(snap){
+    if(snap.val()===true&&!_tried){_tried=true;setTimeout(tryAutoRejoin,500)}
+  });
+}
+</script>
+</body>
+</html>
