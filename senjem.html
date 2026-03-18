@@ -309,7 +309,8 @@ const[aq,setAq]=useState(null);const[sa,setSa]=useState(false);
 const[e1,setE1]=useState(false);const[e2,setE2]=useState(false);
 // Lifelines: true = available
 const[ll,setLl]=useState({1:{dbl:true,sw:true,shield:true,steal:true},2:{dbl:true,sw:true,shield:true,steal:true}});
-const[activeDbl,setActiveDbl]=useState(0); // which team activated double (0=none)
+const[activeDbl,setActiveDbl]=useState(0);
+const[usedLL,setUsedLL]=useState(false); // only 1 lifeline per question
 const[flash,setFlash]=useState(null);const[rand,setRand]=useState(false);
 const[bonusMsg,setBonusMsg]=useState(null);
 const[domBanner,setDomBanner]=useState(null);
@@ -331,7 +332,7 @@ const startGame=()=>{
   setScr("board");
 };
 
-const openQ=(ci,qi)=>{const k=`${ci}-${qi}`;if(ans[k])return;setAq({ci,qi,k,cat:gc[ci],q:gc[ci].questions[qi]});setSa(false);setActiveDbl(0);setRandMult(1);tm.reset();tm.toggle();setScr("question")};
+const openQ=(ci,qi)=>{const k=`${ci}-${qi}`;if(ans[k])return;setAq({ci,qi,k,cat:gc[ci],q:gc[ci].questions[qi]});setSa(false);setActiveDbl(0);setUsedLL(false);setRandMult(1);tm.reset();tm.toggle();setScr("question")};
 
 const showBonus=(text,color)=>{setBonusMsg({text,color});setTimeout(()=>setBonusMsg(null),2000)};
 const doFlash=(color)=>{setFlash(color);setTimeout(()=>setFlash(null),600)};
@@ -360,9 +361,9 @@ const award=(team)=>{
 };
 
 // Shield: protects team from trap deduction (used before reveal)
-const useShield=(team)=>{setLl(p=>({...p,[team]:{...p[team],shield:false}}));showBonus(`🛡️ ${team===1?t1.name:t2.name} — حماية من الفخ!`,"#10B981")};
+const useShield=(team)=>{if(usedLL)return;setLl(p=>({...p,[team]:{...p[team],shield:false}}));setUsedLL(true);showBonus(`🛡️ ${team===1?t1.name:t2.name} — حماية من الفخ!`,"#10B981")};
 // Steal: auto-awards points to team if they use it (used after reveal)
-const useSteal=(team)=>{setLl(p=>({...p,[team]:{...p[team],steal:false}}));award(team);showBonus(`🏴 ${team===1?t1.name:t2.name} — سرقة!`,"#A855F7")};
+const useSteal=(team)=>{if(usedLL)return;setLl(p=>({...p,[team]:{...p[team],steal:false}}));setUsedLL(true);award(team);showBonus(`🏴 ${team===1?t1.name:t2.name} — سرقة!`,"#A855F7")};
 
 const noOne=()=>{
   // Trap: show message if trap question
@@ -372,9 +373,9 @@ const noOne=()=>{
 const fin=res=>{tm.stop();setActiveDbl(0);const na={...ans,[aq.k]:res};setAns(na);Object.keys(na).length>=gc.length*6?setTimeout(()=>setScr("gameover"),400):setScr("board")};
 
 // Lifeline: Double
-const useDbl=(team)=>{setLl(p=>({...p,[team]:{...p[team],dbl:false}}));setActiveDbl(team);showBonus(`⚡ ${team===1?t1.name:t2.name} — نقاط مضاعفة!`,"#F6C90E")};
+const useDbl=(team)=>{if(usedLL)return;setLl(p=>({...p,[team]:{...p[team],dbl:false}}));setActiveDbl(team);setUsedLL(true);showBonus(`⚡ ${team===1?t1.name:t2.name} — نقاط مضاعفة!`,"#F6C90E")};
 // Lifeline: Switch
-const useSwitch=(team)=>{setLl(p=>({...p,[team]:{...p[team],sw:false}}));
+const useSwitch=(team)=>{if(usedLL)return;setLl(p=>({...p,[team]:{...p[team],sw:false}}));setUsedLL(true);
   const open=[];gc.forEach((c,ci)=>c.questions.forEach((q,qi)=>{const k=`${ci}-${qi}`;if(!ans[k]&&k!==aq.k)open.push([ci,qi])}));
   if(!open.length)return;const[ci,qi]=open[~~(Math.random()*open.length)];
   setAq({ci,qi,k:`${ci}-${qi}`,cat:gc[ci],q:gc[ci].questions[qi]});setSa(false);tm.reset();tm.toggle();
@@ -418,23 +419,24 @@ return<div className="qov"><div className="qmod">
   <span className="qhpts">{sa?(isGolden?pts+" 🌟":isTrap?pts+" 💣":pts):aq.q.pts}</span>
 </div>
 <div className="qbdy">
-  {/* Lifelines — split by team, blocked on golden/trap */}
-  {!sa&&!isGolden&&!isTrap&&(ll[1].dbl||ll[1].sw||ll[1].shield||ll[2].dbl||ll[2].sw||ll[2].shield)&&<div className="q-llbar">
+  {/* Lifelines — split by team, blocked on golden/trap, max 1 per question */}
+  {!sa&&!isGolden&&!isTrap&&!usedLL&&(ll[1].dbl||ll[1].sw||ll[1].shield||ll[2].dbl||ll[2].sw||ll[2].shield)&&<div className="q-llbar">
     <div className="q-ll-team" style={{borderColor:t1.color.c+"25"}}>
       <div className="q-ll-title" style={{color:t1.color.l}}>{t1.emoji} {t1.name}</div>
-      {ll[1].dbl&&<button className={`q-llbtn ${activeDbl===1?"active":""}`} onClick={()=>useDbl(1)}>⚡ مضاعفة</button>}
+      {ll[1].dbl&&<button className="q-llbtn" onClick={()=>useDbl(1)}>⚡ مضاعفة</button>}
       {ll[1].sw&&<button className="q-llbtn" onClick={()=>useSwitch(1)}>🔄 تبديل</button>}
       {ll[1].shield&&<button className="q-llbtn" onClick={()=>useShield(1)}>🛡️ حماية</button>}
       {!ll[1].dbl&&!ll[1].sw&&!ll[1].shield&&<div className="q-ll-none">لا توجد وسائل</div>}
     </div>
     <div className="q-ll-team" style={{borderColor:t2.color.c+"25"}}>
       <div className="q-ll-title" style={{color:t2.color.l}}>{t2.emoji} {t2.name}</div>
-      {ll[2].dbl&&<button className={`q-llbtn ${activeDbl===2?"active":""}`} onClick={()=>useDbl(2)}>⚡ مضاعفة</button>}
+      {ll[2].dbl&&<button className="q-llbtn" onClick={()=>useDbl(2)}>⚡ مضاعفة</button>}
       {ll[2].sw&&<button className="q-llbtn" onClick={()=>useSwitch(2)}>🔄 تبديل</button>}
       {ll[2].shield&&<button className="q-llbtn" onClick={()=>useShield(2)}>🛡️ حماية</button>}
       {!ll[2].dbl&&!ll[2].sw&&!ll[2].shield&&<div className="q-ll-none">لا توجد وسائل</div>}
     </div>
   </div>}
+  {!sa&&usedLL&&<div style={{textAlign:"center",fontSize:12,color:"rgba(255,255,255,.2)",marginBottom:16}}>✅ تم استخدام وسيلة مساعدة</div>}
 
   <div className="tmr"><button className="tb" onClick={tm.toggle}>{tm.on?"⏸":"▶"}</button><div className={`tv ${tm.on?"on":""}`}>{tm.fmt}</div><button className="tb" onClick={tm.reset}>↻</button></div>
 
@@ -442,7 +444,6 @@ return<div className="qov"><div className="qmod">
           <div className="qr-frame"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent("https://ianasx.github.io/games/images/"+q.image)}`} alt="QR"/></div>
           <div className="qr-label">📱 امسح الكود بجوالك</div>
           <div className="qr-sublabel">اللاعب يشوف الصورة ويشرحها بدون كلام</div>
-          <div className="qr-answer-hint">🤫 الجواب: {q.a}</div>
         </div>}
   {ph&&!sa&&<div className="phs"><img className="phi" src={`images/${q.image}`} alt={q.image} onError={e=>{e.target.style.background="#111";e.target.alt=q.image}}/></div>}
   {lt&&<><div className="lta"><span className="ltl">يبدأ بحرف</span><div className="ltb">{q.letter}</div></div><p className="qtxt">{q.q}</p></>}
@@ -460,7 +461,7 @@ return<div className="qov"><div className="qmod">
       <button className="ans-team-btn" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.l})`,boxShadow:`0 4px 20px ${t2.color.c}30`}} onClick={()=>award(2)}>{t2.emoji} {t2.name}</button>
       <button className="ans-skip-btn" onClick={noOne}>لا أحد أجاب</button>
     </div>
-    {!isGolden&&!isTrap&&(ll[1].steal||ll[2].steal)&&<div style={{display:"flex",gap:6,marginTop:10,justifyContent:"center"}}>
+    {!isGolden&&!isTrap&&!usedLL&&(ll[1].steal||ll[2].steal)&&<div style={{display:"flex",gap:6,marginTop:10,justifyContent:"center"}}>
       {ll[1].steal&&<button className="q-llbtn" onClick={()=>useSteal(1)}>🏴 سرقة — {t1.emoji} {t1.name}</button>}
       {ll[2].steal&&<button className="q-llbtn" onClick={()=>useSteal(2)}>🏴 سرقة — {t2.emoji} {t2.name}</button>}
     </div>}
