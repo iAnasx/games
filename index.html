@@ -346,9 +346,9 @@ function renderBoard(){
     var stroke=STROKE;
     var tc=ow?"#fff":"#2d1b69";
     var flt=ow?'filter="url(#gl-'+h.o+')"':'';
-    var inner=sz*0.96;
     html+='<g class="hex-cell'+(ow?" owned":"")+(wp?" win-path":"")+'" '+flt+' onclick="onHex('+h.c+','+h.r+')" onmouseenter="hH(this,1,'+ow+')" onmouseleave="hH(this,0,'+ow+')">';
-    html+='<polygon class="hex-poly" points="'+hPts(h.x,h.y,inner)+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+SW+'"/>';
+    html+='<polygon points="'+hPts(h.x,h.y,sz*1.03)+'" fill="'+fill+'" stroke="none"/>';
+    html+='<polygon class="hex-poly" points="'+hPts(h.x,h.y,sz)+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+SW+'"/>';
     html+='<text class="hex-text" x="'+h.x+'" y="'+h.y+'" fill="'+tc+'" font-size="'+fs+'" font-weight="900">'+h.l+'</text></g>';
   });
   svg.innerHTML=html;
