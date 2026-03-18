@@ -380,16 +380,16 @@ const openQ=(ci,qi)=>{const k=`${ci}-${qi}`;if(ans[k])return;setAq({ci,qi,k,cat:
 const showBonus=(text,color)=>{setBonusMsg({text,color});setTimeout(()=>setBonusMsg(null),2000)};
 const doFlash=(color)=>{setFlash(color);setTimeout(()=>setFlash(null),600)};
 
-const calcPts=()=>{
+const calcPts=(team)=>{
   let mult=1;
-  if(activeDbl)mult*=2;
+  if(activeDbl===team)mult*=2; // only apply ×2 to the team that used it
   if(aq.k===goldenKey)mult*=3;
   if(randMult>1)mult*=randMult;
   return aq.q.pts*mult;
 };
 
 const award=(team)=>{
-  const pts=calcPts();
+  const pts=calcPts(team);
   if(team===1){setS1(v=>v+pts);setPop(1)}else{setS2(v=>v+pts);setPop(2)}
   doFlash(team===1?t1.color.c:t2.color.c);
   setTimeout(()=>setPop(0),500);
@@ -482,13 +482,13 @@ return<button key={c.id} onClick={()=>!f&&togCat(c.id)} className={`cc ${s?"sel"
 </div>}</div></div>;
 
 // ═══ QUESTION ═══
-if(scr==="question"&&aq){const{cat,q}=aq;const nw=cat.type==="no_words",lt=cat.type==="letters",ph=cat.type==="guess_photo";const isGolden=aq.k===goldenKey;const isTrap=aq.k===trapKey;const pts=calcPts();
+if(scr==="question"&&aq){const{cat,q}=aq;const nw=cat.type==="no_words",lt=cat.type==="letters",ph=cat.type==="guess_photo";const isGolden=aq.k===goldenKey;const isTrap=aq.k===trapKey;const basePts=q.pts;
 return<div className="qov"><div className="qmod">
 <div className="qhdr" style={{background:`linear-gradient(135deg,${cat.color},${cat.color}CC)`}}>
   <span>{cat.icon}</span><span>{cat.name}</span>
-  {activeDbl>0&&<span className="qh-special qh-gold">⚡ ×2</span>}
+  {activeDbl>0&&<span className="qh-special qh-gold">⚡ ×2 {activeDbl===1?t1.emoji:t2.emoji}</span>}
   {randMult>1&&<span className="qh-special qh-gold">🎲 ×{randMult}</span>}
-  <span className="qhpts">{sa?(isGolden?pts+" 🌟":isTrap?pts+" 💣":pts):aq.q.pts}</span>
+  <span className="qhpts">{sa?(isGolden?basePts+" 🌟":isTrap?basePts+" 💣":basePts):basePts}</span>
 </div>
 <div className="qbdy">
   {/* Lifelines — split by team, blocked on golden/trap, max 1 per question */}
@@ -524,13 +524,15 @@ return<div className="qov"><div className="qmod">
   {!sa?<button className="btn btn-gold" style={{fontSize:19,padding:"15px 40px"}} onClick={()=>{setSa(true);tm.stop()}}>🔍 كشف الإجابة</button>
   :<div className="answ">
     <div className="ansc"><div className="ansl">الإجابة</div><p className="ansv">{q.a}</p></div>
-    <div className="anst">⏱️ {tm.fmt}{activeDbl?" • ⚡ مضاعفة":""}{randMult>1?` • 🎲 ×${randMult}`:""}</div>
+    <div className="anst">⏱️ {tm.fmt}{activeDbl?` • ⚡ مضاعفة ${activeDbl===1?t1.name:t2.name}`:""}{randMult>1?` • 🎲 ×${randMult}`:""}</div>
     {isGolden&&<div style={{textAlign:"center",marginBottom:12,animation:"bonusPop .5s var(--eb)"}}><span style={{background:"rgba(246,201,14,.12)",color:"var(--gold)",padding:"6px 18px",borderRadius:10,fontSize:15,fontWeight:800}}>🌟 سؤال ذهبي! النقاط ×3</span></div>}
     {isTrap&&<div style={{textAlign:"center",marginBottom:12,animation:"bonusPop .5s var(--eb)"}}><span style={{background:"rgba(239,68,68,.12)",color:"var(--red)",padding:"6px 18px",borderRadius:10,fontSize:15,fontWeight:800}}>💣 سؤال فخ! الخطأ يخصم نقاط</span></div>}
     <p style={{textAlign:"center",fontSize:13,color:"var(--dim)",marginBottom:12,fontWeight:600}}>من أجاب صح؟</p>
     <div className="ans-btns">
-      <button className="ans-team-btn" style={{background:`linear-gradient(135deg,${t1.color.c},${t1.color.l})`,boxShadow:`0 4px 20px ${t1.color.c}30`}} onClick={()=>award(1)}>{t1.emoji} {t1.name}</button>
-      <button className="ans-team-btn" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.l})`,boxShadow:`0 4px 20px ${t2.color.c}30`}} onClick={()=>award(2)}>{t2.emoji} {t2.name}</button>
+      <button className="ans-team-btn" style={{background:`linear-gradient(135deg,${t1.color.c},${t1.color.l})`,boxShadow:`0 4px 20px ${t1.color.c}30`}} onClick={()=>award(1)}>{t1.emoji} {t1.name} {activeDbl===1?`(${calcPts(1)})`:""}
+      </button>
+      <button className="ans-team-btn" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.l})`,boxShadow:`0 4px 20px ${t2.color.c}30`}} onClick={()=>award(2)}>{t2.emoji} {t2.name} {activeDbl===2?`(${calcPts(2)})`:""}
+      </button>
       <button className="ans-skip-btn" onClick={noOne}>لا أحد أجاب</button>
     </div>
     {!isGolden&&!isTrap&&!usedLL&&(ll[1].steal||ll[2].steal)&&<div style={{display:"flex",gap:6,marginTop:10,justifyContent:"center"}}>
