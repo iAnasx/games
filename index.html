@@ -338,11 +338,6 @@ function renderBoard(){
   html+='<polygon points="'+x1+','+y1+' '+x1+','+y2+' '+cx+','+cy+'" fill="'+c1+'" opacity="0.85"/>';
   // Right triangle
   html+='<polygon points="'+x2+','+y1+' '+x2+','+y2+' '+cx+','+cy+'" fill="'+c1+'" opacity="0.85"/>';
-  // ─── BORDER HALF-HEXES (clipped at edge) ───
-  borders.forEach(function(b){
-    var cv=t[b.t].c.v;
-    html+='<polygon points="'+hPts(b.x,b.y,sz)+'" fill="'+cv+'" stroke="'+STROKE+'" stroke-width="'+SW+'" opacity="0.95"/>';
-  });
   // ─── MAIN HEX CELLS ───
   var fs=Math.max(sz*0.7,12);
   hexes.forEach(function(h){
