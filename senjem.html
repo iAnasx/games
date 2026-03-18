@@ -3,326 +3,233 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>سين جيم — لعبة المعرفة والتحدي</title>
+<title>سين جيم</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#04060F;--surface:rgba(255,255,255,0.03);
-  --gold:#F6C90E;--gold2:#D4A90A;--neon:#00D4FF;
-  --green:#10B981;--red:#EF4444;
-  --txt:#E8ECF1;--dim:rgba(255,255,255,0.3);
-  --r:14px;--r-lg:22px;
-  --fd:'Readex Pro',sans-serif;--fb:'Tajawal',sans-serif;
-  --ease:cubic-bezier(.4,0,.2,1);--bounce:cubic-bezier(.34,1.56,.64,1);
-}
+:root{--bg:#04060F;--gold:#F6C90E;--gold2:#D4A90A;--neon:#00D4FF;--green:#10B981;--red:#EF4444;--txt:#E8ECF1;--dim:rgba(255,255,255,.3);--r:14px;--rl:22px;--fd:'Readex Pro',sans-serif;--fb:'Tajawal',sans-serif;--e:cubic-bezier(.4,0,.2,1);--eb:cubic-bezier(.34,1.56,.64,1)}
 html,body,#root{min-height:100vh;overflow-x:hidden}
 body{font-family:var(--fb);direction:rtl;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased}
-input,textarea,select{font-family:var(--fb)}
-input::placeholder{color:rgba(255,255,255,0.2)}
-input:focus,select:focus{outline:none;border-color:var(--gold)!important;box-shadow:0 0 0 3px rgba(246,201,14,0.08)}
+input,select{font-family:var(--fb)}input::placeholder{color:rgba(255,255,255,.2)}
+input:focus,select:focus{outline:none;border-color:var(--gold)!important;box-shadow:0 0 0 3px rgba(246,201,14,.08)}
 button{font-family:var(--fb);cursor:pointer;border:none;-webkit-tap-highlight-color:transparent}
 button:disabled{opacity:.25;cursor:not-allowed}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:4px}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:4px}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes scaleIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-@keyframes orbMove{0%,100%{transform:translate(0,0)}33%{transform:translate(20px,-30px)}66%{transform:translate(-15px,20px)}}
+@keyframes orbM{0%,100%{transform:translate(0,0)}33%{transform:translate(20px,-30px)}66%{transform:translate(-15px,20px)}}
 @keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-@keyframes timerGlow{0%,100%{text-shadow:0 0 10px rgba(246,201,14,.2)}50%{text-shadow:0 0 35px rgba(246,201,14,.5)}}
+@keyframes tmGlow{0%,100%{text-shadow:0 0 10px rgba(246,201,14,.2)}50%{text-shadow:0 0 35px rgba(246,201,14,.5)}}
 @keyframes reveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes scorePop{0%{transform:scale(1)}40%{transform:scale(1.4)}100%{transform:scale(1)}}
 @keyframes letterBob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-5px) rotate(1deg)}}
 @keyframes cellIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-@keyframes neonBorder{0%,100%{opacity:.5}50%{opacity:1}}
-@keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
 @keyframes flash{0%{opacity:.4}100%{opacity:0}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-@keyframes spinPick{0%{transform:rotate(0)}100%{transform:rotate(1080deg)}}
-@keyframes doubleGlow{0%,100%{box-shadow:0 0 15px rgba(246,201,14,.2)}50%{box-shadow:0 0 40px rgba(246,201,14,.4)}}
+@keyframes spinPick{0%{transform:rotate(0) scale(1)}50%{transform:rotate(540deg) scale(1.3)}100%{transform:rotate(1080deg) scale(1)}}
+@keyframes dblGlow{0%,100%{box-shadow:0 0 15px rgba(246,201,14,.2)}50%{box-shadow:0 0 40px rgba(246,201,14,.4)}}
+@keyframes goldenShine{0%,100%{box-shadow:0 0 20px rgba(246,201,14,.15)}50%{box-shadow:0 0 50px rgba(246,201,14,.35),0 0 80px rgba(246,201,14,.15)}}
+@keyframes trapPulse{0%,100%{box-shadow:0 0 15px rgba(239,68,68,.1)}50%{box-shadow:0 0 40px rgba(239,68,68,.25)}}
+@keyframes bonusPop{from{opacity:0;transform:scale(.5) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes stealGlow{0%,100%{border-color:rgba(168,85,247,.3)}50%{border-color:rgba(168,85,247,.7)}}
 
-/* ═══ BUTTONS ═══ */
-.btn{font-weight:700;font-size:15px;padding:12px 24px;border-radius:var(--r);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .25s var(--ease);line-height:1.3}
-.btn:not(:disabled):hover{transform:translateY(-2px)}
-.btn:not(:disabled):active{transform:scale(.96)!important}
+.btn{font-weight:700;font-size:15px;padding:12px 24px;border-radius:var(--r);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .25s var(--e);line-height:1.3}
+.btn:not(:disabled):hover{transform:translateY(-2px)}.btn:not(:disabled):active{transform:scale(.96)!important}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a0a0a;font-weight:800;box-shadow:0 4px 20px rgba(246,201,14,.15)}
-.btn-gold:not(:disabled):hover{box-shadow:0 8px 32px rgba(246,201,14,.25)}
-.btn-lg{width:100%;font-size:18px;padding:16px 32px;border-radius:var(--r-lg)}
+.btn-lg{width:100%;font-size:18px;padding:16px 32px;border-radius:var(--rl)}
 .btn-ghost{background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.06)}
 
 /* ═══ SETUP ═══ */
 .setup{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:20px;overflow:hidden}
 .setup::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(246,201,14,.03),transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(0,212,255,.02),transparent 50%)}
 .orb{position:absolute;border-radius:50%;pointer-events:none;will-change:transform;filter:blur(80px)}
-.orb-1{width:500px;height:500px;background:rgba(246,201,14,.05);top:-15%;right:-10%;animation:orbMove 20s ease-in-out infinite}
-.orb-2{width:400px;height:400px;background:rgba(0,212,255,.04);bottom:-10%;left:-8%;animation:orbMove 25s ease-in-out infinite 5s}
-
-.setup-card{position:relative;z-index:1;width:100%;max-width:880px;background:linear-gradient(135deg,rgba(255,255,255,.025),rgba(255,255,255,.008));backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.04);border-radius:28px;padding:48px 40px;animation:fadeUp .6s var(--ease)}
-.logo{text-align:center;margin-bottom:6px}
-.logo-main{font-family:var(--fd);font-size:68px;font-weight:700;letter-spacing:2px}
-.l-sin{background:linear-gradient(135deg,var(--gold),#FFE066);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.l-jim{background:linear-gradient(135deg,#FF6B6B,#E63946);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-right:16px}
-.logo-sub{font-size:15px;color:var(--dim);text-align:center;margin-bottom:40px;letter-spacing:2px}
+.o1{width:500px;height:500px;background:rgba(246,201,14,.05);top:-15%;right:-10%;animation:orbM 20s ease-in-out infinite}
+.o2{width:400px;height:400px;background:rgba(0,212,255,.04);bottom:-10%;left:-8%;animation:orbM 25s ease-in-out infinite 5s}
+.scard{position:relative;z-index:1;width:100%;max-width:880px;background:linear-gradient(135deg,rgba(255,255,255,.025),rgba(255,255,255,.008));backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.04);border-radius:28px;padding:48px 40px;animation:fadeUp .6s var(--e)}
+.logo{text-align:center;margin-bottom:6px}.logo-m{font-family:var(--fd);font-size:68px;font-weight:700;letter-spacing:2px}
+.ls{background:linear-gradient(135deg,var(--gold),#FFE066);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.lj{background:linear-gradient(135deg,#FF6B6B,#E63946);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-right:16px}
+.lsub{font-size:15px;color:var(--dim);text-align:center;margin-bottom:40px;letter-spacing:2px}
 .steps{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:28px}
 .pip{height:4px;border-radius:4px;background:rgba(255,255,255,.08);transition:all .4s;width:24px}
-.pip.on{background:var(--gold);width:48px;box-shadow:0 0 12px rgba(246,201,14,.2)}
-.pip.ok{background:var(--green)}
-.step-t{font-family:var(--fd);font-size:21px;font-weight:600;text-align:center;margin-bottom:24px}
-.fade-s{animation:fadeUp .3s var(--ease)}
-
-/* Teams */
+.pip.on{background:var(--gold);width:48px;box-shadow:0 0 12px rgba(246,201,14,.2)}.pip.ok{background:var(--green)}
+.stitle{font-family:var(--fd);font-size:21px;font-weight:600;text-align:center;margin-bottom:24px}
+.fs{animation:fadeUp .3s var(--e)}
 .t-row{display:flex;gap:20px;margin-bottom:28px;flex-wrap:wrap;justify-content:center}
-.t-card{flex:1;min-width:280px;max-width:400px;background:var(--surface);border:1px solid rgba(255,255,255,.04);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;align-items:center;gap:12px}
-.t-label{font-size:11px;font-weight:800;letter-spacing:3px;color:var(--dim)}
-.t-emoji-btn{font-size:36px;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);border:2px solid rgba(255,255,255,.08);transition:all .2s}
-.t-emoji-btn:hover{border-color:rgba(255,255,255,.2)}
-.emoji-dd{background:#10142A;border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:10px;display:grid;grid-template-columns:repeat(8,1fr);gap:4px;max-width:300px;box-shadow:0 12px 40px rgba(0,0,0,.5);animation:fadeUp .15s}
-.e-opt{font-size:20px;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:transparent;transition:all .1s;border:2px solid transparent}
-.e-opt:hover{background:rgba(255,255,255,.08)}
-.e-opt.sel{background:rgba(246,201,14,.1);border-color:var(--gold)}
-.t-inp{width:100%;padding:11px 16px;border-radius:var(--r);border:1.5px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:#fff;font-size:17px;text-align:center;font-weight:700;transition:all .25s}
-.c-row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
-.c-dot{width:28px;height:28px;border-radius:50%;cursor:pointer;transition:all .2s;border:2.5px solid transparent}
-.c-dot:hover{transform:scale(1.15)}
-.c-dot.sel{border-color:rgba(255,255,255,.9);box-shadow:0 0 14px currentColor}
-.vs-p{font-family:var(--fd);font-size:18px;color:rgba(255,255,255,.06);align-self:center;letter-spacing:8px}
-
-/* Categories */
-.cat-tools{display:flex;gap:8px;margin-bottom:14px;justify-content:center}
-.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:8px;margin-bottom:24px;max-height:360px;overflow-y:auto;padding:2px}
-.cc{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:14px 6px 10px;border-radius:var(--r);border:1.5px solid transparent;color:#fff;transition:all .2s;background:var(--surface);cursor:pointer;overflow:hidden}
+.tc{flex:1;min-width:280px;max-width:400px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.04);border-radius:var(--rl);padding:24px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.tlbl{font-size:11px;font-weight:800;letter-spacing:3px;color:var(--dim)}
+.teb{font-size:36px;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);border:2px solid rgba(255,255,255,.08);transition:all .2s}
+.edd{background:#10142A;border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:10px;display:grid;grid-template-columns:repeat(8,1fr);gap:4px;max-width:300px;box-shadow:0 12px 40px rgba(0,0,0,.5);animation:fadeUp .15s}
+.eo{font-size:20px;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:transparent;border:2px solid transparent;transition:all .1s}
+.eo:hover{background:rgba(255,255,255,.08)}.eo.sel{background:rgba(246,201,14,.1);border-color:var(--gold)}
+.tinp{width:100%;padding:11px 16px;border-radius:var(--r);border:1.5px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:#fff;font-size:17px;text-align:center;font-weight:700}
+.crow{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.cdot{width:28px;height:28px;border-radius:50%;cursor:pointer;transition:all .2s;border:2.5px solid transparent}
+.cdot:hover{transform:scale(1.15)}.cdot.sel{border-color:rgba(255,255,255,.9);box-shadow:0 0 14px currentColor}
+.vsp{font-family:var(--fd);font-size:18px;color:rgba(255,255,255,.06);align-self:center;letter-spacing:8px}
+.ctls{display:flex;gap:8px;margin-bottom:14px;justify-content:center}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:8px;margin-bottom:24px;max-height:360px;overflow-y:auto;padding:2px}
+.cc{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:14px 6px 10px;border-radius:var(--r);border:1.5px solid transparent;color:#fff;transition:all .2s;background:rgba(255,255,255,.03);cursor:pointer;overflow:hidden}
 .cc:hover:not(.full){background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
-.cc.sel{border-color:currentColor;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01))}
-.cc.full:not(.sel){opacity:.15;pointer-events:none}
-.cc-ic{font-size:28px;z-index:1}.cc-nm{font-size:12px;font-weight:800;text-align:center;z-index:1;line-height:1.3}
-.cc-tp{font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);z-index:1}
-.cc-chk{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;z-index:2}
-.cc-glow{position:absolute;bottom:-20px;width:80px;height:40px;border-radius:50%;filter:blur(20px);opacity:0;transition:opacity .3s}
-.cc.sel .cc-glow{opacity:.3}
+.cc.sel{border-color:currentColor}.cc.full:not(.sel){opacity:.15;pointer-events:none}
+.cci{font-size:28px;z-index:1}.ccn{font-size:12px;font-weight:800;text-align:center;z-index:1;line-height:1.3}
+.cct{font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);z-index:1}
+.cck{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;z-index:2}
+.ccg{position:absolute;bottom:-20px;width:80px;height:40px;border-radius:50%;filter:blur(20px);opacity:0;transition:opacity .3s}.cc.sel .ccg{opacity:.3}
 
-/* ═══════════════════════════════════════
-   BOARD — THE PREMIUM EXPERIENCE
-   ═══════════════════════════════════════ */
+/* ═══ BOARD ═══ */
 .board{min-height:100vh;display:flex;flex-direction:column;position:relative;padding:0 14px 14px;background:#04060F}
+.bbg{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bbg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(246,201,14,.02),transparent),radial-gradient(ellipse 30% 50% at 0% 50%,rgba(0,212,255,.015),transparent),radial-gradient(ellipse 30% 50% at 100% 50%,rgba(168,85,247,.01),transparent)}
+.bbg::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);background-size:60px 60px}
+.bhdr{display:flex;align-items:center;justify-content:space-between;padding:12px 4px;gap:8px;position:relative;z-index:1}
+.blogo{font-family:var(--fd);font-size:22px;font-weight:700}
+.bacts{display:flex;gap:6px;align-items:center}
+.abtn{font-size:11px;padding:6px 12px;border-radius:8px;font-weight:700;display:flex;align-items:center;gap:4px;transition:all .2s}
+.abtn:hover{transform:translateY(-1px)}
+.ab-r{background:rgba(168,85,247,.12);color:#C084FC;border:1px solid rgba(168,85,247,.2)}
+.ab-e{background:rgba(255,255,255,.03);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.06)}
+.prog{height:2px;background:rgba(255,255,255,.03);border-radius:2px;margin:0 4px 12px;overflow:hidden;position:relative;z-index:1}
+.pbar{height:100%;background:linear-gradient(90deg,var(--gold),var(--neon));border-radius:2px;transition:width .6s var(--e)}
 
-/* Animated background grid */
-.board-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.board-bg::before{content:'';position:absolute;inset:0;background:
-  radial-gradient(ellipse 60% 40% at 50% 0%,rgba(246,201,14,.02),transparent),
-  radial-gradient(ellipse 30% 50% at 0% 50%,rgba(0,212,255,.015),transparent),
-  radial-gradient(ellipse 30% 50% at 100% 50%,rgba(168,85,247,.01),transparent)}
-.board-bg::after{content:'';position:absolute;inset:0;background-image:
-  linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
-  linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);
-  background-size:60px 60px;animation:fadeIn 1s}
+.bgrd{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;position:relative;z-index:1}
+@media(max-width:920px){.bgrd{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.bgrd{grid-template-columns:1fr}}
 
-/* Floating sparkles */
-.sparkle{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:0;will-change:transform}
+.cblk{border-radius:var(--rl);overflow:hidden;display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:repeat(3,1fr);min-height:210px;position:relative;animation:cellIn .4s var(--eb) both;background:linear-gradient(160deg,rgba(255,255,255,.03),rgba(255,255,255,.005));border:1px solid rgba(255,255,255,.05)}
+.cblk::before{content:'';position:absolute;top:0;left:10%;right:10%;height:2px;border-radius:0 0 4px 4px;opacity:.6}
+.bmid{grid-column:2;grid-row:1/4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 18px;gap:6px;min-width:90px;position:relative;z-index:1}
+.bmid::before,.bmid::after{content:'';position:absolute;top:8%;bottom:8%;width:1px}
+.bmid::before{right:0;background:linear-gradient(180deg,transparent,rgba(255,255,255,.05),transparent)}
+.bmid::after{left:0;background:linear-gradient(180deg,transparent,rgba(255,255,255,.05),transparent)}
+.bm-ring{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid rgba(255,255,255,.06)}
+.bm-nm{font-family:var(--fd);font-size:11px;font-weight:600;text-align:center;line-height:1.2;max-width:80px;color:rgba(255,255,255,.55)}
+.bm-tp{font-size:7px;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.25);font-weight:700}
 
-.board-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 4px;gap:8px;position:relative;z-index:1}
-.b-logo{font-family:var(--fd);font-size:22px;font-weight:700}
-.b-logo .bs{background:linear-gradient(135deg,var(--gold),#FFE066);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.b-logo .bj{background:linear-gradient(135deg,#FF6B6B,#E63946);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-
-.board-actions{display:flex;gap:6px;align-items:center}
-.action-btn{font-size:12px;padding:6px 12px;border-radius:8px;font-weight:700;display:flex;align-items:center;gap:4px;transition:all .2s}
-.action-btn:hover{transform:translateY(-1px)}
-.ab-random{background:linear-gradient(135deg,rgba(168,85,247,.15),rgba(168,85,247,.05));color:#C084FC;border:1px solid rgba(168,85,247,.2)}
-.ab-double{background:linear-gradient(135deg,rgba(246,201,14,.15),rgba(246,201,14,.05));color:var(--gold);border:1px solid rgba(246,201,14,.2)}
-.ab-double.active{animation:doubleGlow 1.5s ease-in-out infinite;background:linear-gradient(135deg,rgba(246,201,14,.25),rgba(246,201,14,.1))}
-.ab-end{background:rgba(255,255,255,.03);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.06)}
-
-.progress{height:2px;background:rgba(255,255,255,.03);border-radius:2px;margin:0 4px 12px;overflow:hidden;position:relative;z-index:1}
-.progress-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--neon));border-radius:2px;transition:width .6s var(--ease)}
-
-/* Board Grid */
-.b-grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;position:relative;z-index:1}
-@media(max-width:920px){.b-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.b-grid{grid-template-columns:1fr}}
-
-/* Category Block — THE KEY VISUAL */
-.cat-blk{border-radius:var(--r-lg);overflow:hidden;display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:repeat(3,1fr);min-height:210px;position:relative;animation:cellIn .4s var(--bounce) both;
-  background:linear-gradient(160deg,rgba(255,255,255,.03) 0%,rgba(255,255,255,.008) 100%);
-  border:1px solid rgba(255,255,255,.05)}
-
-/* Colored top edge glow */
-.cat-blk::before{content:'';position:absolute;top:0;left:10%;right:10%;height:2px;border-radius:0 0 4px 4px;opacity:.6}
-
-/* Subtle corner accent */
-.cat-blk::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:0 var(--r-lg) 0 80px;opacity:.04}
-
-/* Center column */
-.blk-c{grid-column:2;grid-row:1/4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 18px;gap:6px;min-width:90px;position:relative;z-index:1}
-.blk-c::before,.blk-c::after{content:'';position:absolute;top:8%;bottom:8%;width:1px}
-.blk-c::before{right:0;background:linear-gradient(180deg,transparent,rgba(255,255,255,.05),transparent)}
-.blk-c::after{left:0;background:linear-gradient(180deg,transparent,rgba(255,255,255,.05),transparent)}
-
-/* Icon with glow ring */
-.blk-c-ring{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative;border:2px solid rgba(255,255,255,.06);transition:all .3s}
-.blk-c-ring::after{content:'';position:absolute;inset:-4px;border-radius:50%;opacity:.15}
-.blk-c-nm{font-family:var(--fd);font-size:11px;font-weight:600;text-align:center;line-height:1.2;max-width:80px;color:rgba(255,255,255,.55)}
-.blk-c-tp{font-size:7px;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.25);font-weight:700}
-
-/* ═══ QUESTION TILES — premium solid design ═══ */
-.qcell{display:flex;align-items:center;justify-content:center;padding:18px 4px;color:#fff;font-family:var(--fd);transition:all .3s var(--ease);position:relative;overflow:hidden;border-radius:10px;margin:4px;cursor:pointer;
-  background:linear-gradient(145deg,#0F1328 0%,#0A0E20 50%,#080B1A 100%);
-  border:1px solid rgba(255,255,255,.06);
-  box-shadow:0 2px 8px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.03)}
-
-/* Subtle inner top highlight */
-.qcell::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transition:all .3s}
-/* Bottom edge glow (colored per category, set via inline style) */
-.qcell::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;border-radius:2px;opacity:.2;transition:all .3s}
-
-/* 200 tier — cool / subtle */
-.qcell.tier-200{background:linear-gradient(145deg,#0D1225 0%,#0B0F1F 100%);border-color:rgba(100,160,255,.08)}
-.qcell.tier-200::after{background:linear-gradient(90deg,transparent,rgba(100,160,255,.5),transparent)}
-
-/* 400 tier — warm / medium */
-.qcell.tier-400{background:linear-gradient(145deg,#12102A 0%,#0E0C22 100%);border-color:rgba(168,85,247,.08)}
-.qcell.tier-400::after{background:linear-gradient(90deg,transparent,rgba(168,85,247,.5),transparent)}
-
-/* 600 tier — gold / premium */
-.qcell.tier-600{background:linear-gradient(145deg,#1A1508 0%,#141005 100%);border-color:rgba(246,201,14,.1)}
-.qcell.tier-600::after{background:linear-gradient(90deg,transparent,rgba(246,201,14,.5),transparent)}
-.qcell.tier-600 .qcell-v.gold{filter:drop-shadow(0 0 6px rgba(246,201,14,.2))}
-
-/* Hover states */
-.qcell:not(.done):hover{transform:translateY(-2px);border-color:rgba(255,255,255,.12);box-shadow:0 6px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.05)}
-.qcell:not(.done):hover::before{left:5%;right:5%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)}
-.qcell:not(.done):hover::after{opacity:.6;left:10%;right:10%}
-.qcell:not(.done):hover .qcell-v{transform:scale(1.15);text-shadow:0 0 20px currentColor}
-
-/* Hover tier-specific intensity */
-.qcell.tier-200:not(.done):hover{border-color:rgba(100,160,255,.15);box-shadow:0 6px 20px rgba(100,160,255,.06),inset 0 1px 0 rgba(100,160,255,.04)}
-.qcell.tier-400:not(.done):hover{border-color:rgba(168,85,247,.15);box-shadow:0 6px 20px rgba(168,85,247,.06),inset 0 1px 0 rgba(168,85,247,.04)}
-.qcell.tier-600:not(.done):hover{border-color:rgba(246,201,14,.2);box-shadow:0 6px 24px rgba(246,201,14,.08),inset 0 1px 0 rgba(246,201,14,.05)}
-
-/* Active press */
-.qcell:not(.done):active{transform:scale(.95)!important;box-shadow:0 1px 4px rgba(0,0,0,.5)}
-
-/* Done state */
-.qcell.done{cursor:default;transform:none;border-color:transparent}
-.qcell.done::before,.qcell.done::after{opacity:0}
-
-/* Point value */
-.qcell-v{font-size:24px;font-weight:700;transition:all .3s var(--ease);position:relative;z-index:1}
-.qcell-v.gold{color:var(--gold)}
-.qcell-v.team{font-weight:700}
-
-/* Answered cell colored bg */
-.qcell-bg{position:absolute;inset:0;opacity:0;transition:opacity .4s;border-radius:inherit}
-.qcell.done .qcell-bg{opacity:1}
-
-/* Double indicator */
-.double-badge{position:absolute;top:2px;right:2px;font-size:8px;font-weight:900;color:var(--gold);background:rgba(246,201,14,.1);padding:1px 4px;border-radius:4px;z-index:2}
+/* ═══ QUESTION TILES ═══ */
+.qc{display:flex;align-items:center;justify-content:center;padding:18px 4px;color:#fff;font-family:var(--fd);transition:all .3s var(--e);position:relative;overflow:hidden;border-radius:10px;margin:4px;cursor:pointer;background:linear-gradient(145deg,#0F1328,#0A0E20,#080B1A);border:1px solid rgba(255,255,255,.06);box-shadow:0 2px 8px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.03)}
+.qc::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transition:all .3s}
+.qc::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;border-radius:2px;opacity:.2;transition:all .3s}
+.qc.t2{background:linear-gradient(145deg,#0D1225,#0B0F1F);border-color:rgba(100,160,255,.08)}.qc.t2::after{background:linear-gradient(90deg,transparent,rgba(100,160,255,.5),transparent)}
+.qc.t4{background:linear-gradient(145deg,#12102A,#0E0C22);border-color:rgba(168,85,247,.08)}.qc.t4::after{background:linear-gradient(90deg,transparent,rgba(168,85,247,.5),transparent)}
+.qc.t6{background:linear-gradient(145deg,#1A1508,#141005);border-color:rgba(246,201,14,.1)}.qc.t6::after{background:linear-gradient(90deg,transparent,rgba(246,201,14,.5),transparent)}
+.qc:not(.done):hover{transform:translateY(-2px);border-color:rgba(255,255,255,.12);box-shadow:0 6px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.05)}
+.qc:not(.done):hover::before{left:5%;right:5%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)}
+.qc:not(.done):hover::after{opacity:.6;left:10%;right:10%}
+.qc:not(.done):hover .qv{transform:scale(1.15);text-shadow:0 0 20px currentColor}
+.qc:not(.done):active{transform:scale(.95)!important}
+.qc.done{cursor:default;transform:none;border-color:transparent}.qc.done::before,.qc.done::after{opacity:0}
+.qc.golden:not(.done){animation:goldenShine 2s ease-in-out infinite}
+.qc.trap:not(.done){animation:trapPulse 2s ease-in-out infinite}
+.qv{font-size:24px;font-weight:700;transition:all .3s;position:relative;z-index:1}.qv.gld{color:var(--gold)}.qv.tm{font-weight:700}
+.qbg{position:absolute;inset:0;opacity:0;transition:opacity .4s;border-radius:inherit}.qc.done .qbg{opacity:1}
+.qbadge{position:absolute;top:3px;right:3px;font-size:9px;z-index:2;padding:1px 5px;border-radius:4px;font-weight:800}
+.qb-gold{background:rgba(246,201,14,.15);color:var(--gold)}.qb-trap{background:rgba(239,68,68,.15);color:var(--red)}.qb-dbl{background:rgba(246,201,14,.1);color:var(--gold)}
 
 /* ═══ SCOREBOARD ═══ */
-.scoreboard{display:flex;align-items:stretch;justify-content:center;gap:14px;padding:10px 0;position:relative;z-index:1}
+.scb{display:flex;align-items:stretch;justify-content:center;gap:10px;padding:8px 0;position:relative;z-index:1;flex-wrap:wrap}
+.scc{display:flex;align-items:center;gap:12px;padding:12px 20px;border-radius:var(--rl);transition:all .3s;min-width:170px;position:relative;overflow:hidden}
+.sce{font-size:26px;position:relative;z-index:1}.sci{display:flex;flex-direction:column;position:relative;z-index:1}
+.scn{font-size:12px;font-weight:700;opacity:.5}.scv{font-family:var(--fd);font-size:34px;font-weight:700;line-height:1;transition:all .2s}
+.scv.pop{animation:scorePop .4s var(--eb)}
+.scm{font-family:var(--fd);font-size:14px;color:rgba(255,255,255,.04);font-weight:700;align-self:center;letter-spacing:4px}
 
-.sc-card{display:flex;align-items:center;gap:14px;padding:14px 24px;border-radius:var(--r-lg);transition:all .3s var(--ease);min-width:180px;position:relative;overflow:hidden}
-/* Glass bg */
-.sc-card::before{content:'';position:absolute;inset:0;border-radius:inherit;opacity:.04}
-/* Bottom glow */
-.sc-card::after{content:'';position:absolute;bottom:-10px;left:20%;right:20%;height:20px;border-radius:50%;filter:blur(12px);opacity:0;transition:opacity .3s}
-.sc-card.glow::after{opacity:.3}
+/* Lifeline buttons in scoreboard */
+.llrow{display:flex;gap:4px;margin-top:6px;position:relative;z-index:1}
+.llbtn{font-size:10px;padding:3px 7px;border-radius:6px;font-weight:700;display:flex;align-items:center;gap:3px;transition:all .15s;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:rgba(255,255,255,.5)}
+.llbtn:hover:not(:disabled){background:rgba(255,255,255,.08);color:#fff;transform:scale(1.05)}
+.llbtn.used{opacity:.2;text-decoration:line-through;cursor:default}
 
-.sc-e{font-size:28px;position:relative;z-index:1}
-.sc-i{display:flex;flex-direction:column;position:relative;z-index:1}
-.sc-n{font-size:13px;font-weight:700;opacity:.5}
-.sc-v{font-family:var(--fd);font-size:36px;font-weight:700;line-height:1;transition:all .2s}
-.sc-v.pop{animation:scorePop .4s var(--bounce)}
-.sc-mid{font-family:var(--fd);font-size:14px;color:rgba(255,255,255,.04);font-weight:700;align-self:center;letter-spacing:4px}
-
-/* Flash overlay */
-.flash-overlay{position:fixed;inset:0;pointer-events:none;z-index:500;opacity:0;animation:flash .5s ease forwards}
+/* Flash + bonus popup */
+.flash-ov{position:fixed;inset:0;pointer-events:none;z-index:500;opacity:0;animation:flash .5s ease forwards}
+.bonus-pop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:600;pointer-events:none;animation:bonusPop .6s var(--eb) forwards;font-family:var(--fd);font-size:42px;font-weight:700;text-shadow:0 4px 20px rgba(0,0,0,.5)}
+.rand-ov{position:fixed;inset:0;background:rgba(2,4,12,.9);display:flex;align-items:center;justify-content:center;z-index:250;animation:fadeIn .2s}
+.rand-spin{font-size:60px;animation:spinPick 1.5s var(--e) forwards}
 
 /* ═══ QUESTION OVERLAY ═══ */
-.q-ov{position:fixed;inset:0;background:rgba(2,4,12,.93);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:200;animation:fadeIn .15s}
-.q-modal{width:100%;max-width:680px;border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(170deg,#0C1024,#080C1A);border:1px solid rgba(255,255,255,.05);box-shadow:0 40px 80px rgba(0,0,0,.5);animation:scaleIn .35s var(--bounce)}
-.q-hdr{padding:16px 24px;display:flex;align-items:center;gap:10px;font-family:var(--fd);font-size:18px;font-weight:600;position:relative}
-.q-hdr::after{content:'';position:absolute;bottom:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
-.q-hdr-pts{margin-right:auto;background:rgba(0,0,0,.3);padding:4px 16px;border-radius:10px;font-size:15px;font-weight:700;border:1px solid rgba(255,255,255,.04)}
-.q-hdr-2x{font-size:11px;background:rgba(246,201,14,.15);color:var(--gold);padding:3px 10px;border-radius:8px;font-weight:800;margin-right:6px;animation:pulse 1s ease-in-out infinite}
-.q-body{padding:28px 24px;display:flex;flex-direction:column;align-items:center}
+.qov{position:fixed;inset:0;background:rgba(2,4,12,.93);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:200;animation:fadeIn .15s}
+.qmod{width:100%;max-width:700px;border-radius:var(--rl);overflow:hidden;background:linear-gradient(170deg,#0C1024,#080C1A);border:1px solid rgba(255,255,255,.05);box-shadow:0 40px 80px rgba(0,0,0,.5);animation:scaleIn .35s var(--eb)}
+.qhdr{padding:14px 22px;display:flex;align-items:center;gap:8px;font-family:var(--fd);font-size:17px;font-weight:600;position:relative}
+.qhdr::after{content:'';position:absolute;bottom:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.qhpts{margin-right:auto;background:rgba(0,0,0,.3);padding:3px 14px;border-radius:10px;font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.04)}
+.qh-special{font-size:11px;padding:3px 10px;border-radius:8px;font-weight:800;margin-right:6px;animation:pulse 1s infinite}
+.qh-gold{background:rgba(246,201,14,.15);color:var(--gold)}.qh-trap{background:rgba(239,68,68,.15);color:var(--red)}
+.qbdy{padding:24px 22px;display:flex;flex-direction:column;align-items:center}
 
-/* Timer */
-.tmr{display:flex;align-items:center;gap:16px;margin-bottom:28px}
-.tmr-v{font-family:var(--fd);font-size:48px;font-weight:700;color:var(--gold);min-width:130px;text-align:center;letter-spacing:4px;font-variant-numeric:tabular-nums}
-.tmr-v.on{animation:timerGlow 1.5s ease-in-out infinite}
-.tmr-b{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.06);transition:all .2s}
-.tmr-b:hover{background:rgba(255,255,255,.08);color:#fff}
+/* Lifeline bar in question */
+.q-llbar{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
+.q-llbtn{font-size:12px;padding:8px 14px;border-radius:10px;font-weight:700;display:flex;align-items:center;gap:6px;transition:all .2s;border:1.5px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:rgba(255,255,255,.6)}
+.q-llbtn:hover:not(:disabled){background:rgba(255,255,255,.07);color:#fff;border-color:rgba(255,255,255,.15);transform:translateY(-1px)}
+.q-llbtn.active{border-color:var(--gold);color:var(--gold);background:rgba(246,201,14,.06);animation:dblGlow 1.5s infinite}
+.q-llbtn:disabled{opacity:.2}
 
-.q-text{font-size:24px;font-weight:700;text-align:center;line-height:1.9;margin-bottom:28px;max-width:580px}
+.tmr{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.tv{font-family:var(--fd);font-size:48px;font-weight:700;color:var(--gold);min-width:130px;text-align:center;letter-spacing:4px;font-variant-numeric:tabular-nums}.tv.on{animation:tmGlow 1.5s infinite}
+.tb{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.06);transition:all .2s}
+.tb:hover{background:rgba(255,255,255,.08);color:#fff}
 
-/* Special */
-.nw-show{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:28px;animation:scaleIn .4s var(--bounce)}
-.nw-img{width:300px;height:300px;object-fit:contain;border-radius:var(--r-lg);border:1px solid rgba(255,255,255,.06);background:#0a0a15}
-.nw-note{font-size:12px;color:rgba(255,255,255,.2);background:rgba(255,255,255,.03);padding:6px 14px;border-radius:8px}
-.ph-show{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:28px;animation:scaleIn .4s var(--bounce)}
-.ph-img{max-width:100%;max-height:360px;object-fit:contain;border-radius:var(--r-lg);border:1px solid rgba(255,255,255,.06)}
-.lt-area{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
-.lt-badge{font-family:var(--fd);width:56px;height:56px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#0a0a0a;background:linear-gradient(135deg,var(--gold),#FFE066);box-shadow:0 4px 24px rgba(246,201,14,.2);animation:letterBob 3s ease-in-out infinite}
-.lt-lbl{font-size:14px;color:var(--dim);font-weight:600}
+.qtxt{font-size:24px;font-weight:700;text-align:center;line-height:1.9;margin-bottom:24px;max-width:580px}
+.nws{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:24px;animation:scaleIn .4s var(--eb)}
+.nwi{width:300px;height:300px;object-fit:contain;border-radius:var(--rl);border:1px solid rgba(255,255,255,.06);background:#0a0a15}
+.nwn{font-size:12px;color:rgba(255,255,255,.2);background:rgba(255,255,255,.03);padding:6px 14px;border-radius:8px}
+.phs{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:24px;animation:scaleIn .4s var(--eb)}
+.phi{max-width:100%;max-height:340px;object-fit:contain;border-radius:var(--rl);border:1px solid rgba(255,255,255,.06)}
+.lta{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
+.ltb{font-family:var(--fd);width:56px;height:56px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#0a0a0a;background:linear-gradient(135deg,var(--gold),#FFE066);box-shadow:0 4px 24px rgba(246,201,14,.2);animation:letterBob 3s infinite}
+.ltl{font-size:14px;color:var(--dim);font-weight:600}
 
-/* Answer */
-.ans-w{width:100%;animation:reveal .35s var(--ease)}
-.ans-card{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.12);border-radius:var(--r);padding:18px 20px;text-align:center;margin-bottom:18px}
-.ans-lbl{font-size:10px;font-weight:800;color:var(--green);letter-spacing:3px;margin-bottom:6px}
-.ans-val{font-size:22px;font-weight:800;color:var(--green);line-height:1.5}
-.ans-time{text-align:center;font-size:12px;color:var(--dim);margin-bottom:14px}
-.team-btns{display:flex;gap:8px;flex-wrap:wrap}
-.btn-award{font-size:15px;padding:14px 20px;border-radius:var(--r);flex:1;min-width:120px;color:#fff;font-weight:800;transition:all .25s var(--ease)}
-.btn-award:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
-.btn-nobody{background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);padding:14px 18px;border-radius:var(--r);font-weight:700;font-size:13px;border:1px solid rgba(255,255,255,.04)}
+.answ{width:100%;animation:reveal .35s var(--e)}
+.ansc{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.12);border-radius:var(--r);padding:16px 18px;text-align:center;margin-bottom:16px}
+.ansl{font-size:10px;font-weight:800;color:var(--green);letter-spacing:3px;margin-bottom:5px}
+.ansv{font-size:22px;font-weight:800;color:var(--green);line-height:1.5}
+.anst{text-align:center;font-size:12px;color:var(--dim);margin-bottom:12px}
+.tbtns{display:flex;gap:6px;flex-wrap:wrap}
+.btn-aw{font-size:14px;padding:12px 16px;border-radius:var(--r);flex:1;min-width:100px;color:#fff;font-weight:800;transition:all .25s var(--e)}
+.btn-aw:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.btn-wr{font-size:13px;padding:12px 14px;border-radius:var(--r);flex:1;min-width:90px;color:#fff;font-weight:700;opacity:.7;transition:all .2s}
+.btn-wr:hover{opacity:1}
+.btn-no{background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);padding:12px 14px;border-radius:var(--r);font-weight:700;font-size:12px;border:1px solid rgba(255,255,255,.04)}
+
+/* Steal phase */
+.steal-box{width:100%;padding:16px;border-radius:var(--r);border:2px solid rgba(168,85,247,.3);background:rgba(168,85,247,.05);text-align:center;margin-top:12px;animation:stealGlow 1s infinite,reveal .3s var(--e)}
+.steal-title{font-family:var(--fd);font-size:16px;font-weight:700;color:#C084FC;margin-bottom:10px}
+.steal-btns{display:flex;gap:8px;justify-content:center}
+
+/* Domination banner */
+.dom-banner{position:fixed;top:20%;left:50%;transform:translateX(-50%);z-index:600;pointer-events:none;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a0a0a;padding:12px 32px;border-radius:var(--rl);font-family:var(--fd);font-size:20px;font-weight:700;animation:bonusPop .6s var(--eb) forwards;box-shadow:0 8px 40px rgba(246,201,14,.3)}
 
 /* ═══ GAMEOVER ═══ */
-.go-w{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:20px;background:var(--bg)}
-.go-w::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(246,201,14,.03),transparent 60%)}
-.go-card{text-align:center;animation:fadeUp .6s var(--ease);max-width:520px;width:100%;position:relative;z-index:1}
-.go-trophy{font-size:80px;margin-bottom:12px;animation:pulse 2.5s ease-in-out infinite}
-.go-title{font-family:var(--fd);font-size:46px;font-weight:700;margin-bottom:8px}
-.go-sub{font-size:15px;color:var(--dim);margin-bottom:36px}
-.go-scores{display:flex;align-items:center;justify-content:center;gap:32px;margin-bottom:36px}
-.go-team{display:flex;flex-direction:column;align-items:center;gap:6px}
-.go-e{font-size:36px}.go-n{font-size:17px;font-weight:800}
-.go-s{font-family:var(--fd);font-size:56px;font-weight:700;line-height:1}
-.go-vs{font-family:var(--fd);font-size:20px;color:rgba(255,255,255,.06);font-weight:700}
-.confetti-p{position:absolute;border-radius:2px;will-change:transform}
+.gow{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:20px;background:var(--bg)}
+.gow::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(246,201,14,.03),transparent 60%)}
+.goc{text-align:center;animation:fadeUp .6s var(--e);max-width:520px;width:100%;position:relative;z-index:1}
+.got{font-size:80px;margin-bottom:12px;animation:pulse 2.5s infinite}
+.goti{font-family:var(--fd);font-size:46px;font-weight:700;margin-bottom:8px}
+.gosub{font-size:15px;color:var(--dim);margin-bottom:36px}
+.gosc{display:flex;align-items:center;justify-content:center;gap:32px;margin-bottom:36px}
+.goteam{display:flex;flex-direction:column;align-items:center;gap:6px}
+.goe{font-size:36px}.gon{font-size:17px;font-weight:800}.gos{font-family:var(--fd);font-size:56px;font-weight:700;line-height:1}
+.govs{font-family:var(--fd);font-size:20px;color:rgba(255,255,255,.06);font-weight:700}
+.confp{position:absolute;border-radius:2px;will-change:transform}
 
-/* ═══ MODAL ═══ */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:300;padding:16px;animation:fadeIn .15s}
-.modal{width:100%;max-width:620px;max-height:88vh;overflow-y:auto;background:#0E1228;border:1px solid rgba(255,255,255,.05);border-radius:var(--r-lg);padding:28px;animation:scaleIn .3s var(--bounce)}
-.modal-t{font-family:var(--fd);font-size:19px;font-weight:600;margin-bottom:20px;text-align:center}
-.m-row{margin-bottom:12px}
-.m-lbl{font-size:11px;font-weight:700;color:var(--dim);margin-bottom:5px;display:block;letter-spacing:1px}
-.m-inp{width:100%;padding:10px 14px;border-radius:var(--r);border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:#fff;font-size:15px;font-weight:600;transition:all .2s}
-.m-sel{width:100%;padding:10px 14px;border-radius:var(--r);border:1px solid rgba(255,255,255,.06);background:#0E1228;color:#fff;font-size:14px;font-weight:600}
-.m-3{display:flex;gap:10px}.m-3>div{flex:1}
-.m-qb{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.03);border-radius:var(--r);padding:12px;margin-bottom:8px}
-.m-qp{font-family:var(--fd);font-size:12px;font-weight:700;color:var(--gold);margin-bottom:6px}
-.m-qr{display:flex;gap:6px;margin-bottom:6px}
-.m-qr input{flex:1}
-.m-eg{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin-top:6px;max-height:180px;overflow-y:auto;background:rgba(0,0,0,.2);border-radius:var(--r);padding:8px}
-.m-eb{font-size:18px;width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:transparent;border:1.5px solid transparent;transition:all .1s}
-.m-eb:hover{background:rgba(255,255,255,.08)}
-.m-eb.sel{background:rgba(246,201,14,.1);border-color:var(--gold)}
-.m-btns{display:flex;gap:8px;margin-top:16px}
+/* Modal */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:300;padding:16px;animation:fadeIn .15s}
+.mdl{width:100%;max-width:620px;max-height:88vh;overflow-y:auto;background:#0E1228;border:1px solid rgba(255,255,255,.05);border-radius:var(--rl);padding:28px;animation:scaleIn .3s var(--eb)}
+.mt{font-family:var(--fd);font-size:19px;font-weight:600;margin-bottom:20px;text-align:center}
+.mr{margin-bottom:12px}.ml{font-size:11px;font-weight:700;color:var(--dim);margin-bottom:5px;display:block;letter-spacing:1px}
+.mi{width:100%;padding:10px 14px;border-radius:var(--r);border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:#fff;font-size:15px;font-weight:600}
+.msel{width:100%;padding:10px 14px;border-radius:var(--r);border:1px solid rgba(255,255,255,.06);background:#0E1228;color:#fff;font-size:14px;font-weight:600}
+.m3{display:flex;gap:10px}.m3>div{flex:1}
+.mqb{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.03);border-radius:var(--r);padding:12px;margin-bottom:8px}
+.mqp{font-family:var(--fd);font-size:12px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.mqr{display:flex;gap:6px;margin-bottom:6px}.mqr input{flex:1}
+.meg{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin-top:6px;max-height:180px;overflow-y:auto;background:rgba(0,0,0,.2);border-radius:var(--r);padding:8px}
+.meb{font-size:18px;width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:transparent;border:1.5px solid transparent}
+.meb:hover{background:rgba(255,255,255,.08)}.meb.sel{background:rgba(246,201,14,.1);border-color:var(--gold)}
+.mbtns{display:flex;gap:8px;margin-top:16px}
 
-/* Random picker overlay */
-.rand-ov{position:fixed;inset:0;background:rgba(2,4,12,.9);display:flex;align-items:center;justify-content:center;z-index:250;animation:fadeIn .2s}
-.rand-spin{font-size:60px;animation:spinPick 1.5s var(--ease) forwards}
-
-@media(max-width:680px){
-  .setup-card{padding:28px 16px}.logo-main{font-size:50px}
-  .t-card{min-width:240px;padding:18px}.qcell-v{font-size:18px}.qcell{padding:14px 4px;margin:3px;border-radius:8px}
-  .blk-c-nm{font-size:9px}.sc-v{font-size:26px}.sc-card{padding:10px 14px;min-width:130px}
-  .q-text{font-size:19px}.tmr-v{font-size:36px}.go-title{font-size:34px}.go-s{font-size:44px}
-  .cat-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.nw-img{width:240px;height:240px}
-}
+@media(max-width:680px){.scard{padding:28px 16px}.logo-m{font-size:50px}.tc{min-width:240px;padding:18px}.qv{font-size:18px}.qc{padding:14px 4px;margin:3px;border-radius:8px}.bm-nm{font-size:9px}.scv{font-size:26px}.scc{padding:10px 14px;min-width:130px}.qtxt{font-size:19px}.tv{font-size:36px}.goti{font-size:34px}.gos{font-size:44px}.cg{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.nwi{width:240px;height:240px}}
 </style>
 </head>
 <body>
@@ -331,224 +238,318 @@ button:disabled{opacity:.25;cursor:not-allowed}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <script type="text/babel">
-const{useState,useEffect,useRef,useMemo}=React;
-const COLORS=[{id:"red",c:"#E63946",l:"#FF6B6B"},{id:"blue",c:"#3A86FF",l:"#60A5FA"},{id:"green",c:"#10B981",l:"#34D399"},{id:"purple",c:"#A855F7",l:"#C084FC"},{id:"orange",c:"#F59E0B",l:"#FBBF24"},{id:"pink",c:"#EC4899",l:"#F472B6"},{id:"teal",c:"#06B6D4",l:"#22D3EE"},{id:"lime",c:"#84CC16",l:"#A3E635"}];
-const TEMOJI=["⚡","🔥","💪","🦅","🐺","🦁","🏆","⭐","🎯","🚀","💎","👑","🗡️","🛡️","🐉","🦈","🐻","🦊","🦇","🐍","🦂","🎭","🌪️","❄️"];
-const IEMOJI=["⚽","🏛️","🕌","🌍","🎵","🔬","💻","🍽️","🗺️","🦁","📜","✍️","✅","🎭","🔤","🤫","🧩","🚗","🎮","🎬","📚","🧠","💡","🎨","🏅","🎲","🌟","🔑","📸","🎤","✈️","🏖️","🏔️","🌸","🎸","🛸","⚗️","🔭","💊","🏗️","🎪","🎻","📡","🧬","💰","🏦","📊","🛒","🎁","❓"];
-
+const{useState,useEffect,useRef,useMemo,useCallback}=React;
+const CLS=[{id:"red",c:"#E63946",l:"#FF6B6B"},{id:"blue",c:"#3A86FF",l:"#60A5FA"},{id:"green",c:"#10B981",l:"#34D399"},{id:"purple",c:"#A855F7",l:"#C084FC"},{id:"orange",c:"#F59E0B",l:"#FBBF24"},{id:"pink",c:"#EC4899",l:"#F472B6"},{id:"teal",c:"#06B6D4",l:"#22D3EE"},{id:"lime",c:"#84CC16",l:"#A3E635"}];
+const TEM=["⚡","🔥","💪","🦅","🐺","🦁","🏆","⭐","🎯","🚀","💎","👑","🗡️","🛡️","🐉","🦈","🐻","🦊","🦇","🐍","🦂","🎭","🌪️","❄️"];
+const IEM=["⚽","🏛️","🕌","🌍","🎵","🔬","💻","🍽️","🗺️","🦁","📜","✍️","✅","🎭","🔤","🤫","🧩","🚗","🎮","🎬","📚","🧠","💡","🎨","🏅","🎲","🌟","🔑","📸","🎤","✈️","🏖️","🏔️","🌸","🎸","🛸","⚗️","🔭","💊","🏗️","🎪","🎻","📡","🧬","💰","🏦","📊","🛒","🎁","❓"];
 const CATS=[
-  {id:"sports",name:"رياضة",icon:"⚽",color:"#E63946",type:"regular",questions:[{pts:200,q:"كم لاعب في فريق كرة القدم؟",a:"11"},{pts:200,q:"أين مونديال 2022؟",a:"قطر"},{pts:400,q:"هدف السعودية ضد بلجيكا 94؟",a:"سعيد العويران"},{pts:400,q:"ألقاب الهلال الآسيوية؟",a:"4"},{pts:600,q:"فاز بالمونديال 3 مرات؟",a:"بيليه"},{pts:600,q:"هدّاف مونديال 2022؟",a:"مبابي"}]},
-  {id:"history",name:"تاريخ",icon:"🏛️",color:"#8B6914",type:"regular",questions:[{pts:200,q:"توحيد السعودية؟",a:"1932م"},{pts:200,q:"أول رئيس أمريكي؟",a:"واشنطن"},{pts:400,q:"معركة صلاح الدين؟",a:"حطين"},{pts:400,q:"سقوط العثمانية؟",a:"1922م"},{pts:600,q:"فاتح الأندلس؟",a:"طارق بن زياد"},{pts:600,q:"أقدم حضارة؟",a:"السومرية"}]},
+  {id:"sports",name:"رياضة",icon:"⚽",color:"#E63946",type:"regular",questions:[{pts:200,q:"كم لاعب في فريق كرة القدم؟",a:"11"},{pts:200,q:"أين مونديال 2022؟",a:"قطر"},{pts:400,q:"هدف السعودية ضد بلجيكا 94؟",a:"العويران"},{pts:400,q:"ألقاب الهلال آسيوياً؟",a:"4"},{pts:600,q:"فاز بالمونديال 3 مرات؟",a:"بيليه"},{pts:600,q:"هدّاف مونديال 2022؟",a:"مبابي"}]},
+  {id:"history",name:"تاريخ",icon:"🏛️",color:"#8B6914",type:"regular",questions:[{pts:200,q:"توحيد السعودية؟",a:"1932"},{pts:200,q:"أول رئيس أمريكي؟",a:"واشنطن"},{pts:400,q:"معركة صلاح الدين؟",a:"حطين"},{pts:400,q:"سقوط العثمانية؟",a:"1922"},{pts:600,q:"فاتح الأندلس؟",a:"طارق بن زياد"},{pts:600,q:"أقدم حضارة؟",a:"السومرية"}]},
   {id:"islamic",name:"إسلامي",icon:"🕌",color:"#2A9D8F",type:"regular",questions:[{pts:200,q:"أركان الإسلام؟",a:"5"},{pts:200,q:"أول سورة؟",a:"الفاتحة"},{pts:400,q:"أطول سورة؟",a:"البقرة"},{pts:400,q:"غزوة بدر؟",a:"2 هـ"},{pts:600,q:"أنبياء القرآن؟",a:"25"},{pts:600,q:"قلب القرآن؟",a:"يس"}]},
   {id:"countries",name:"دول و عواصم",icon:"🌍",color:"#457B9D",type:"regular",questions:[{pts:200,q:"عاصمة فرنسا؟",a:"باريس"},{pts:200,q:"أكبر عربية مساحة؟",a:"الجزائر"},{pts:400,q:"عاصمة أستراليا؟",a:"كانبيرا"},{pts:400,q:"أصغر دولة؟",a:"الفاتيكان"},{pts:600,q:"عاصمة ميانمار؟",a:"نايبيداو"},{pts:600,q:"أكثر جزر؟",a:"السويد"}]},
-  {id:"gulf_art",name:"فن خليجي",icon:"🎵",color:"#9B2335",type:"regular",questions:[{pts:200,q:"فنان العرب؟",a:"محمد عبده"},{pts:200,q:"جنسية أحلام؟",a:"إماراتية"},{pts:400,q:"يا ليل يا عين؟",a:"الرويشد"},{pts:400,q:"إيقاع السامري؟",a:"الصفقة"},{pts:600,q:"فوق هام السحب؟",a:"خالد الفيصل"},{pts:600,q:"فن المجرور؟",a:"فن حجازي"}]},
-  {id:"science",name:"علوم",icon:"🔬",color:"#6A4C93",type:"regular",questions:[{pts:200,q:"غاز التنفس؟",a:"أكسجين"},{pts:200,q:"كواكب؟",a:"8"},{pts:400,q:"أصلب معدن؟",a:"ألماس"},{pts:400,q:"سرعة الضوء؟",a:"300K كم/ث"},{pts:600,q:"أوفر عنصر بالكون؟",a:"هيدروجين"},{pts:600,q:"سبب المد؟",a:"جاذبية القمر"}]},
+  {id:"gulf_art",name:"فن خليجي",icon:"🎵",color:"#9B2335",type:"regular",questions:[{pts:200,q:"فنان العرب؟",a:"محمد عبده"},{pts:200,q:"جنسية أحلام؟",a:"إماراتية"},{pts:400,q:"يا ليل يا عين؟",a:"الرويشد"},{pts:400,q:"إيقاع السامري؟",a:"الصفقة"},{pts:600,q:"فوق هام السحب؟",a:"خالد الفيصل"},{pts:600,q:"فن المجرور؟",a:"حجازي"}]},
+  {id:"science",name:"علوم",icon:"🔬",color:"#6A4C93",type:"regular",questions:[{pts:200,q:"غاز التنفس؟",a:"أكسجين"},{pts:200,q:"كواكب؟",a:"8"},{pts:400,q:"أصلب معدن؟",a:"ألماس"},{pts:400,q:"سرعة الضوء؟",a:"300K كم/ث"},{pts:600,q:"أوفر عنصر؟",a:"هيدروجين"},{pts:600,q:"سبب المد؟",a:"القمر"}]},
   {id:"tech",name:"تقنية",icon:"💻",color:"#3A86FF",type:"regular",questions:[{pts:200,q:"AI بالعربية؟",a:"ذكاء اصطناعي"},{pts:200,q:"مؤسس مايكروسوفت؟",a:"بيل غيتس"},{pts:400,q:"أول iPhone؟",a:"2007"},{pts:400,q:"لغة فان روسم؟",a:"بايثون"},{pts:600,q:"بروتوكول الويب؟",a:"HTTP"},{pts:600,q:"البلوكتشين؟",a:"سجل لامركزي"}]},
   {id:"food",name:"طبخ",icon:"🍽️",color:"#E07A5F",type:"regular",questions:[{pts:200,q:"أكلة سعودية شهيرة؟",a:"كبسة"},{pts:200,q:"بلد الكشري؟",a:"مصر"},{pts:400,q:"توابل الكاري؟",a:"كركم"},{pts:400,q:"أغلى توابل؟",a:"زعفران"},{pts:600,q:"قهوة بالهيل؟",a:"عربية"},{pts:600,q:"ملكة الفواكه؟",a:"مانغوستين"}]},
   {id:"geography",name:"جغرافيا",icon:"🗺️",color:"#606C38",type:"regular",questions:[{pts:200,q:"أطول نهر؟",a:"النيل"},{pts:200,q:"قارة مصر؟",a:"أفريقيا"},{pts:400,q:"أعلى قمة؟",a:"إيفرست"},{pts:400,q:"أكبر محيط؟",a:"الهادئ"},{pts:600,q:"أعلى قمة سعودية؟",a:"السودة"},{pts:600,q:"بحر بلا ساحل؟",a:"سارغاسو"}]},
   {id:"animals",name:"حيوان",icon:"🦁",color:"#BC6C25",type:"regular",questions:[{pts:200,q:"أسرع بري؟",a:"فهد"},{pts:200,q:"أذرع أخطبوط؟",a:"8"},{pts:400,q:"لا يقفز؟",a:"فيل"},{pts:400,q:"أكبر حيوان؟",a:"حوت أزرق"},{pts:600,q:"قلوب أخطبوط؟",a:"3"},{pts:600,q:"أقوى عضّة؟",a:"تمساح مالح"}]},
-  {id:"proverbs",name:"أمثال",icon:"📜",color:"#A68A64",type:"regular",questions:[{pts:200,q:"'اللي ما يعرف الصقر...'",a:"يشويه"},{pts:200,q:"'الطيور على أشكالها...'",a:"تقع"},{pts:400,q:"'يد واحدة ما تصفّق'؟",a:"تعاون"},{pts:400,q:"'إذا هبّت رياحك...'",a:"فاغتنمها"},{pts:600,q:"'ما كل مرة...'",a:"تسلم الجرّة"},{pts:600,q:"'يبي العسل...'؟",a:"يصبر"}]},
-  {id:"arabic_lang",name:"لغة عربية",icon:"✍️",color:"#1D3557",type:"regular",questions:[{pts:200,q:"حروف العربية؟",a:"28"},{pts:200,q:"جمع كتاب؟",a:"كُتُب"},{pts:400,q:"مثنى قلم؟",a:"قلمان"},{pts:400,q:"إعراب محمداً؟",a:"مفعول به"},{pts:600,q:"إنّ vs أنّ؟",a:"إنّ أول — أنّ بعد فعل"},{pts:600,q:"جمع أخطبوط؟",a:"أخاطب"}]},
-  {id:"true_false",name:"صح / غلط",icon:"✅",color:"#38B000",type:"regular",questions:[{pts:200,q:"الهند أكبر سكاناً؟",a:"صح"},{pts:200,q:"القمر يُصدر ضوء؟",a:"غلط"},{pts:400,q:"سور الصين من الفضاء؟",a:"غلط"},{pts:400,q:"النعامة تدفن رأسها؟",a:"غلط"},{pts:600,q:"الماء النقي عازل؟",a:"صح"},{pts:600,q:"الزهرة يدور عكسياً؟",a:"صح"}]},
-  {id:"who_am_i",name:"من أنا؟",icon:"🎭",color:"#9B5DE5",type:"regular",questions:[{pts:200,q:"ملك الإنسانية",a:"فيصل"},{pts:200,q:"مونديال 2022 أرجنتين",a:"ميسي"},{pts:400,q:"رحّالة مغربي",a:"ابن بطوطة"},{pts:400,q:"تيسلا + سبيس إكس",a:"ماسك"},{pts:600,q:"النسبية",a:"أينشتاين"},{pts:600,q:"ملكة مصرية",a:"كليوباترا"}]},
+  {id:"proverbs",name:"أمثال",icon:"📜",color:"#A68A64",type:"regular",questions:[{pts:200,q:"'ما يعرف الصقر...'",a:"يشويه"},{pts:200,q:"'الطيور على أشكالها...'",a:"تقع"},{pts:400,q:"'يد ما تصفّق'؟",a:"تعاون"},{pts:400,q:"'إذا هبّت رياحك...'",a:"فاغتنمها"},{pts:600,q:"'ما كل مرة...'",a:"تسلم الجرّة"},{pts:600,q:"'يبي العسل...'؟",a:"يصبر"}]},
+  {id:"arabic",name:"لغة عربية",icon:"✍️",color:"#1D3557",type:"regular",questions:[{pts:200,q:"حروف العربية؟",a:"28"},{pts:200,q:"جمع كتاب؟",a:"كُتُب"},{pts:400,q:"مثنى قلم؟",a:"قلمان"},{pts:400,q:"إعراب محمداً؟",a:"مفعول به"},{pts:600,q:"إنّ vs أنّ؟",a:"إنّ أول — أنّ بعد فعل"},{pts:600,q:"جمع أخطبوط؟",a:"أخاطب"}]},
+  {id:"tf",name:"صح / غلط",icon:"✅",color:"#38B000",type:"regular",questions:[{pts:200,q:"الهند أكبر سكاناً؟",a:"صح"},{pts:200,q:"القمر يُصدر ضوء؟",a:"غلط"},{pts:400,q:"سور الصين من الفضاء؟",a:"غلط"},{pts:400,q:"النعامة تدفن رأسها؟",a:"غلط"},{pts:600,q:"الماء النقي عازل؟",a:"صح"},{pts:600,q:"الزهرة يدور عكسياً؟",a:"صح"}]},
+  {id:"wai",name:"من أنا؟",icon:"🎭",color:"#9B5DE5",type:"regular",questions:[{pts:200,q:"ملك الإنسانية",a:"فيصل"},{pts:200,q:"أرجنتين 2022",a:"ميسي"},{pts:400,q:"رحّالة مغربي",a:"ابن بطوطة"},{pts:400,q:"تيسلا+سبيس إكس",a:"ماسك"},{pts:600,q:"النسبية",a:"أينشتاين"},{pts:600,q:"ملكة مصرية",a:"كليوباترا"}]},
   {id:"letters",name:"حروف",icon:"🔤",color:"#D4A373",type:"letters",questions:[{pts:200,q:"عروس البحر الأحمر",a:"جدة",letter:"ج"},{pts:200,q:"فاكهة صفراء",a:"موز",letter:"م"},{pts:400,q:"أبو الطب",a:"ابن سينا",letter:"ا"},{pts:400,q:"أكبر صحراء عربية",a:"الربع الخالي",letter:"ر"},{pts:600,q:"مخترع المصباح",a:"إديسون",letter:"ت"},{pts:600,q:"عملة اليابان",a:"ين",letter:"ي"}]},
-  {id:"no_words",name:"ولا كلمة",icon:"🤫",color:"#E76F51",type:"no_words",questions:[{pts:200,image:"no-words/q1.png",a:"طيّار"},{pts:200,image:"no-words/q2.png",a:"طبّاخ"},{pts:400,image:"no-words/q3.png",a:"غوّاص"},{pts:400,image:"no-words/q4.png",a:"مصوّر"},{pts:600,image:"no-words/q5.png",a:"رائد فضاء"},{pts:600,image:"no-words/q6.png",a:"ساحر"}]},
-  {id:"guess_photo",name:"خمن الصورة",icon:"🧩",color:"#264653",type:"guess_photo",questions:[{pts:200,image:"guess/q1.png",a:"—"},{pts:200,image:"guess/q2.png",a:"—"},{pts:400,image:"guess/q3.png",a:"—"},{pts:400,image:"guess/q4.png",a:"—"},{pts:600,image:"guess/q5.png",a:"—"},{pts:600,image:"guess/q6.png",a:"—"}]},
+  {id:"nw",name:"ولا كلمة",icon:"🤫",color:"#E76F51",type:"no_words",questions:[{pts:200,image:"no-words/q1.png",a:"طيّار"},{pts:200,image:"no-words/q2.png",a:"طبّاخ"},{pts:400,image:"no-words/q3.png",a:"غوّاص"},{pts:400,image:"no-words/q4.png",a:"مصوّر"},{pts:600,image:"no-words/q5.png",a:"رائد فضاء"},{pts:600,image:"no-words/q6.png",a:"ساحر"}]},
+  {id:"gp",name:"خمن الصورة",icon:"🧩",color:"#264653",type:"guess_photo",questions:[{pts:200,image:"guess/q1.png",a:"—"},{pts:200,image:"guess/q2.png",a:"—"},{pts:400,image:"guess/q3.png",a:"—"},{pts:400,image:"guess/q4.png",a:"—"},{pts:600,image:"guess/q5.png",a:"—"},{pts:600,image:"guess/q6.png",a:"—"}]},
 ];
 
 function useTimer(){const[s,setS]=useState(0);const[on,setOn]=useState(false);const r=useRef(null);useEffect(()=>{if(on)r.current=setInterval(()=>setS(p=>p+1),1000);else clearInterval(r.current);return()=>clearInterval(r.current)},[on]);return{s,on,fmt:`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`,toggle:()=>setOn(p=>!p),reset:()=>{setS(0);setOn(false)},stop:()=>setOn(false)};}
-
-function Confetti(){const c=["#E63946","#FFD700","#3A86FF","#10B981","#A855F7","#F59E0B","#EC4899"];const p=useMemo(()=>Array.from({length:80},(_,i)=>({i,l:Math.random()*100,d:Math.random()*3,dur:2+Math.random()*3,c:c[~~(Math.random()*c.length)],sz:4+Math.random()*8,rot:Math.random()*360})),[]);return<div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:999}}>{p.map(x=><div key={x.i} className="confetti-p" style={{left:`${x.l}%`,top:"-16px",width:x.sz,height:x.sz*.5,background:x.c,transform:`rotate(${x.rot}deg)`,animation:`confetti ${x.dur}s ease-in ${x.d}s forwards`}}/>)}</div>;}
+function Confetti(){const c=["#E63946","#FFD700","#3A86FF","#10B981","#A855F7","#F59E0B","#EC4899"];const p=useMemo(()=>Array.from({length:80},(_,i)=>({i,l:Math.random()*100,d:Math.random()*3,dur:2+Math.random()*3,c:c[~~(Math.random()*c.length)],sz:4+Math.random()*8,rot:Math.random()*360})),[]);return<div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:999}}>{p.map(x=><div key={x.i} className="confp" style={{left:`${x.l}%`,top:"-16px",width:x.sz,height:x.sz*.5,background:x.c,transform:`rotate(${x.rot}deg)`,animation:`confetti ${x.dur}s ease-in ${x.d}s forwards`}}/>)}</div>;}
 
 function CatModal({onClose,onSave}){const[nm,setNm]=useState("");const[ic,setIc]=useState("❓");const[si,setSi]=useState(false);const[co,setCo]=useState("#E63946");const[ty,setTy]=useState("regular");const[qs,setQs]=useState([200,200,400,400,600,600].map(p=>({pts:p,q:"",a:"",letter:"",image:""})));const up=(i,f,v)=>{const n=[...qs];n[i]={...n[i],[f]:v};setQs(n)};const ok=nm.trim()&&qs.every(q=>(ty==="regular"||ty==="letters")?q.q&&q.a:(q.image&&q.a));
-  return<div className="modal-bg" onClick={e=>e.target===e.currentTarget&&onClose()}><div className="modal">
-    <div className="modal-t">➕ تصنيف جديد</div>
-    <div className="m-row"><label className="m-lbl">الاسم</label><input className="m-inp" value={nm} onChange={e=>setNm(e.target.value)} placeholder="سيارات"/></div>
-    <div className="m-3"><div><label className="m-lbl">أيقونة</label><button onClick={()=>setSi(!si)} style={{width:"100%",padding:10,borderRadius:"var(--r)",border:"1px solid rgba(255,255,255,.06)",background:"rgba(255,255,255,.03)",color:"#fff",fontSize:28,cursor:"pointer",textAlign:"center"}}>{ic}</button>{si&&<div className="m-eg">{IEMOJI.map(e=><button key={e} className={`m-eb ${ic===e?"sel":""}`} onClick={()=>{setIc(e);setSi(false)}}>{e}</button>)}</div>}</div>
-      <div><label className="m-lbl">اللون</label><input type="color" value={co} onChange={e=>setCo(e.target.value)} style={{width:"100%",height:44,border:"none",borderRadius:8,cursor:"pointer",background:"transparent"}}/></div>
-      <div><label className="m-lbl">النوع</label><select className="m-sel" value={ty} onChange={e=>setTy(e.target.value)}><option value="regular">سؤال وجواب</option><option value="letters">حروف 🔤</option><option value="no_words">ولا كلمة 🤫</option><option value="guess_photo">خمن الصورة 🧩</option></select></div></div>
-    <div style={{marginTop:14}}><label className="m-lbl">6 أسئلة</label>{qs.map((q,i)=><div key={i} className="m-qb"><div className="m-qp">{q.pts}</div>
-      {(ty==="regular")&&<><div className="m-qr"><input className="m-inp" placeholder="السؤال" value={q.q} onChange={e=>up(i,"q",e.target.value)}/></div><div className="m-qr"><input className="m-inp" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
-      {ty==="letters"&&<><div className="m-qr"><input className="m-inp" placeholder="السؤال" value={q.q} onChange={e=>up(i,"q",e.target.value)}/><input className="m-inp" placeholder="حرف" value={q.letter} onChange={e=>up(i,"letter",e.target.value)} style={{maxWidth:50,textAlign:"center",fontWeight:900}}/></div><div className="m-qr"><input className="m-inp" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
-      {(ty==="no_words"||ty==="guess_photo")&&<><div className="m-qr"><input className="m-inp" placeholder="مسار الصورة" value={q.image} onChange={e=>up(i,"image",e.target.value)}/></div><div className="m-qr"><input className="m-inp" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
-    </div>)}</div>
-    <div className="m-btns"><button className="btn btn-gold" style={{flex:1}} disabled={!ok} onClick={()=>onSave({id:"c_"+Date.now(),name:nm,icon:ic,color:co,type:ty,questions:qs})}>💾 حفظ</button><button className="btn btn-ghost" onClick={onClose}>إلغاء</button></div>
-  </div></div>;}
+return<div className="mbg" onClick={e=>e.target===e.currentTarget&&onClose()}><div className="mdl"><div className="mt">➕ تصنيف جديد</div>
+<div className="mr"><label className="ml">الاسم</label><input className="mi" value={nm} onChange={e=>setNm(e.target.value)}/></div>
+<div className="m3"><div><label className="ml">أيقونة</label><button onClick={()=>setSi(!si)} style={{width:"100%",padding:10,borderRadius:"var(--r)",border:"1px solid rgba(255,255,255,.06)",background:"rgba(255,255,255,.03)",color:"#fff",fontSize:28,textAlign:"center"}}>{ic}</button>{si&&<div className="meg">{IEM.map(e=><button key={e} className={`meb ${ic===e?"sel":""}`} onClick={()=>{setIc(e);setSi(false)}}>{e}</button>)}</div>}</div>
+<div><label className="ml">اللون</label><input type="color" value={co} onChange={e=>setCo(e.target.value)} style={{width:"100%",height:44,border:"none",borderRadius:8,cursor:"pointer",background:"transparent"}}/></div>
+<div><label className="ml">النوع</label><select className="msel" value={ty} onChange={e=>setTy(e.target.value)}><option value="regular">سؤال وجواب</option><option value="letters">حروف</option><option value="no_words">ولا كلمة</option><option value="guess_photo">خمن الصورة</option></select></div></div>
+<div style={{marginTop:14}}><label className="ml">6 أسئلة</label>{qs.map((q,i)=><div key={i} className="mqb"><div className="mqp">{q.pts}</div>
+{ty==="regular"&&<><div className="mqr"><input className="mi" placeholder="السؤال" value={q.q} onChange={e=>up(i,"q",e.target.value)}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
+{ty==="letters"&&<><div className="mqr"><input className="mi" placeholder="السؤال" value={q.q} onChange={e=>up(i,"q",e.target.value)}/><input className="mi" placeholder="حرف" value={q.letter} onChange={e=>up(i,"letter",e.target.value)} style={{maxWidth:50,textAlign:"center",fontWeight:900}}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
+{(ty==="no_words"||ty==="guess_photo")&&<><div className="mqr"><input className="mi" placeholder="مسار الصورة" value={q.image} onChange={e=>up(i,"image",e.target.value)}/></div><div className="mqr"><input className="mi" placeholder="الجواب" value={q.a} onChange={e=>up(i,"a",e.target.value)}/></div></>}
+</div>)}</div>
+<div className="mbtns"><button className="btn btn-gold" style={{flex:1}} disabled={!ok} onClick={()=>onSave({id:"c_"+Date.now(),name:nm,icon:ic,color:co,type:ty,questions:qs})}>💾 حفظ</button><button className="btn btn-ghost" onClick={onClose}>إلغاء</button></div></div></div>;}
 
 function App(){
-  const[scr,setScr]=useState("setup");const[step,setStep]=useState(0);
-  const[t1,setT1]=useState({name:"",color:COLORS[0],emoji:"⚡"});
-  const[t2,setT2]=useState({name:"",color:COLORS[1],emoji:"🔥"});
-  const[pool,setPool]=useState(CATS);const[sel,setSel]=useState([]);const[modal,setModal]=useState(false);
-  const[gc,setGc]=useState([]);const[ans,setAns]=useState({});
-  const[s1,setS1]=useState(0);const[s2,setS2]=useState(0);const[pop,setPop]=useState(0);
-  const[aq,setAq]=useState(null);const[sa,setSa]=useState(false);
-  const[e1,setE1]=useState(false);const[e2,setE2]=useState(false);
-  const[dbl,setDbl]=useState(false); // double points
-  const[flash,setFlash]=useState(null); // flash color
-  const[rand,setRand]=useState(false); // random picker
-  const tm=useTimer();
+const[scr,setScr]=useState("setup");const[step,setStep]=useState(0);
+const[t1,setT1]=useState({name:"",color:CLS[0],emoji:"⚡"});const[t2,setT2]=useState({name:"",color:CLS[1],emoji:"🔥"});
+const[pool,setPool]=useState(CATS);const[sel,setSel]=useState([]);const[modal,setModal]=useState(false);
+const[gc,setGc]=useState([]);const[ans,setAns]=useState({});
+const[s1,setS1]=useState(0);const[s2,setS2]=useState(0);const[pop,setPop]=useState(0);
+const[aq,setAq]=useState(null);const[sa,setSa]=useState(false);
+const[e1,setE1]=useState(false);const[e2,setE2]=useState(false);
+// Lifelines: true = available
+const[ll,setLl]=useState({1:{dbl:true,sw:true,shield:true,steal:true},2:{dbl:true,sw:true,shield:true,steal:true}});
+const[activeDbl,setActiveDbl]=useState(0); // which team activated double (0=none)
+const[flash,setFlash]=useState(null);const[rand,setRand]=useState(false);
+const[bonusMsg,setBonusMsg]=useState(null); // {text,color}
+const[stealPhase,setStealPhase]=useState(null); // {stealingTeam, pts}
+const[domBanner,setDomBanner]=useState(null);
+// Special questions
+const[goldenKey,setGoldenKey]=useState(null);const[trapKey,setTrapKey]=useState(null);
+const[randMult,setRandMult]=useState(1); // for random picks
+const tm=useTimer();
+// Track correct per team per category
+const[catScore,setCatScore]=useState({}); // {`${ci}-${team}`: count}
 
-  const togCat=id=>setSel(p=>{if(p.includes(id))return p.filter(c=>c!==id);return p.length>=6?p:[...p,id]});
-  const startGame=()=>{setGc(pool.filter(c=>sel.includes(c.id)));setScr("board")};
+const togCat=id=>setSel(p=>{if(p.includes(id))return p.filter(c=>c!==id);return p.length>=6?p:[...p,id]});
 
-  const openQ=(ci,qi)=>{const k=`${ci}-${qi}`;if(ans[k])return;setAq({ci,qi,k,cat:gc[ci],q:gc[ci].questions[qi]});setSa(false);tm.reset();tm.toggle();setScr("question")};
+const startGame=()=>{
+  const g=pool.filter(c=>sel.includes(c.id));setGc(g);
+  // Assign golden + trap randomly
+  const allKeys=[];g.forEach((c,ci)=>c.questions.forEach((q,qi)=>allKeys.push(`${ci}-${qi}`)));
+  const shuffled=[...allKeys].sort(()=>Math.random()-.5);
+  setGoldenKey(shuffled[0]||null);setTrapKey(shuffled[1]||null);
+  setScr("board");
+};
 
-  const award=(team)=>{
-    const mult=dbl?2:1;const pts=aq.q.pts*mult;
-    if(team===1){setS1(v=>v+pts);setPop(1);setFlash(t1.color.c)}
-    else{setS2(v=>v+pts);setPop(2);setFlash(t2.color.c)}
-    setTimeout(()=>{setPop(0);setFlash(null)},600);
-    fin({team,pts});
-  };
-  const noOne=()=>{fin({team:0,pts:0})};
-  const fin=res=>{tm.stop();const na={...ans,[aq.k]:res};setAns(na);Object.keys(na).length>=gc.length*6?setTimeout(()=>setScr("gameover"),400):setScr("board")};
+const openQ=(ci,qi)=>{const k=`${ci}-${qi}`;if(ans[k])return;setAq({ci,qi,k,cat:gc[ci],q:gc[ci].questions[qi]});setSa(false);setActiveDbl(0);setStealPhase(null);setRandMult(1);tm.reset();tm.toggle();setScr("question")};
 
-  const randomPick=()=>{
-    const open=[];gc.forEach((c,ci)=>c.questions.forEach((q,qi)=>{if(!ans[`${ci}-${qi}`])open.push([ci,qi])}));
-    if(!open.length)return;
-    setRand(true);
-    setTimeout(()=>{setRand(false);const[ci,qi]=open[~~(Math.random()*open.length)];openQ(ci,qi)},1600);
-  };
+const showBonus=(text,color)=>{setBonusMsg({text,color});setTimeout(()=>setBonusMsg(null),2000)};
+const doFlash=(color)=>{setFlash(color);setTimeout(()=>setFlash(null),600)};
 
-  const importJSON=()=>{const inp=document.createElement("input");inp.type="file";inp.accept=".json";inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);const c=d.categories||d;if(Array.isArray(c))setPool(p=>[...p,...c.map((x,i)=>({...x,id:x.id||"i_"+Date.now()+"_"+i}))])}catch{alert("خطأ")}};r.readAsText(f)};inp.click()};
-  const resetAll=()=>{setScr("setup");setStep(0);setT1({name:"",color:COLORS[0],emoji:"⚡"});setT2({name:"",color:COLORS[1],emoji:"🔥"});setSel([]);setGc([]);setAns({});setS1(0);setS2(0);setAq(null);setSa(false);tm.reset();setDbl(false)};
+const calcPts=()=>{
+  let mult=1;
+  if(activeDbl)mult*=2;
+  if(aq.k===goldenKey)mult*=3;
+  if(randMult>1)mult*=randMult;
+  return aq.q.pts*mult;
+};
 
-  // ═══ SETUP ═══
-  if(scr==="setup")return<div className="setup"><div className="orb orb-1"/><div className="orb orb-2"/>
-    <div className="setup-card">
-      <div className="logo"><div className="logo-main"><span className="l-sin">سين</span><span className="l-jim">جيم</span></div></div>
-      <div className="logo-sub">لعبة المعرفة والتحدي</div>
-      <div className="steps"><div className={`pip ${step===0?"on":step>0?"ok":""}`}/><div className={`pip ${step===1?"on":""}`}/></div>
-      {step===0?<div className="fade-s" key="s0">
-        <div className="step-t">⚔️ إعداد الفريقين</div>
-        <div className="t-row">
-          <div className="t-card" style={{borderColor:t1.color.c+"30"}}><div className="t-label">الفريق الأول</div>
-            <div className="t-emoji-btn" style={{borderColor:t1.color.c+"50",background:t1.color.c+"0A"}} onClick={()=>{setE1(!e1);setE2(false)}}>{t1.emoji}</div>
-            {e1&&<div className="emoji-dd">{TEMOJI.map(e=><button key={e} className={`e-opt ${t1.emoji===e?"sel":""}`} onClick={()=>{setT1({...t1,emoji:e});setE1(false)}}>{e}</button>)}</div>}
-            <input className="t-inp" placeholder="اسم الفريق" value={t1.name} onChange={e=>setT1({...t1,name:e.target.value})} style={{borderColor:t1.color.c+"25"}}/>
-            <div className="c-row">{COLORS.map(c=><div key={c.id} className={`c-dot ${t1.color.id===c.id?"sel":""}`} style={{background:c.c,color:c.c}} onClick={()=>setT1({...t1,color:c})}/>)}</div>
-          </div>
-          <div className="vs-p">VS</div>
-          <div className="t-card" style={{borderColor:t2.color.c+"30"}}><div className="t-label">الفريق الثاني</div>
-            <div className="t-emoji-btn" style={{borderColor:t2.color.c+"50",background:t2.color.c+"0A"}} onClick={()=>{setE2(!e2);setE1(false)}}>{t2.emoji}</div>
-            {e2&&<div className="emoji-dd">{TEMOJI.map(e=><button key={e} className={`e-opt ${t2.emoji===e?"sel":""}`} onClick={()=>{setT2({...t2,emoji:e});setE2(false)}}>{e}</button>)}</div>}
-            <input className="t-inp" placeholder="اسم الفريق" value={t2.name} onChange={e=>setT2({...t2,name:e.target.value})} style={{borderColor:t2.color.c+"25"}}/>
-            <div className="c-row">{COLORS.map(c=><div key={c.id} className={`c-dot ${t2.color.id===c.id?"sel":""}`} style={{background:c.c,color:c.c}} onClick={()=>setT2({...t2,color:c})}/>)}</div>
-          </div>
-        </div>
-        <button className="btn btn-gold btn-lg" disabled={!t1.name.trim()||!t2.name.trim()} onClick={()=>setStep(1)}>التالي ← التصنيفات</button>
-      </div>:<div className="fade-s" key="s1">
-        <button className="btn btn-ghost" style={{marginBottom:10,fontSize:12,padding:"5px 12px"}} onClick={()=>setStep(0)}>→ رجوع</button>
-        <div className="step-t">📚 اختر 6 تصنيفات <span style={{fontSize:13,background:"rgba(246,201,14,.08)",color:"var(--gold)",padding:"3px 12px",borderRadius:12,marginRight:8}}>{sel.length}/6</span></div>
-        <div className="cat-tools"><button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={()=>setModal(true)}>➕ إضافة</button><button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={importJSON}>📂 JSON</button></div>
-        <div className="cat-grid">{pool.map(c=>{const s=sel.includes(c.id),f=sel.length>=6&&!s;const tp={regular:null,no_words:"🤫 تمثيل",letters:"🔤 حروف",guess_photo:"🧩 صور"}[c.type];
-          return<button key={c.id} onClick={()=>!f&&togCat(c.id)} className={`cc ${s?"sel":""} ${f?"full":""}`} style={{color:c.color}}>
-            {s&&<div className="cc-chk" style={{background:c.color}}>✓</div>}
-            <span className="cc-ic">{c.icon}</span><span className="cc-nm">{c.name}</span>{tp&&<span className="cc-tp">{tp}</span>}<div className="cc-glow" style={{background:c.color}}/></button>})}</div>
-        <button className="btn btn-gold btn-lg" disabled={sel.length!==6} onClick={startGame}>🎮 ابدأ!</button>
-        {modal&&<CatModal onClose={()=>setModal(false)} onSave={c=>{setPool(p=>[...p,c]);setModal(false)}}/>}
-      </div>}
-    </div>
-  </div>;
+const award=(team)=>{
+  const pts=calcPts();
+  if(team===1){setS1(v=>v+pts);setPop(1)}else{setS2(v=>v+pts);setPop(2)}
+  doFlash(team===1?t1.color.c:t2.color.c);
+  setTimeout(()=>setPop(0),500);
+  if(aq.k===goldenKey)showBonus("🌟 سؤال ذهبي! ×3","#FFD700");
+  if(randMult>1)showBonus(`🎲 مضاعف عشوائي ×${randMult}`,"#C084FC");
+  // Track category domination
+  const csKey=`${aq.ci}-${team}`;const newCS={...catScore,[csKey]:(catScore[csKey]||0)+1};setCatScore(newCS);
+  // Check domination (6 correct in a category)
+  if(newCS[csKey]>=5){setDomBanner(`${team===1?t1.emoji:t2.emoji} ${team===1?t1.name:t2.name} سيطروا على ${gc[aq.ci].name}! +500`);
+    if(team===1)setS1(v=>v+500);else setS2(v=>v+500);setTimeout(()=>setDomBanner(null),3000);}
+  fin({team,pts});
+};
 
-  // ═══ QUESTION ═══
-  if(scr==="question"&&aq){const{cat,q}=aq;const nw=cat.type==="no_words",lt=cat.type==="letters",ph=cat.type==="guess_photo";const mult=dbl?2:1;
-    return<div className="q-ov"><div className="q-modal">
-      <div className="q-hdr" style={{background:`linear-gradient(135deg,${cat.color},${cat.color}CC)`}}>
-        <span>{cat.icon}</span><span>{cat.name}</span>
-        {dbl&&<span className="q-hdr-2x">×2</span>}
-        <span className="q-hdr-pts">{q.pts*mult}</span>
+const wrong=(team)=>{
+  // Trap question — deduct points
+  if(aq.k===trapKey){
+    const ded=aq.q.pts;
+    if(team===1)setS1(v=>Math.max(0,v-ded));else setS2(v=>Math.max(0,v-ded));
+    showBonus(`💣 سؤال فخ! -${ded}`,"#EF4444");doFlash("#EF4444");
+  }
+  // Check if wrong team has shield
+  if(ll[team].shield){
+    // Don't close — let host decide to use shield
+  }
+  // Check if other team can steal
+  const other=team===1?2:1;
+  if(ll[other].steal){
+    setStealPhase({stealingTeam:other,pts:calcPts()});
+    return; // Don't close yet
+  }
+  fin({team:0,pts:0});
+};
+
+const useShield=(team)=>{
+  setLl(p=>({...p,[team]:{...p[team],shield:false}}));
+  showBonus("🛡️ حماية! السؤال مستمر","#10B981");
+  // Reset answer state — question stays open
+  setSa(false);setStealPhase(null);
+};
+
+const doSteal=(success)=>{
+  const st=stealPhase.stealingTeam;
+  setLl(p=>({...p,[st]:{...p[st],steal:false}}));
+  if(success){
+    const pts=stealPhase.pts;
+    if(st===1){setS1(v=>v+pts);setPop(1)}else{setS2(v=>v+pts);setPop(2)}
+    doFlash(st===1?t1.color.c:t2.color.c);
+    showBonus(`🏴 سرقة ناجحة! +${pts}`,"#A855F7");
+    setTimeout(()=>setPop(0),500);
+    const csKey=`${aq.ci}-${st}`;setCatScore(p=>({...p,[csKey]:(p[csKey]||0)+1}));
+    fin({team:st,pts});
+  } else {
+    if(aq.k===trapKey){const ded=aq.q.pts;if(st===1)setS1(v=>Math.max(0,v-ded));else setS2(v=>Math.max(0,v-ded));showBonus(`💣 فخ! -${ded}`,"#EF4444");}
+    fin({team:0,pts:0});
+  }
+};
+
+const noOne=()=>fin({team:0,pts:0});
+const fin=res=>{tm.stop();setActiveDbl(0);setStealPhase(null);const na={...ans,[aq.k]:res};setAns(na);Object.keys(na).length>=gc.length*6?setTimeout(()=>setScr("gameover"),400):setScr("board")};
+
+// Lifeline: Double
+const useDbl=(team)=>{setLl(p=>({...p,[team]:{...p[team],dbl:false}}));setActiveDbl(team);showBonus(`⚡ ${team===1?t1.name:t2.name} — نقاط مضاعفة!`,"#F6C90E")};
+// Lifeline: Switch
+const useSwitch=(team)=>{setLl(p=>({...p,[team]:{...p[team],sw:false}}));
+  const open=[];gc.forEach((c,ci)=>c.questions.forEach((q,qi)=>{const k=`${ci}-${qi}`;if(!ans[k]&&k!==aq.k)open.push([ci,qi])}));
+  if(!open.length)return;const[ci,qi]=open[~~(Math.random()*open.length)];
+  setAq({ci,qi,k:`${ci}-${qi}`,cat:gc[ci],q:gc[ci].questions[qi]});setSa(false);tm.reset();tm.toggle();
+  showBonus("🔄 تبديل السؤال!","#06B6D4");
+};
+
+const randomPick=()=>{const open=[];gc.forEach((c,ci)=>c.questions.forEach((q,qi)=>{if(!ans[`${ci}-${qi}`])open.push([ci,qi])}));if(!open.length)return;
+  setRand(true);const mult=[1,1,1,1.5,1.5,2][~~(Math.random()*6)];
+  setTimeout(()=>{setRand(false);const[ci,qi]=open[~~(Math.random()*open.length)];setRandMult(mult);openQ(ci,qi);if(mult>1)showBonus(`🎲 مضاعف عشوائي! ×${mult}`,"#C084FC")},1600)};
+
+const importJSON=()=>{const inp=document.createElement("input");inp.type="file";inp.accept=".json";inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);const c=d.categories||d;if(Array.isArray(c))setPool(p=>[...p,...c.map((x,i)=>({...x,id:x.id||"i_"+Date.now()+"_"+i}))])}catch{alert("خطأ")}};r.readAsText(f)};inp.click()};
+const resetAll=()=>{setScr("setup");setStep(0);setT1({name:"",color:CLS[0],emoji:"⚡"});setT2({name:"",color:CLS[1],emoji:"🔥"});setSel([]);setGc([]);setAns({});setS1(0);setS2(0);setAq(null);setSa(false);tm.reset();setLl({1:{dbl:true,sw:true,shield:true,steal:true},2:{dbl:true,sw:true,shield:true,steal:true}});setCatScore({})};
+
+// ═══ SETUP ═══
+if(scr==="setup")return<div className="setup"><div className="orb o1"/><div className="orb o2"/>
+<div className="scard"><div className="logo"><div className="logo-m"><span className="ls">سين</span><span className="lj">جيم</span></div></div><div className="lsub">لعبة المعرفة والتحدي</div>
+<div className="steps"><div className={`pip ${step===0?"on":step>0?"ok":""}`}/><div className={`pip ${step===1?"on":""}`}/></div>
+{step===0?<div className="fs" key="s0"><div className="stitle">⚔️ إعداد الفريقين</div>
+<div className="t-row">
+<div className="tc" style={{borderColor:t1.color.c+"30"}}><div className="tlbl">الفريق الأول</div><div className="teb" style={{borderColor:t1.color.c+"50"}} onClick={()=>{setE1(!e1);setE2(false)}}>{t1.emoji}</div>{e1&&<div className="edd">{TEM.map(e=><button key={e} className={`eo ${t1.emoji===e?"sel":""}`} onClick={()=>{setT1({...t1,emoji:e});setE1(false)}}>{e}</button>)}</div>}<input className="tinp" placeholder="اسم الفريق" value={t1.name} onChange={e=>setT1({...t1,name:e.target.value})} style={{borderColor:t1.color.c+"25"}}/><div className="crow">{CLS.map(c=><div key={c.id} className={`cdot ${t1.color.id===c.id?"sel":""}`} style={{background:c.c,color:c.c}} onClick={()=>setT1({...t1,color:c})}/>)}</div></div>
+<div className="vsp">VS</div>
+<div className="tc" style={{borderColor:t2.color.c+"30"}}><div className="tlbl">الفريق الثاني</div><div className="teb" style={{borderColor:t2.color.c+"50"}} onClick={()=>{setE2(!e2);setE1(false)}}>{t2.emoji}</div>{e2&&<div className="edd">{TEM.map(e=><button key={e} className={`eo ${t2.emoji===e?"sel":""}`} onClick={()=>{setT2({...t2,emoji:e});setE2(false)}}>{e}</button>)}</div>}<input className="tinp" placeholder="اسم الفريق" value={t2.name} onChange={e=>setT2({...t2,name:e.target.value})} style={{borderColor:t2.color.c+"25"}}/><div className="crow">{CLS.map(c=><div key={c.id} className={`cdot ${t2.color.id===c.id?"sel":""}`} style={{background:c.c,color:c.c}} onClick={()=>setT2({...t2,color:c})}/>)}</div></div></div>
+<button className="btn btn-gold btn-lg" disabled={!t1.name.trim()||!t2.name.trim()} onClick={()=>setStep(1)}>التالي ← التصنيفات</button>
+</div>:<div className="fs" key="s1">
+<button className="btn btn-ghost" style={{marginBottom:10,fontSize:12,padding:"5px 12px"}} onClick={()=>setStep(0)}>→ رجوع</button>
+<div className="stitle">📚 اختر 6 تصنيفات <span style={{fontSize:13,background:"rgba(246,201,14,.08)",color:"var(--gold)",padding:"3px 12px",borderRadius:12,marginRight:8}}>{sel.length}/6</span></div>
+<div className="ctls"><button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={()=>setModal(true)}>➕ إضافة</button><button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={importJSON}>📂 JSON</button></div>
+<div className="cg">{pool.map(c=>{const s=sel.includes(c.id),f=sel.length>=6&&!s;const tp={regular:null,no_words:"🤫",letters:"🔤",guess_photo:"🧩"}[c.type];
+return<button key={c.id} onClick={()=>!f&&togCat(c.id)} className={`cc ${s?"sel":""} ${f?"full":""}`} style={{color:c.color}}>{s&&<div className="cck" style={{background:c.color}}>✓</div>}<span className="cci">{c.icon}</span><span className="ccn">{c.name}</span>{tp&&<span className="cct">{tp}</span>}<div className="ccg" style={{background:c.color}}/></button>})}</div>
+<button className="btn btn-gold btn-lg" disabled={sel.length!==6} onClick={startGame}>🎮 ابدأ!</button>
+{modal&&<CatModal onClose={()=>setModal(false)} onSave={c=>{setPool(p=>[...p,c]);setModal(false)}}/>}
+</div>}</div></div>;
+
+// ═══ QUESTION ═══
+if(scr==="question"&&aq){const{cat,q}=aq;const nw=cat.type==="no_words",lt=cat.type==="letters",ph=cat.type==="guess_photo";const isGolden=aq.k===goldenKey;const isTrap=aq.k===trapKey;const pts=calcPts();
+return<div className="qov"><div className="qmod">
+<div className="qhdr" style={{background:`linear-gradient(135deg,${cat.color},${cat.color}CC)`}}>
+  <span>{cat.icon}</span><span>{cat.name}</span>
+  {isGolden&&<span className="qh-special qh-gold">🌟 ذهبي ×3</span>}
+  {isTrap&&<span className="qh-special qh-trap">💣 فخ</span>}
+  {activeDbl>0&&<span className="qh-special qh-gold">⚡ ×2</span>}
+  {randMult>1&&<span className="qh-special qh-gold">🎲 ×{randMult}</span>}
+  <span className="qhpts">{pts}</span>
+</div>
+<div className="qbdy">
+  {/* Lifelines before answer */}
+  {!sa&&<div className="q-llbar">
+    {ll[1].dbl&&<button className={`q-llbtn ${activeDbl===1?"active":""}`} onClick={()=>useDbl(1)}>⚡ مضاعفة — {t1.emoji}{t1.name}</button>}
+    {ll[2].dbl&&<button className={`q-llbtn ${activeDbl===2?"active":""}`} onClick={()=>useDbl(2)}>⚡ مضاعفة — {t2.emoji}{t2.name}</button>}
+    {ll[1].sw&&<button className="q-llbtn" onClick={()=>useSwitch(1)}>🔄 تبديل — {t1.emoji}</button>}
+    {ll[2].sw&&<button className="q-llbtn" onClick={()=>useSwitch(2)}>🔄 تبديل — {t2.emoji}</button>}
+  </div>}
+
+  <div className="tmr"><button className="tb" onClick={tm.toggle}>{tm.on?"⏸":"▶"}</button><div className={`tv ${tm.on?"on":""}`}>{tm.fmt}</div><button className="tb" onClick={tm.reset}>↻</button></div>
+
+  {nw&&!sa&&<div className="nws"><img className="nwi" src={`images/${q.image}`} alt={q.image} onError={e=>{e.target.style.background="#111";e.target.alt=q.image}}/><div className="nwn">🤫 يشرح بلا كلام!</div></div>}
+  {ph&&!sa&&<div className="phs"><img className="phi" src={`images/${q.image}`} alt={q.image} onError={e=>{e.target.style.background="#111";e.target.alt=q.image}}/></div>}
+  {lt&&<><div className="lta"><span className="ltl">يبدأ بحرف</span><div className="ltb">{q.letter}</div></div><p className="qtxt">{q.q}</p></>}
+  {!nw&&!lt&&!ph&&<p className="qtxt">{q.q}</p>}
+
+  {!sa?<button className="btn btn-gold" style={{fontSize:19,padding:"15px 40px"}} onClick={()=>{setSa(true);tm.stop()}}>🔍 كشف الإجابة</button>
+  :<div className="answ">
+    <div className="ansc"><div className="ansl">الإجابة</div><p className="ansv">{q.a}</p></div>
+    <div className="anst">⏱️ {tm.fmt}{isGolden?" • 🌟 ذهبي":""}{isTrap?" • 💣 فخ":""}</div>
+
+    {!stealPhase?<>
+      <div className="tbtns">
+        <button className="btn-aw" style={{background:`linear-gradient(135deg,${t1.color.c},${t1.color.l})`}} onClick={()=>award(1)}>✓ {t1.emoji} {t1.name}</button>
+        <button className="btn-aw" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.l})`}} onClick={()=>award(2)}>✓ {t2.emoji} {t2.name}</button>
       </div>
-      <div className="q-body">
-        <div className="tmr"><button className="tmr-b" onClick={tm.toggle}>{tm.on?"⏸":"▶"}</button><div className={`tmr-v ${tm.on?"on":""}`}>{tm.fmt}</div><button className="tmr-b" onClick={tm.reset}>↻</button></div>
-        {nw&&!sa&&<div className="nw-show"><img className="nw-img" src={`images/${q.image}`} alt="" onError={e=>{e.target.style.background="#111";e.target.style.padding="40px";e.target.alt=q.image}}/><div className="nw-note">🤫 اعرض للاعب — يشرح بلا كلام!</div></div>}
-        {ph&&!sa&&<div className="ph-show"><img className="ph-img" src={`images/${q.image}`} alt="" onError={e=>{e.target.style.background="#111";e.target.style.padding="40px";e.target.alt=q.image}}/></div>}
-        {lt&&<><div className="lt-area"><span className="lt-lbl">يبدأ بحرف</span><div className="lt-badge">{q.letter}</div></div><p className="q-text">{q.q}</p></>}
-        {!nw&&!lt&&!ph&&<p className="q-text">{q.q}</p>}
-        {!sa?<button className="btn btn-gold" style={{fontSize:19,padding:"15px 40px"}} onClick={()=>{setSa(true);tm.stop()}}>🔍 كشف الإجابة</button>
-        :<div className="ans-w"><div className="ans-card"><div className="ans-lbl">الإجابة</div><p className="ans-val">{q.a}</p></div>
-          <div className="ans-time">⏱️ {tm.fmt}{dbl?" • نقاط مضاعفة ×2":""}</div>
-          <div className="team-btns">
-            <button className="btn-award" style={{background:`linear-gradient(135deg,${t1.color.c},${t1.color.l})`}} onClick={()=>award(1)}>✓ {t1.emoji} {t1.name}</button>
-            <button className="btn-award" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.l})`}} onClick={()=>award(2)}>✓ {t2.emoji} {t2.name}</button>
-            <button className="btn btn-nobody" onClick={noOne}>لا أحد</button>
-          </div></div>}
+      <div className="tbtns" style={{marginTop:8}}>
+        <button className="btn-wr" style={{background:`${t1.color.c}30`,border:`1px solid ${t1.color.c}40`}} onClick={()=>wrong(1)}>✗ {t1.emoji} خطأ</button>
+        <button className="btn-wr" style={{background:`${t2.color.c}30`,border:`1px solid ${t2.color.c}40`}} onClick={()=>wrong(2)}>✗ {t2.emoji} خطأ</button>
+        <button className="btn btn-no" onClick={noOne}>لا أحد</button>
       </div>
-    </div></div>;}
-
-  // ═══ GAMEOVER ═══
-  if(scr==="gameover"){const w=s1>s2?1:s2>s1?2:0;const wt=w===1?t1:w===2?t2:null;
-    return<div className="go-w">{w!==0&&<Confetti/>}<div className="go-card">
-      <div className="go-trophy">{wt?wt.emoji:"🤝"}</div>
-      <h1 className="go-title" style={wt?{background:`linear-gradient(135deg,${wt.color.c},${wt.color.l})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}:{color:"var(--gold)"}}>{w===1?`${t1.name} فازوا!`:w===2?`${t2.name} فازوا!`:"تعادل!"}</h1>
-      <div className="go-sub">{wt?`بفارق ${Math.abs(s1-s2)} نقطة`:"متساوية!"}</div>
-      <div className="go-scores"><div className="go-team"><div className="go-e">{t1.emoji}</div><div className="go-n" style={{color:t1.color.c}}>{t1.name}</div><div className="go-s" style={{color:t1.color.c}}>{s1}</div></div><div className="go-vs">—</div><div className="go-team"><div className="go-e">{t2.emoji}</div><div className="go-n" style={{color:t2.color.c}}>{t2.name}</div><div className="go-s" style={{color:t2.color.c}}>{s2}</div></div></div>
-      <button className="btn btn-gold btn-lg" style={{maxWidth:360,margin:"0 auto"}} onClick={resetAll}>🔄 لعبة جديدة</button>
-    </div></div>;}
-
-  // ═══ BOARD ═══
-  const rows=[[0,1],[2,3],[4,5]];const anN=Object.keys(ans).length;const totQ=gc.length*6;
-  const cStyle=(ci,qi)=>{const k=`${ci}-${qi}`;const a=ans[k];if(!a)return{};const tc=a.team===1?t1.color:a.team===2?t2.color:null;return tc?{}:{}};
-  const cBg=(ci,qi)=>{const k=`${ci}-${qi}`;const a=ans[k];if(!a)return null;const tc=a.team===1?t1.color.c:a.team===2?t2.color.c:null;if(tc)return`linear-gradient(135deg,${tc}20,${tc}08)`;return"rgba(255,255,255,.015)"};
-  const cPts=(ci,qi)=>{const k=`${ci}-${qi}`;const a=ans[k];if(!a)return{cls:"gold",sty:{}};const tc=a.team===1?t1.color.l:a.team===2?t2.color.l:"rgba(255,255,255,.08)";return{cls:"team",sty:{color:tc}}};
-
-  return<div className="board">
-    <div className="board-bg"/>
-    {flash&&<div className="flash-overlay" key={Date.now()} style={{background:flash}}/>}
-    {rand&&<div className="rand-ov"><div className="rand-spin">🎲</div></div>}
-
-    <div className="board-hdr">
-      <div className="b-logo"><span className="bs">سين</span> <span className="bj">جيم</span></div>
-      <div style={{flex:1}}/>
-      <div className="board-actions">
-        <button className="action-btn ab-random" onClick={randomPick}>🎲 عشوائي</button>
-        <button className={`action-btn ab-double ${dbl?"active":""}`} onClick={()=>setDbl(!dbl)}>{dbl?"⚡ ×2 مفعّل":"⚡ مضاعفة"}</button>
-        <button className="action-btn ab-end" onClick={()=>setScr("gameover")}>🏁</button>
+      {/* Shield buttons */}
+      <div className="tbtns" style={{marginTop:8}}>
+        {ll[1].shield&&<button className="q-llbtn" onClick={()=>useShield(1)}>🛡️ حماية — {t1.emoji}</button>}
+        {ll[2].shield&&<button className="q-llbtn" onClick={()=>useShield(2)}>🛡️ حماية — {t2.emoji}</button>}
       </div>
-    </div>
-    <div className="progress"><div className="progress-bar" style={{width:`${totQ?(anN/totQ)*100:0}%`}}/></div>
+    </>
+    :<div className="steal-box">
+      <div className="steal-title">🏴 {stealPhase.stealingTeam===1?t1.name:t2.name} — فرصة سرقة!</div>
+      <div className="steal-btns">
+        <button className="btn-aw" style={{background:`linear-gradient(135deg,${stealPhase.stealingTeam===1?t1.color.c:t2.color.c},${stealPhase.stealingTeam===1?t1.color.l:t2.color.l})`}} onClick={()=>doSteal(true)}>✓ صحيحة!</button>
+        <button className="btn btn-ghost" onClick={()=>doSteal(false)}>✗ خاطئة</button>
+        <button className="btn btn-no" onClick={()=>{setStealPhase(null);fin({team:0,pts:0})}}>تخطي</button>
+      </div>
+    </div>}
+  </div>}
+</div></div></div>;}
 
-    <div className="b-grid">
-      {gc.map((cat,ci)=><div key={cat.id} className="cat-blk" style={{animationDelay:`${ci*.07}s`,"--cc":cat.color}}>
-        <style>{`
-          .cat-blk:nth-child(${ci+1})::before{background:linear-gradient(90deg,transparent,${cat.color},transparent)}
-          .cat-blk:nth-child(${ci+1})::after{background:${cat.color}}
-          .cat-blk:nth-child(${ci+1}) .blk-c-ring{border-color:${cat.color}30}
-          .cat-blk:nth-child(${ci+1}) .blk-c-ring::after{border:2px solid ${cat.color}20}
-          .cat-blk:nth-child(${ci+1}) .qcell::after{background:linear-gradient(90deg,transparent,${cat.color},transparent)!important}
-          .cat-blk:nth-child(${ci+1}) .qcell:not(.done):hover{border-color:${cat.color}25;box-shadow:0 6px 24px ${cat.color}0A,inset 0 1px 0 ${cat.color}08}
-        `}</style>
+// ═══ GAMEOVER ═══
+if(scr==="gameover"){const w=s1>s2?1:s2>s1?2:0;const wt=w===1?t1:w===2?t2:null;
+return<div className="gow">{w!==0&&<Confetti/>}<div className="goc">
+<div className="got">{wt?wt.emoji:"🤝"}</div>
+<h1 className="goti" style={wt?{background:`linear-gradient(135deg,${wt.color.c},${wt.color.l})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}:{color:"var(--gold)"}}>{w===1?`${t1.name} فازوا!`:w===2?`${t2.name} فازوا!`:"تعادل!"}</h1>
+<div className="gosub">{wt?`بفارق ${Math.abs(s1-s2)} نقطة`:"متساوية!"}</div>
+<div className="gosc"><div className="goteam"><div className="goe">{t1.emoji}</div><div className="gon" style={{color:t1.color.c}}>{t1.name}</div><div className="gos" style={{color:t1.color.c}}>{s1}</div></div><div className="govs">—</div><div className="goteam"><div className="goe">{t2.emoji}</div><div className="gon" style={{color:t2.color.c}}>{t2.name}</div><div className="gos" style={{color:t2.color.c}}>{s2}</div></div></div>
+<button className="btn btn-gold btn-lg" style={{maxWidth:360,margin:"0 auto"}} onClick={resetAll}>🔄 لعبة جديدة</button></div></div>;}
 
-        {rows.map(([li],ri)=>{const k=`${ci}-${li}`;const d=!!ans[k];const cp=cPts(ci,li);const bg=cBg(ci,li);const pts=cat.questions[li].pts;
-          return<button key={`l${ri}`} className={`qcell tier-${pts} ${d?"done":""}`} style={{gridColumn:1,gridRow:ri+1}} onClick={()=>openQ(ci,li)} disabled={d}>
-            <div className="qcell-bg" style={{background:bg||"transparent"}}/>
-            {dbl&&!d&&<span className="double-badge">×2</span>}
-            <span className={`qcell-v ${cp.cls}`} style={cp.sty}>{pts}</span>
-          </button>})}
+// ═══ BOARD ═══
+const rows=[[0,1],[2,3],[4,5]];const anN=Object.keys(ans).length;const totQ=gc.length*6;
+const cBg=(ci,qi)=>{const k=`${ci}-${qi}`;const a=ans[k];if(!a)return null;const tc=a.team===1?t1.color.c:a.team===2?t2.color.c:null;return tc?`linear-gradient(135deg,${tc}20,${tc}08)`:"rgba(255,255,255,.015)"};
+const cPts=(ci,qi)=>{const k=`${ci}-${qi}`;const a=ans[k];if(!a)return{cls:"gld",sty:{}};const tc=a.team===1?t1.color.l:a.team===2?t2.color.l:"rgba(255,255,255,.08)";return{cls:"tm",sty:{color:tc}}};
+const tier=p=>p<=200?"t2":p<=400?"t4":"t6";
+const isSpecial=(ci,qi)=>{const k=`${ci}-${qi}`;if(k===goldenKey&&!ans[k])return"golden";if(k===trapKey&&!ans[k])return"trap";return""};
 
-        <div className="blk-c" style={{background:cat.color+"06"}}>
-          <div className="blk-c-ring" style={{background:cat.color+"0A"}}>{cat.icon}</div>
-          <span className="blk-c-nm">{cat.name}</span>
-          {cat.type!=="regular"&&<span className="blk-c-tp">{{no_words:"تمثيل",letters:"حروف",guess_photo:"صور"}[cat.type]}</span>}
-        </div>
+return<div className="board"><div className="bbg"/>
+{flash&&<div className="flash-ov" key={Date.now()} style={{background:flash}}/>}
+{bonusMsg&&<div className="bonus-pop" key={bonusMsg.text} style={{color:bonusMsg.color}}>{bonusMsg.text}</div>}
+{domBanner&&<div className="dom-banner">{domBanner}</div>}
+{rand&&<div className="rand-ov"><div className="rand-spin">🎲</div></div>}
 
-        {rows.map(([,ri2],ri)=>{const k=`${ci}-${ri2}`;const d=!!ans[k];const cp=cPts(ci,ri2);const bg=cBg(ci,ri2);const pts=cat.questions[ri2].pts;
-          return<button key={`r${ri}`} className={`qcell tier-${pts} ${d?"done":""}`} style={{gridColumn:3,gridRow:ri+1}} onClick={()=>openQ(ci,ri2)} disabled={d}>
-            <div className="qcell-bg" style={{background:bg||"transparent"}}/>
-            {dbl&&!d&&<span className="double-badge">×2</span>}
-            <span className={`qcell-v ${cp.cls}`} style={cp.sty}>{pts}</span>
-          </button>})}
-      </div>)}
-    </div>
+<div className="bhdr"><div className="blogo"><span className="bs">سين</span> <span className="bj">جيم</span></div><div style={{flex:1}}/><div className="bacts">
+  <button className="abtn ab-r" onClick={randomPick}>🎲 عشوائي</button>
+  <button className="abtn ab-e" onClick={()=>setScr("gameover")}>🏁</button>
+</div></div>
+<div className="prog"><div className="pbar" style={{width:`${totQ?(anN/totQ)*100:0}%`}}/></div>
 
-    <div className="scoreboard">
-      <div className="sc-card" style={{borderColor:t1.color.c+"40",background:t1.color.c+"06"}}><div className="sc-card" style={{position:"absolute",inset:0,background:t1.color.c,opacity:.03,borderRadius:"inherit"}}/><div className="sc-e">{t1.emoji}</div><div className="sc-i"><div className="sc-n">{t1.name}</div><div className={`sc-v ${pop===1?"pop":""}`} style={{color:t1.color.c}}>{s1}</div></div></div>
-      <div className="sc-mid">VS</div>
-      <div className="sc-card" style={{borderColor:t2.color.c+"40",background:t2.color.c+"06"}}><div style={{position:"absolute",inset:0,background:t2.color.c,opacity:.03,borderRadius:"inherit"}}/><div className="sc-e">{t2.emoji}</div><div className="sc-i"><div className="sc-n">{t2.name}</div><div className={`sc-v ${pop===2?"pop":""}`} style={{color:t2.color.c}}>{s2}</div></div></div>
-    </div>
-  </div>;
-}
+<div className="bgrd">{gc.map((cat,ci)=><div key={cat.id} className="cblk" style={{animationDelay:`${ci*.07}s`}}>
+  <style>{`.cblk:nth-child(${ci+1})::before{background:linear-gradient(90deg,transparent,${cat.color},transparent)}.cblk:nth-child(${ci+1}) .qc::after{background:linear-gradient(90deg,transparent,${cat.color},transparent)!important}.cblk:nth-child(${ci+1}) .qc:not(.done):hover{border-color:${cat.color}20}`}</style>
+
+  {rows.map(([li],ri)=>{const k=`${ci}-${li}`;const d=!!ans[k];const cp=cPts(ci,li);const bg=cBg(ci,li);const pts=cat.questions[li].pts;const sp=isSpecial(ci,li);
+    return<button key={`l${ri}`} className={`qc ${tier(pts)} ${d?"done":""} ${sp}`} style={{gridColumn:1,gridRow:ri+1}} onClick={()=>openQ(ci,li)} disabled={d}>
+      <div className="qbg" style={{background:bg||"transparent"}}/>
+      {sp==="golden"&&!d&&<span className="qbadge qb-gold">🌟</span>}
+      {sp==="trap"&&!d&&<span className="qbadge qb-trap">💣</span>}
+      <span className={`qv ${cp.cls}`} style={cp.sty}>{pts}</span>
+    </button>})}
+
+  <div className="bmid" style={{background:cat.color+"06"}}><div className="bm-ring" style={{borderColor:cat.color+"30",background:cat.color+"0A"}}>{cat.icon}</div><span className="bm-nm">{cat.name}</span>{cat.type!=="regular"&&<span className="bm-tp">{{no_words:"تمثيل",letters:"حروف",guess_photo:"صور"}[cat.type]}</span>}</div>
+
+  {rows.map(([,ri2],ri)=>{const k=`${ci}-${ri2}`;const d=!!ans[k];const cp=cPts(ci,ri2);const bg=cBg(ci,ri2);const pts=cat.questions[ri2].pts;const sp=isSpecial(ci,ri2);
+    return<button key={`r${ri}`} className={`qc ${tier(pts)} ${d?"done":""} ${sp}`} style={{gridColumn:3,gridRow:ri+1}} onClick={()=>openQ(ci,ri2)} disabled={d}>
+      <div className="qbg" style={{background:bg||"transparent"}}/>
+      {sp==="golden"&&!d&&<span className="qbadge qb-gold">🌟</span>}
+      {sp==="trap"&&!d&&<span className="qbadge qb-trap">💣</span>}
+      <span className={`qv ${cp.cls}`} style={cp.sty}>{pts}</span>
+    </button>})}
+</div>)}</div>
+
+<div className="scb">
+  <div className="scc" style={{borderColor:t1.color.c+"40",background:t1.color.c+"06",border:`1.5px solid ${t1.color.c}40`}}>
+    <div className="sce">{t1.emoji}</div><div className="sci"><div className="scn">{t1.name}</div><div className={`scv ${pop===1?"pop":""}`} style={{color:t1.color.c}}>{s1}</div>
+    <div className="llrow">
+      {ll[1].dbl&&<span className="llbtn">⚡</span>}{ll[1].sw&&<span className="llbtn">🔄</span>}{ll[1].shield&&<span className="llbtn">🛡️</span>}{ll[1].steal&&<span className="llbtn">🏴</span>}
+      {!ll[1].dbl&&<span className="llbtn used">⚡</span>}{!ll[1].sw&&<span className="llbtn used">🔄</span>}{!ll[1].shield&&<span className="llbtn used">🛡️</span>}{!ll[1].steal&&<span className="llbtn used">🏴</span>}
+    </div></div>
+  </div>
+  <div className="scm">VS</div>
+  <div className="scc" style={{borderColor:t2.color.c+"40",background:t2.color.c+"06",border:`1.5px solid ${t2.color.c}40`}}>
+    <div className="sce">{t2.emoji}</div><div className="sci"><div className="scn">{t2.name}</div><div className={`scv ${pop===2?"pop":""}`} style={{color:t2.color.c}}>{s2}</div>
+    <div className="llrow">
+      {ll[2].dbl&&<span className="llbtn">⚡</span>}{ll[2].sw&&<span className="llbtn">🔄</span>}{ll[2].shield&&<span className="llbtn">🛡️</span>}{ll[2].steal&&<span className="llbtn">🏴</span>}
+      {!ll[2].dbl&&<span className="llbtn used">⚡</span>}{!ll[2].sw&&<span className="llbtn used">🔄</span>}{!ll[2].shield&&<span className="llbtn used">🛡️</span>}{!ll[2].steal&&<span className="llbtn used">🏴</span>}
+    </div></div>
+  </div>
+</div></div>;}
+
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
 </body>
