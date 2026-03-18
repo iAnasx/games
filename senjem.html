@@ -78,6 +78,18 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .cct{font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);z-index:1}
 .cck{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;z-index:2}
 .ccg{position:absolute;bottom:-20px;width:80px;height:40px;border-radius:50%;filter:blur(20px);opacity:0;transition:opacity .3s}.cc.sel .ccg{opacity:.3}
+.cc-del{position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;background:rgba(239,68,68,.12);color:#EF4444;z-index:3;opacity:0;transition:all .2s;border:1px solid rgba(239,68,68,.15)}
+.cc:hover .cc-del{opacity:1}.cc-del:hover{background:rgba(239,68,68,.3);transform:scale(1.15)}
+.cc-cnt{font-size:8px;color:rgba(255,255,255,.2);font-weight:600;z-index:1}
+
+/* Host panel */
+.host-panel{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:300;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .15s}
+.host-card{width:100%;max-width:500px;max-height:80vh;overflow-y:auto;background:#0E1228;border:1px solid rgba(255,255,255,.05);border-radius:var(--rl);padding:28px;animation:scaleIn .3s var(--eb)}
+.host-title{font-family:var(--fd);font-size:18px;font-weight:600;margin-bottom:16px;text-align:center}
+.host-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:var(--r);background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.03);margin-bottom:6px;font-size:13px;font-weight:600}
+.host-row-label{display:flex;align-items:center;gap:8px}
+.host-actions{display:flex;gap:6px}
+.host-sm-btn{font-size:11px;padding:4px 10px;border-radius:6px;font-weight:700;transition:all .15s}
 
 /* ═══ BOARD ═══ */
 .board{min-height:100vh;display:flex;flex-direction:column;position:relative;padding:0 14px 14px;background:#04060F}
@@ -302,7 +314,7 @@ return<div className="mbg" onClick={e=>e.target===e.currentTarget&&onClose()}><d
 function App(){
 const[scr,setScr]=useState("setup");const[step,setStep]=useState(0);
 const[t1,setT1]=useState({name:"",color:CLS[0],emoji:"⚡"});const[t2,setT2]=useState({name:"",color:CLS[1],emoji:"🔥"});
-const[pool,setPool]=useState(CATS);const[sel,setSel]=useState([]);const[modal,setModal]=useState(false);
+const[pool,setPool]=useState(CATS);const[sel,setSel]=useState([]);const[modal,setModal]=useState(false);const[hostPanel,setHostPanel]=useState(false);
 const[gc,setGc]=useState([]);const[ans,setAns]=useState({});
 const[s1,setS1]=useState(0);const[s2,setS2]=useState(0);const[pop,setPop]=useState(0);
 const[aq,setAq]=useState(null);const[sa,setSa]=useState(false);
@@ -324,7 +336,18 @@ const[catScore,setCatScore]=useState({}); // {`${ci}-${team}`: count}
 const togCat=id=>setSel(p=>{if(p.includes(id))return p.filter(c=>c!==id);return p.length>=6?p:[...p,id]});
 
 const startGame=()=>{
-  const g=pool.filter(c=>sel.includes(c.id));setGc(g);
+  const g=pool.filter(c=>sel.includes(c.id)).map(cat=>{
+    const qs=cat.questions;
+    // If exactly 6 already, use as-is
+    if(qs.length<=6)return cat;
+    // Randomly pick 2×200 + 2×400 + 2×600 from the pool
+    const pick=(arr,n)=>{const s=[...arr].sort(()=>Math.random()-.5);return s.slice(0,n)};
+    const q200=pick(qs.filter(q=>q.pts===200),2);
+    const q400=pick(qs.filter(q=>q.pts===400),2);
+    const q600=pick(qs.filter(q=>q.pts===600),2);
+    return{...cat,questions:[...q200,...q400,...q600]};
+  });
+  setGc(g);
   // Assign golden + trap randomly
   const allKeys=[];g.forEach((c,ci)=>c.questions.forEach((q,qi)=>allKeys.push(`${ci}-${qi}`)));
   const shuffled=[...allKeys].sort(()=>Math.random()-.5);
@@ -386,7 +409,24 @@ const randomPick=()=>{const open=[];gc.forEach((c,ci)=>c.questions.forEach((q,qi
   setRand(true);const mult=[1,1,1,1.5,1.5,2][~~(Math.random()*6)];
   setTimeout(()=>{setRand(false);const[ci,qi]=open[~~(Math.random()*open.length)];setRandMult(mult);openQ(ci,qi);if(mult>1)showBonus(`🎲 مضاعف عشوائي! ×${mult}`,"#C084FC")},1600)};
 
-const importJSON=()=>{const inp=document.createElement("input");inp.type="file";inp.accept=".json";inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);const c=d.categories||d;if(Array.isArray(c))setPool(p=>[...p,...c.map((x,i)=>({...x,id:x.id||"i_"+Date.now()+"_"+i}))])}catch{alert("خطأ")}};r.readAsText(f)};inp.click()};
+const importJSON=()=>{const inp=document.createElement("input");inp.type="file";inp.accept=".json";inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{
+  const d=JSON.parse(ev.target.result);const cats=d.categories||d;
+  if(!Array.isArray(cats)){alert("صيغة غير صحيحة");return}
+  let added=0,skipped=0,dupes=[];
+  const newPool=[...pool];
+  cats.forEach((c,i)=>{
+    const cid=c.id||"i_"+Date.now()+"_"+i;
+    const existsId=newPool.find(p=>p.id===cid);
+    const existsName=newPool.find(p=>p.name===c.name);
+    if(existsId||existsName){skipped++;dupes.push(c.name);return}
+    newPool.push({...c,id:cid});added++;
+  });
+  setPool(newPool);
+  let msg=`✅ تم استيراد ${added} تصنيف`;
+  if(skipped)msg+=`\n⚠️ تم تخطي ${skipped} تصنيف مكرر:\n${[...new Set(dupes)].join("، ")}`;
+  alert(msg);
+}catch{alert("خطأ في قراءة الملف")}};r.readAsText(f)};inp.click()};
+const delCat=(id)=>{setSel(p=>p.filter(c=>c!==id));setPool(p=>p.filter(c=>c.id!==id))};
 const resetAll=()=>{setScr("setup");setStep(0);setT1({name:"",color:CLS[0],emoji:"⚡"});setT2({name:"",color:CLS[1],emoji:"🔥"});setSel([]);setGc([]);setAns({});setS1(0);setS2(0);setAq(null);setSa(false);tm.reset();setLl({1:{dbl:true,sw:true,shield:true,steal:true},2:{dbl:true,sw:true,shield:true,steal:true}});setCatScore({})};
 
 // ═══ SETUP ═══
@@ -402,9 +442,21 @@ if(scr==="setup")return<div className="setup"><div className="orb o1"/><div clas
 </div>:<div className="fs" key="s1">
 <button className="btn btn-ghost" style={{marginBottom:10,fontSize:12,padding:"5px 12px"}} onClick={()=>setStep(0)}>→ رجوع</button>
 <div className="stitle">📚 اختر 6 تصنيفات <span style={{fontSize:13,background:"rgba(246,201,14,.08)",color:"var(--gold)",padding:"3px 12px",borderRadius:12,marginRight:8}}>{sel.length}/6</span></div>
-<div className="ctls"><button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={()=>setModal(true)}>➕ إضافة</button><button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={importJSON}>📂 JSON</button></div>
-<div className="cg">{pool.map(c=>{const s=sel.includes(c.id),f=sel.length>=6&&!s;const tp={regular:null,no_words:"🤫",letters:"🔤",guess_photo:"🧩"}[c.type];
-return<button key={c.id} onClick={()=>!f&&togCat(c.id)} className={`cc ${s?"sel":""} ${f?"full":""}`} style={{color:c.color}}>{s&&<div className="cck" style={{background:c.color}}>✓</div>}<span className="cci">{c.icon}</span><span className="ccn">{c.name}</span>{tp&&<span className="cct">{tp}</span>}<div className="ccg" style={{background:c.color}}/></button>})}</div>
+<div className="ctls">
+  <button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={()=>setModal(true)}>➕ إضافة</button>
+  <button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={importJSON}>📂 استيراد JSON</button>
+  <button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px",color:"rgba(239,68,68,.5)",borderColor:"rgba(239,68,68,.15)"}} onClick={()=>{if(confirm("حذف كل التصنيفات المستوردة؟")){setPool(CATS);setSel([])}}}>🗑️ مسح المستورد</button>
+  <span style={{fontSize:11,color:"var(--dim)"}}>{pool.length} تصنيف</span>
+</div>
+<div className="cg">{pool.map(c=>{const s=sel.includes(c.id),f=sel.length>=6&&!s;const tp={regular:null,no_words:"🤫",letters:"🔤",guess_photo:"🧩"}[c.type];const qn=c.questions?c.questions.length:0;const isBuiltin=CATS.some(b=>b.id===c.id);
+return<button key={c.id} onClick={()=>!f&&togCat(c.id)} className={`cc ${s?"sel":""} ${f?"full":""}`} style={{color:c.color}}>
+  {!isBuiltin&&<div className="cc-del" onClick={e=>{e.stopPropagation();delCat(c.id)}} title="حذف">✕</div>}
+  {s&&<div className="cck" style={{background:c.color}}>✓</div>}
+  <span className="cci">{c.icon}</span><span className="ccn">{c.name}</span>
+  {tp&&<span className="cct">{tp}</span>}
+  {qn>6&&<span className="cc-cnt">{qn} سؤال</span>}
+  <div className="ccg" style={{background:c.color}}/>
+</button>})}</div>
 <button className="btn btn-gold btn-lg" disabled={sel.length!==6} onClick={startGame}>🎮 ابدأ!</button>
 {modal&&<CatModal onClose={()=>setModal(false)} onSave={c=>{setPool(p=>[...p,c]);setModal(false)}}/>}
 </div>}</div></div>;
@@ -491,6 +543,7 @@ return<div className="board"><div className="bbg"/>
 
 <div className="bhdr"><div className="blogo"><span className="bs">سين</span> <span className="bj">جيم</span></div><div style={{flex:1}}/><div className="bacts">
   <button className="abtn ab-r" onClick={randomPick}>🎲 عشوائي</button>
+  <button className="abtn" style={{background:"rgba(246,201,14,.1)",color:"var(--gold)",border:"1px solid rgba(246,201,14,.2)"}} onClick={()=>setHostPanel(true)}>⚙️ تحكم</button>
   <button className="abtn ab-e" onClick={()=>setScr("gameover")}>🏁</button>
 </div></div>
 <div className="prog"><div className="pbar" style={{width:`${totQ?(anN/totQ)*100:0}%`}}/></div>
@@ -549,7 +602,69 @@ return<div className="board"><div className="bbg"/>
       <div className={`ll-chip ll-tip ${ll[2].steal?"avail":"used"}`} data-tip="سرقة السؤال إذا أخطأ الفريق الآخر"><span className="ll-icon">🏴</span><span className="ll-label">سرقة</span></div>
     </div>
   </div>
-</div></div>;}
+</div>
+
+{/* ═══ HOST CONTROL PANEL ═══ */}
+{hostPanel&&<div className="host-panel" onClick={e=>e.target===e.currentTarget&&setHostPanel(false)}>
+  <div className="host-card">
+    <div className="host-title">⚙️ لوحة تحكم المضيف</div>
+
+    <div style={{fontSize:12,fontWeight:700,color:"var(--dim)",marginBottom:8,letterSpacing:1}}>📊 النتيجة</div>
+    <div className="host-row">
+      <div className="host-row-label">{t1.emoji} {t1.name}</div>
+      <div className="host-actions">
+        <button className="host-sm-btn" style={{background:"rgba(239,68,68,.12)",color:"#EF4444"}} onClick={()=>setS1(v=>Math.max(0,v-100))}>-100</button>
+        <button className="host-sm-btn" style={{background:"rgba(239,68,68,.12)",color:"#EF4444"}} onClick={()=>setS1(v=>Math.max(0,v-200))}>-200</button>
+        <span style={{minWidth:50,textAlign:"center",fontWeight:800,color:t1.color.c}}>{s1}</span>
+        <button className="host-sm-btn" style={{background:"rgba(16,185,129,.12)",color:"#10B981"}} onClick={()=>setS1(v=>v+100)}>+100</button>
+        <button className="host-sm-btn" style={{background:"rgba(16,185,129,.12)",color:"#10B981"}} onClick={()=>setS1(v=>v+200)}>+200</button>
+      </div>
+    </div>
+    <div className="host-row">
+      <div className="host-row-label">{t2.emoji} {t2.name}</div>
+      <div className="host-actions">
+        <button className="host-sm-btn" style={{background:"rgba(239,68,68,.12)",color:"#EF4444"}} onClick={()=>setS2(v=>Math.max(0,v-100))}>-100</button>
+        <button className="host-sm-btn" style={{background:"rgba(239,68,68,.12)",color:"#EF4444"}} onClick={()=>setS2(v=>Math.max(0,v-200))}>-200</button>
+        <span style={{minWidth:50,textAlign:"center",fontWeight:800,color:t2.color.c}}>{s2}</span>
+        <button className="host-sm-btn" style={{background:"rgba(16,185,129,.12)",color:"#10B981"}} onClick={()=>setS2(v=>v+100)}>+100</button>
+        <button className="host-sm-btn" style={{background:"rgba(16,185,129,.12)",color:"#10B981"}} onClick={()=>setS2(v=>v+200)}>+200</button>
+      </div>
+    </div>
+
+    <div style={{fontSize:12,fontWeight:700,color:"var(--dim)",marginBottom:8,marginTop:16,letterSpacing:1}}>🛡️ وسائل المساعدة — تفعيل / تعطيل</div>
+    {[1,2].map(t=><div key={t}>
+      <div style={{fontSize:11,fontWeight:800,color:t===1?t1.color.l:t2.color.l,marginBottom:4}}>{t===1?t1.emoji+" "+t1.name:t2.emoji+" "+t2.name}</div>
+      <div style={{display:"flex",gap:4,marginBottom:8,flexWrap:"wrap"}}>
+        <button className="host-sm-btn" style={{background:ll[t].dbl?"rgba(246,201,14,.1)":"rgba(255,255,255,.03)",color:ll[t].dbl?"var(--gold)":"rgba(255,255,255,.2)",border:`1px solid ${ll[t].dbl?"rgba(246,201,14,.2)":"rgba(255,255,255,.04)"}`}} onClick={()=>setLl(p=>({...p,[t]:{...p[t],dbl:!p[t].dbl}}))}>⚡ مضاعفة {ll[t].dbl?"✓":"✕"}</button>
+        <button className="host-sm-btn" style={{background:ll[t].sw?"rgba(6,182,212,.1)":"rgba(255,255,255,.03)",color:ll[t].sw?"#22D3EE":"rgba(255,255,255,.2)",border:`1px solid ${ll[t].sw?"rgba(6,182,212,.2)":"rgba(255,255,255,.04)"}`}} onClick={()=>setLl(p=>({...p,[t]:{...p[t],sw:!p[t].sw}}))}>🔄 تبديل {ll[t].sw?"✓":"✕"}</button>
+        <button className="host-sm-btn" style={{background:ll[t].shield?"rgba(16,185,129,.1)":"rgba(255,255,255,.03)",color:ll[t].shield?"#10B981":"rgba(255,255,255,.2)",border:`1px solid ${ll[t].shield?"rgba(16,185,129,.2)":"rgba(255,255,255,.04)"}`}} onClick={()=>setLl(p=>({...p,[t]:{...p[t],shield:!p[t].shield}}))}>🛡️ حماية {ll[t].shield?"✓":"✕"}</button>
+        <button className="host-sm-btn" style={{background:ll[t].steal?"rgba(168,85,247,.1)":"rgba(255,255,255,.03)",color:ll[t].steal?"#C084FC":"rgba(255,255,255,.2)",border:`1px solid ${ll[t].steal?"rgba(168,85,247,.2)":"rgba(255,255,255,.04)"}`}} onClick={()=>setLl(p=>({...p,[t]:{...p[t],steal:!p[t].steal}}))}>🏴 سرقة {ll[t].steal?"✓":"✕"}</button>
+      </div>
+    </div>)}
+
+    <div style={{fontSize:12,fontWeight:700,color:"var(--dim)",marginBottom:8,marginTop:8,letterSpacing:1}}>🎲 معلومات</div>
+    <div className="host-row"><div className="host-row-label">🌟 سؤال ذهبي</div><span style={{fontSize:11,color:"var(--gold)"}}>{goldenKey?"مخفي في اللعبة":"غير موجود"}</span></div>
+    <div className="host-row"><div className="host-row-label">💣 سؤال فخ</div><span style={{fontSize:11,color:"var(--red)"}}>{trapKey?"مخفي في اللعبة":"غير موجود"}</span></div>
+    <div className="host-row"><div className="host-row-label">📋 الأسئلة</div><span style={{fontSize:12}}>{Object.keys(ans).length} / {gc.length*6}</span></div>
+
+    <div className="host-row" style={{marginTop:8}}>
+      <div className="host-row-label">↩️ تراجع</div>
+      <button className="host-sm-btn" style={{background:"rgba(246,201,14,.1)",color:"var(--gold)",border:"1px solid rgba(246,201,14,.2)"}} onClick={()=>{
+        const keys=Object.keys(ans);if(!keys.length)return;const last=keys[keys.length-1];const lastAns=ans[last];
+        const na={...ans};delete na[last];setAns(na);
+        if(lastAns&&lastAns.team===1)setS1(v=>Math.max(0,v-lastAns.pts));
+        if(lastAns&&lastAns.team===2)setS2(v=>Math.max(0,v-lastAns.pts));
+      }}>↩️ تراجع عن آخر سؤال</button>
+    </div>
+
+    <div style={{display:"flex",gap:8,marginTop:16}}>
+      <button className="btn btn-ghost" style={{flex:1,fontSize:13}} onClick={()=>setHostPanel(false)}>✓ إغلاق</button>
+      <button className="btn" style={{flex:1,fontSize:13,background:"rgba(239,68,68,.1)",color:"#EF4444",border:"1px solid rgba(239,68,68,.15)"}} onClick={()=>{if(confirm("إعادة تعيين كل شيء؟")){setS1(0);setS2(0);setAns({});setLl({1:{dbl:true,sw:true,shield:true,steal:true},2:{dbl:true,sw:true,shield:true,steal:true}})}}}>🔄 إعادة تعيين</button>
+    </div>
+  </div>
+</div>}
+
+</div>;}
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
