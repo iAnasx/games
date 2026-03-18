@@ -328,7 +328,7 @@ const startGame=()=>{
   setScr("board");
 };
 
-const openQ=(ci,qi)=>{const k=`${ci}-${qi}`;if(ans[k])return;setAq({ci,qi,k,cat:gc[ci],q:gc[ci].questions[qi]});setSa(false);setActiveDbl(0);setStealPhase(null);setRandMult(1);tm.reset();tm.toggle();setScr("question")};
+const openQ=(ci,qi)=>{const k=`${ci}-${qi}`;if(ans[k])return;setAq({ci,qi,k,cat:gc[ci],q:gc[ci].questions[qi]});setSa(false);setActiveDbl(0);setRandMult(1);tm.reset();tm.toggle();setScr("question")};
 
 const showBonus=(text,color)=>{setBonusMsg({text,color});setTimeout(()=>setBonusMsg(null),2000)};
 const doFlash=(color)=>{setFlash(color);setTimeout(()=>setFlash(null),600)};
