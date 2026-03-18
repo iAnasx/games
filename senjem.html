@@ -166,12 +166,47 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .blk-c-nm{font-family:var(--fd);font-size:11px;font-weight:600;text-align:center;line-height:1.2;max-width:80px;color:rgba(255,255,255,.55)}
 .blk-c-tp{font-size:7px;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.25);font-weight:700}
 
-/* Question cells */
-.qcell{display:flex;align-items:center;justify-content:center;padding:18px 4px;background:transparent;color:#fff;font-family:var(--fd);transition:all .25s var(--ease);position:relative;overflow:hidden;border-radius:4px;margin:3px}
-.qcell:not(.done){cursor:pointer}
-.qcell:not(.done):hover{background:rgba(255,255,255,.04)}
+/* ═══ QUESTION TILES — premium solid design ═══ */
+.qcell{display:flex;align-items:center;justify-content:center;padding:18px 4px;color:#fff;font-family:var(--fd);transition:all .3s var(--ease);position:relative;overflow:hidden;border-radius:10px;margin:4px;cursor:pointer;
+  background:linear-gradient(145deg,#0F1328 0%,#0A0E20 50%,#080B1A 100%);
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:0 2px 8px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.03)}
+
+/* Subtle inner top highlight */
+.qcell::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transition:all .3s}
+/* Bottom edge glow (colored per category, set via inline style) */
+.qcell::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;border-radius:2px;opacity:.2;transition:all .3s}
+
+/* 200 tier — cool / subtle */
+.qcell.tier-200{background:linear-gradient(145deg,#0D1225 0%,#0B0F1F 100%);border-color:rgba(100,160,255,.08)}
+.qcell.tier-200::after{background:linear-gradient(90deg,transparent,rgba(100,160,255,.5),transparent)}
+
+/* 400 tier — warm / medium */
+.qcell.tier-400{background:linear-gradient(145deg,#12102A 0%,#0E0C22 100%);border-color:rgba(168,85,247,.08)}
+.qcell.tier-400::after{background:linear-gradient(90deg,transparent,rgba(168,85,247,.5),transparent)}
+
+/* 600 tier — gold / premium */
+.qcell.tier-600{background:linear-gradient(145deg,#1A1508 0%,#141005 100%);border-color:rgba(246,201,14,.1)}
+.qcell.tier-600::after{background:linear-gradient(90deg,transparent,rgba(246,201,14,.5),transparent)}
+.qcell.tier-600 .qcell-v.gold{filter:drop-shadow(0 0 6px rgba(246,201,14,.2))}
+
+/* Hover states */
+.qcell:not(.done):hover{transform:translateY(-2px);border-color:rgba(255,255,255,.12);box-shadow:0 6px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.05)}
+.qcell:not(.done):hover::before{left:5%;right:5%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent)}
+.qcell:not(.done):hover::after{opacity:.6;left:10%;right:10%}
 .qcell:not(.done):hover .qcell-v{transform:scale(1.15);text-shadow:0 0 20px currentColor}
-.qcell.done{cursor:default}
+
+/* Hover tier-specific intensity */
+.qcell.tier-200:not(.done):hover{border-color:rgba(100,160,255,.15);box-shadow:0 6px 20px rgba(100,160,255,.06),inset 0 1px 0 rgba(100,160,255,.04)}
+.qcell.tier-400:not(.done):hover{border-color:rgba(168,85,247,.15);box-shadow:0 6px 20px rgba(168,85,247,.06),inset 0 1px 0 rgba(168,85,247,.04)}
+.qcell.tier-600:not(.done):hover{border-color:rgba(246,201,14,.2);box-shadow:0 6px 24px rgba(246,201,14,.08),inset 0 1px 0 rgba(246,201,14,.05)}
+
+/* Active press */
+.qcell:not(.done):active{transform:scale(.95)!important;box-shadow:0 1px 4px rgba(0,0,0,.5)}
+
+/* Done state */
+.qcell.done{cursor:default;transform:none;border-color:transparent}
+.qcell.done::before,.qcell.done::after{opacity:0}
 
 /* Point value */
 .qcell-v{font-size:24px;font-weight:700;transition:all .3s var(--ease);position:relative;z-index:1}
@@ -283,7 +318,7 @@ button:disabled{opacity:.25;cursor:not-allowed}
 
 @media(max-width:680px){
   .setup-card{padding:28px 16px}.logo-main{font-size:50px}
-  .t-card{min-width:240px;padding:18px}.qcell-v{font-size:18px}
+  .t-card{min-width:240px;padding:18px}.qcell-v{font-size:18px}.qcell{padding:14px 4px;margin:3px;border-radius:8px}
   .blk-c-nm{font-size:9px}.sc-v{font-size:26px}.sc-card{padding:10px 14px;min-width:130px}
   .q-text{font-size:19px}.tmr-v{font-size:36px}.go-title{font-size:34px}.go-s{font-size:44px}
   .cat-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.nw-img{width:240px;height:240px}
@@ -481,14 +516,15 @@ function App(){
           .cat-blk:nth-child(${ci+1})::after{background:${cat.color}}
           .cat-blk:nth-child(${ci+1}) .blk-c-ring{border-color:${cat.color}30}
           .cat-blk:nth-child(${ci+1}) .blk-c-ring::after{border:2px solid ${cat.color}20}
-          .cat-blk:nth-child(${ci+1}) .qcell:not(.done):hover{background:${cat.color}0A}
+          .cat-blk:nth-child(${ci+1}) .qcell::after{background:linear-gradient(90deg,transparent,${cat.color},transparent)!important}
+          .cat-blk:nth-child(${ci+1}) .qcell:not(.done):hover{border-color:${cat.color}25;box-shadow:0 6px 24px ${cat.color}0A,inset 0 1px 0 ${cat.color}08}
         `}</style>
 
-        {rows.map(([li],ri)=>{const k=`${ci}-${li}`;const d=!!ans[k];const cp=cPts(ci,li);const bg=cBg(ci,li);
-          return<button key={`l${ri}`} className={`qcell ${d?"done":""}`} style={{gridColumn:1,gridRow:ri+1}} onClick={()=>openQ(ci,li)} disabled={d}>
+        {rows.map(([li],ri)=>{const k=`${ci}-${li}`;const d=!!ans[k];const cp=cPts(ci,li);const bg=cBg(ci,li);const pts=cat.questions[li].pts;
+          return<button key={`l${ri}`} className={`qcell tier-${pts} ${d?"done":""}`} style={{gridColumn:1,gridRow:ri+1}} onClick={()=>openQ(ci,li)} disabled={d}>
             <div className="qcell-bg" style={{background:bg||"transparent"}}/>
             {dbl&&!d&&<span className="double-badge">×2</span>}
-            <span className={`qcell-v ${cp.cls}`} style={cp.sty}>{cat.questions[li].pts}</span>
+            <span className={`qcell-v ${cp.cls}`} style={cp.sty}>{pts}</span>
           </button>})}
 
         <div className="blk-c" style={{background:cat.color+"06"}}>
@@ -497,11 +533,11 @@ function App(){
           {cat.type!=="regular"&&<span className="blk-c-tp">{{no_words:"تمثيل",letters:"حروف",guess_photo:"صور"}[cat.type]}</span>}
         </div>
 
-        {rows.map(([,ri2],ri)=>{const k=`${ci}-${ri2}`;const d=!!ans[k];const cp=cPts(ci,ri2);const bg=cBg(ci,ri2);
-          return<button key={`r${ri}`} className={`qcell ${d?"done":""}`} style={{gridColumn:3,gridRow:ri+1}} onClick={()=>openQ(ci,ri2)} disabled={d}>
+        {rows.map(([,ri2],ri)=>{const k=`${ci}-${ri2}`;const d=!!ans[k];const cp=cPts(ci,ri2);const bg=cBg(ci,ri2);const pts=cat.questions[ri2].pts;
+          return<button key={`r${ri}`} className={`qcell tier-${pts} ${d?"done":""}`} style={{gridColumn:3,gridRow:ri+1}} onClick={()=>openQ(ci,ri2)} disabled={d}>
             <div className="qcell-bg" style={{background:bg||"transparent"}}/>
             {dbl&&!d&&<span className="double-badge">×2</span>}
-            <span className={`qcell-v ${cp.cls}`} style={cp.sty}>{cat.questions[ri2].pts}</span>
+            <span className={`qcell-v ${cp.cls}`} style={cp.sty}>{pts}</span>
           </button>})}
       </div>)}
     </div>
