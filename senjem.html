@@ -4,240 +4,248 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>سين جيم — لعبة المعرفة والتحدي</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#06091A;--bg2:#0C1128;--card:rgba(255,255,255,0.035);
-  --gold:#FFD700;--gold2:#FFA500;--green:#22C55E;--green2:#16A34A;
-  --txt:#F1F5F9;--dim:rgba(255,255,255,0.35);--dim2:rgba(255,255,255,0.12);
-  --radius:16px;--radius-sm:10px;--radius-lg:24px;
+  --bg:#04060F;--bg2:#080D1E;--surface:rgba(255,255,255,0.025);--surface2:rgba(255,255,255,0.04);
+  --gold:#F6C90E;--gold-dim:#C9A30A;--neon-blue:#00D4FF;--neon-purple:#A855F7;
+  --green:#10B981;--red:#EF4444;--txt:#E8ECF1;--dim:rgba(255,255,255,0.3);
+  --r:14px;--r-lg:22px;
+  --font-display:'Readex Pro',sans-serif;--font-body:'Tajawal',sans-serif;
+  --ease:cubic-bezier(.4,0,.2,1);--ease-bounce:cubic-bezier(.34,1.56,.64,1);
 }
-html,body,#root{min-height:100vh;overflow-x:hidden}
-body{font-family:'Tajawal',sans-serif;direction:rtl;background:var(--bg);color:var(--txt)}
-input,textarea,select{font-family:'Tajawal',sans-serif}
-input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.25)}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold)!important;box-shadow:0 0 0 3px rgba(255,215,0,0.1)}
-button{font-family:'Tajawal',sans-serif;cursor:pointer;border:none;transition:all .2s}
-button:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px)}
-button:active:not(:disabled){transform:scale(0.97)!important}
-button:disabled{opacity:.3;cursor:not-allowed;filter:none}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
+html,body,#root{min-height:100vh}
+body{font-family:var(--font-body);direction:rtl;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased}
+input,textarea,select{font-family:var(--font-body)}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.2)}
+input:focus,select:focus{outline:none;border-color:var(--gold)!important;box-shadow:0 0 0 3px rgba(246,201,14,0.08)}
+button{font-family:var(--font-body);cursor:pointer;border:none;-webkit-tap-highlight-color:transparent}
+button:disabled{opacity:.25;cursor:not-allowed;filter:none!important;transform:none!important}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:4px}
 
-/* ═══ ANIMATIONS ═══ */
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes scaleIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
-@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(255,215,0,.1)}50%{box-shadow:0 0 50px rgba(255,215,0,.25)}}
-@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(15px,-25px) scale(1.05)}}
-@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,15px) scale(1.03)}}
-@keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(10px,20px)}}
-@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-@keyframes timerGlow{0%,100%{text-shadow:0 0 10px rgba(255,215,0,.3)}50%{text-shadow:0 0 30px rgba(255,215,0,.6)}}
-@keyframes revealSlide{from{opacity:0;transform:translateY(16px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes bounceIn{0%{transform:scale(.4);opacity:0}50%{transform:scale(1.06)}70%{transform:scale(.96)}100%{transform:scale(1);opacity:1}}
-@keyframes scoreFlash{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@keyframes letterGlow{0%,100%{box-shadow:0 0 15px rgba(255,215,0,.2),inset 0 0 15px rgba(255,215,0,.05)}50%{box-shadow:0 0 40px rgba(255,215,0,.4),inset 0 0 20px rgba(255,215,0,.1)}}
-@keyframes cellReveal{from{background:rgba(255,215,0,.15)}to{background:transparent}}
+@keyframes glow{0%,100%{opacity:.4}50%{opacity:.8}}
+@keyframes neonPulse{0%,100%{filter:drop-shadow(0 0 8px var(--gold)) drop-shadow(0 0 20px rgba(246,201,14,.15))}50%{filter:drop-shadow(0 0 16px var(--gold)) drop-shadow(0 0 40px rgba(246,201,14,.25))}}
+@keyframes confetti{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@keyframes timerPulse{0%,100%{text-shadow:0 0 12px rgba(246,201,14,.2)}50%{text-shadow:0 0 32px rgba(246,201,14,.5)}}
+@keyframes revealUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scorePop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+@keyframes letterFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(20px,-30px)}66%{transform:translate(-15px,20px)}}
+@keyframes boardCellIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
 
-/* ═══ SHARED ═══ */
-.btn{font-weight:700;font-size:15px;padding:12px 28px;border-radius:var(--radius-sm);display:inline-flex;align-items:center;justify-content:center;gap:8px;line-height:1.4}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1a2e;font-size:17px;padding:15px 32px;box-shadow:0 4px 24px rgba(255,215,0,.2)}
-.btn-lg{width:100%;font-size:18px;padding:16px 32px;border-radius:var(--radius)}
-.btn-ghost{background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.08)}
-.btn-team{font-size:16px;padding:14px 24px;border-radius:var(--radius);flex:1;min-width:120px;color:#fff;font-weight:800}
+/* ═══════ BUTTONS ═══════ */
+.btn{font-weight:700;font-size:15px;padding:12px 24px;border-radius:var(--r);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .25s var(--ease);line-height:1.3}
+.btn:not(:disabled):hover{transform:translateY(-2px)}
+.btn:not(:disabled):active{transform:scale(.96)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#0a0a0a;font-weight:800;box-shadow:0 4px 20px rgba(246,201,14,.15),0 0 0 1px rgba(246,201,14,.1)}
+.btn-gold:not(:disabled):hover{box-shadow:0 8px 32px rgba(246,201,14,.25),0 0 0 1px rgba(246,201,14,.2)}
+.btn-lg{width:100%;font-size:18px;padding:16px 32px;border-radius:var(--r-lg)}
+.btn-ghost{background:var(--surface2);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.06)}
+.btn-ghost:not(:disabled):hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7)}
 
-/* ═══ SETUP SCREEN ═══ */
-.setup{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:20px;background:var(--bg)}
-.setup::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(255,215,0,.04) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(58,134,255,.04) 0%,transparent 50%)}
-.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px)}
-.orb-1{width:500px;height:500px;background:rgba(230,57,70,.06);top:-10%;right:-8%;animation:float1 14s ease-in-out infinite}
-.orb-2{width:400px;height:400px;background:rgba(58,134,255,.05);bottom:-5%;left:-5%;animation:float2 18s ease-in-out infinite}
-.orb-3{width:300px;height:300px;background:rgba(255,215,0,.04);top:40%;left:20%;animation:float3 12s ease-in-out infinite}
+/* ═══════ SETUP ═══════ */
+.setup{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:20px;overflow:hidden}
+.setup::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse 600px 600px at 25% 20%,rgba(246,201,14,.03),transparent),
+  radial-gradient(ellipse 500px 500px at 75% 80%,rgba(0,212,255,.02),transparent),
+  radial-gradient(ellipse 400px 400px at 50% 50%,rgba(168,85,247,.015),transparent)}
+.orb{position:absolute;border-radius:50%;pointer-events:none;will-change:transform}
+.orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(246,201,14,.04),transparent 70%);top:-15%;right:-10%;animation:orbFloat 20s ease-in-out infinite}
+.orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(0,212,255,.03),transparent 70%);bottom:-10%;left:-8%;animation:orbFloat 25s ease-in-out infinite 5s}
 
-.setup-card{position:relative;z-index:2;width:100%;max-width:860px;background:var(--card);backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius-lg);padding:48px 40px;animation:fadeUp .6s ease}
+.setup-card{position:relative;z-index:1;width:100%;max-width:880px;background:linear-gradient(135deg,rgba(255,255,255,.025),rgba(255,255,255,.01));backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.04);border-radius:28px;padding:48px 40px;animation:fadeUp .6s var(--ease)}
 
-/* Logo */
-.logo{text-align:center;margin-bottom:8px}
-.logo-main{display:inline-flex;gap:14px;align-items:baseline}
-.logo-s{font-family:'Readex Pro',sans-serif;font-size:72px;font-weight:700;background:linear-gradient(135deg,#E63946 20%,#FF6B6B 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 8px rgba(230,57,70,.3))}
-.logo-j{font-family:'Readex Pro',sans-serif;font-size:72px;font-weight:700;background:linear-gradient(135deg,var(--gold) 20%,var(--gold2) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 8px rgba(255,215,0,.3))}
-.logo-sub{font-size:16px;color:var(--dim);font-weight:500;text-align:center;margin-bottom:40px;letter-spacing:1px}
+.logo{text-align:center;margin-bottom:6px}
+.logo-main{font-family:var(--font-display);font-size:68px;font-weight:700;letter-spacing:2px}
+.logo-sin{background:linear-gradient(135deg,var(--gold),#FFE066);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-jim{background:linear-gradient(135deg,#FF6B6B,#E63946);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-right:16px}
+.logo-sub{font-size:15px;color:var(--dim);font-weight:500;text-align:center;margin-bottom:40px;letter-spacing:2px}
 
-/* Step indicator */
-.steps{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:32px}
-.step-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.1);transition:all .3s}
-.step-dot.active{background:var(--gold);box-shadow:0 0 12px rgba(255,215,0,.3);width:28px;border-radius:5px}
-.step-dot.done{background:var(--green)}
+.steps{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:28px}
+.step-pip{height:4px;border-radius:4px;background:rgba(255,255,255,.08);transition:all .4s var(--ease);width:24px}
+.step-pip.active{background:var(--gold);width:48px;box-shadow:0 0 12px rgba(246,201,14,.2)}
+.step-pip.done{background:var(--green);width:24px}
 
-.step-title{font-size:22px;font-weight:800;text-align:center;margin-bottom:24px}
-.fade-step{animation:fadeUp .35s ease}
+.step-title{font-family:var(--font-display);font-size:21px;font-weight:600;text-align:center;margin-bottom:24px;color:var(--txt)}
+.fade-step{animation:fadeUp .3s var(--ease)}
 
-/* Team setup */
-.teams-row{display:flex;gap:24px;margin-bottom:28px;flex-wrap:wrap;justify-content:center}
-.team-card{flex:1;min-width:280px;max-width:380px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius-lg);padding:24px;display:flex;flex-direction:column;align-items:center;gap:14px;transition:all .3s}
-.team-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;opacity:.5}
-.team-emoji-pick{font-size:40px;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;border:2px solid rgba(255,255,255,.1)}
-.team-emoji-pick:hover{border-color:rgba(255,255,255,.25)}
-.emoji-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:8px 0}
-.emoji-opt{font-size:22px;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,.04);transition:all .15s;border:2px solid transparent}
-.emoji-opt:hover{background:rgba(255,255,255,.1)}
-.emoji-opt.sel{border-color:var(--gold);background:rgba(255,215,0,.1)}
-.team-inp{width:100%;padding:12px 16px;border-radius:var(--radius-sm);border:2px solid rgba(255,255,255,.06);background:rgba(255,255,255,.04);color:#fff;font-size:17px;text-align:center;font-weight:700}
-.color-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.color-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;transition:all .2s;border:3px solid transparent;position:relative}
-.color-dot:hover{transform:scale(1.15)}
-.color-dot.sel{border-color:#fff;transform:scale(1.15);box-shadow:0 0 16px rgba(255,255,255,.2)}
+/* Team cards */
+.teams-row{display:flex;gap:20px;margin-bottom:28px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.team-card{flex:1;min-width:280px;max-width:400px;background:var(--surface);border:1px solid rgba(255,255,255,.04);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;align-items:center;gap:12px;transition:border-color .3s}
+.team-label{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--dim)}
+.team-emoji-btn{font-size:36px;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);border:2px solid rgba(255,255,255,.08);cursor:pointer;transition:all .2s}
+.team-emoji-btn:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06)}
+.emoji-dropdown{background:#12162A;border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:10px;display:grid;grid-template-columns:repeat(8,1fr);gap:4px;max-width:300px;box-shadow:0 12px 40px rgba(0,0,0,.5);animation:fadeUp .2s var(--ease)}
+.emoji-opt{font-size:20px;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:transparent;transition:all .12s;border:2px solid transparent}
+.emoji-opt:hover{background:rgba(255,255,255,.08)}
+.emoji-opt.sel{background:rgba(246,201,14,.1);border-color:var(--gold)}
+.team-inp{width:100%;padding:11px 16px;border-radius:var(--r);border:1.5px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:#fff;font-size:17px;text-align:center;font-weight:700;transition:all .25s}
+.color-row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.color-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;transition:all .2s;border:2.5px solid transparent;position:relative}
+.color-swatch:hover{transform:scale(1.15)}
+.color-swatch.sel{border-color:rgba(255,255,255,.9);box-shadow:0 0 14px currentColor}
+.vs-pill{font-family:var(--font-display);font-size:18px;font-weight:600;color:rgba(255,255,255,.06);align-self:center;letter-spacing:8px}
 
-.vs-badge{display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:rgba(255,255,255,.08);letter-spacing:6px;align-self:center}
+/* Category grid */
+.cat-tools{display:flex;gap:8px;margin-bottom:14px;justify-content:center}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:8px;margin-bottom:24px;max-height:360px;overflow-y:auto;padding:2px}
+.cat-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:14px 6px 10px;border-radius:var(--r);border:1.5px solid transparent;color:#fff;transition:all .2s var(--ease);background:var(--surface);cursor:pointer;overflow:hidden}
+.cat-card:hover:not(.full){background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
+.cat-card.sel{border-color:currentColor;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01))}
+.cat-card.full:not(.sel){opacity:.15;cursor:not-allowed;pointer-events:none}
+.c-ic{font-size:28px;position:relative;z-index:1}
+.c-nm{font-size:12px;font-weight:800;text-align:center;position:relative;z-index:1;line-height:1.3}
+.c-tp{font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);position:relative;z-index:1}
+.c-chk{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;z-index:2}
+.c-glow{position:absolute;bottom:-20px;width:80px;height:40px;border-radius:50%;filter:blur(20px);opacity:0;transition:opacity .3s}
+.cat-card.sel .c-glow{opacity:.3}
 
-/* Category selection */
-.cat-section{width:100%}
-.cat-actions{display:flex;gap:10px;margin-bottom:16px;justify-content:center;flex-wrap:wrap}
-.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:24px;max-height:380px;overflow-y:auto;padding:4px}
-.cat-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:16px 8px 12px;border-radius:var(--radius);border:2px solid transparent;color:#fff;transition:all .25s;background:rgba(255,255,255,.03);overflow:hidden}
-.cat-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:inherit}
-.cat-card.sel::before{opacity:1}
-.cat-card.sel{transform:scale(1.02);border-color:currentColor}
-.cat-card.full:not(.sel){opacity:.2;cursor:not-allowed}
-.cat-card .cat-ic{font-size:30px;position:relative;z-index:1}
-.cat-card .cat-nm{font-size:13px;font-weight:800;text-align:center;position:relative;z-index:1;line-height:1.3}
-.cat-card .cat-tp{font-size:9px;font-weight:600;padding:2px 8px;border-radius:6px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);position:relative;z-index:1}
-.cat-chk{position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;z-index:2;animation:bounceIn .3s ease}
+/* ═══════ BOARD ═══════ */
+.board{min-height:100vh;display:flex;flex-direction:column;background:var(--bg);position:relative;padding:0 12px 12px}
+.board::before{content:'';position:fixed;inset:0;pointer-events:none;background:
+  radial-gradient(ellipse 50% 50% at 50% 0%,rgba(246,201,14,.015),transparent),
+  radial-gradient(ellipse 40% 40% at 0% 50%,rgba(0,212,255,.01),transparent),
+  radial-gradient(ellipse 40% 40% at 100% 50%,rgba(168,85,247,.01),transparent)}
 
-/* ═══ GAME BOARD ═══ */
-.board{min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(170deg,var(--bg) 0%,var(--bg2) 50%,#0a0f25 100%);padding:0 14px 14px}
 .board-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 4px;gap:10px}
-.board-logo{font-family:'Readex Pro',sans-serif;font-size:24px;font-weight:700;background:linear-gradient(135deg,#E63946,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.b-logo{font-family:var(--font-display);font-size:22px;font-weight:700}
+.b-logo .bls{background:linear-gradient(135deg,var(--gold),#FFE066);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.b-logo .blj{background:linear-gradient(135deg,#FF6B6B,#E63946);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-.board-grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;animation:fadeUp .5s ease}
-@media(max-width:900px){.board-grid{grid-template-columns:repeat(2,1fr)}}
+.progress{height:2px;background:rgba(255,255,255,.03);border-radius:2px;margin:0 4px 12px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--neon-blue));border-radius:2px;transition:width .6s var(--ease)}
+
+.board-grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+@media(max-width:920px){.board-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.board-grid{grid-template-columns:1fr}}
 
-.cat-block{border-radius:var(--radius);overflow:hidden;display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:repeat(3,1fr);background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);min-height:200px;position:relative}
-.cat-block::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.cat-blk{border-radius:var(--r-lg);overflow:hidden;display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:repeat(3,1fr);background:linear-gradient(160deg,rgba(255,255,255,.02),rgba(255,255,255,.005));border:1px solid rgba(255,255,255,.035);min-height:200px;position:relative;animation:boardCellIn .4s var(--ease-bounce) both}
 
-.blk-center{grid-column:2;grid-row:1/4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 18px;gap:4px;min-width:90px;border-right:1px solid rgba(255,255,255,.04);border-left:1px solid rgba(255,255,255,.04);position:relative}
-.blk-center-ic{font-size:32px}
-.blk-center-nm{font-size:12px;font-weight:800;text-align:center;line-height:1.2;max-width:80px}
-.blk-center-tp{font-size:8px;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.35);font-weight:700;margin-top:2px}
+.blk-mid{grid-column:2;grid-row:1/4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 16px;gap:3px;min-width:85px;position:relative}
+.blk-mid::before,.blk-mid::after{content:'';position:absolute;top:10%;bottom:10%;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.06),transparent)}
+.blk-mid::before{right:0}
+.blk-mid::after{left:0}
+.blk-mid-ic{font-size:30px}
+.blk-mid-nm{font-family:var(--font-display);font-size:11px;font-weight:600;text-align:center;line-height:1.2;max-width:75px;color:rgba(255,255,255,.6)}
+.blk-mid-tp{font-size:7px;padding:2px 5px;border-radius:4px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.3);font-weight:700}
 
-.q-cell{display:flex;align-items:center;justify-content:center;padding:16px 4px;background:transparent;color:#fff;font-family:'Tajawal',sans-serif;transition:all .3s;position:relative;overflow:hidden}
-.q-cell:not(.answered):hover{background:rgba(255,255,255,.06)}
-.q-cell.answered{cursor:default}
-.q-cell.answered .q-cell-pts{opacity:.85}
-.q-cell-pts{font-family:'Readex Pro',sans-serif;font-size:22px;font-weight:700;transition:all .3s}
-.q-cell-pts.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.qc{display:flex;align-items:center;justify-content:center;padding:16px 4px;background:transparent;color:#fff;font-family:var(--font-display);transition:all .25s var(--ease);position:relative;overflow:hidden}
+.qc:not(.done):hover{background:rgba(246,201,14,.04)}
+.qc:not(.done):hover .qc-pts{text-shadow:0 0 16px rgba(246,201,14,.3)}
+.qc.done{cursor:default}
+.qc-pts{font-size:22px;font-weight:600;transition:all .3s var(--ease)}
+.qc-pts.virgin{color:var(--gold)}
+.qc-pts.team-colored{font-weight:700}
 
 /* Scoreboard */
-.scoreboard{display:flex;align-items:stretch;justify-content:center;gap:16px;padding:10px 0}
-.sc-team{display:flex;align-items:center;gap:14px;padding:12px 24px;border-radius:var(--radius);transition:all .3s;background:rgba(255,255,255,.025);border:2px solid transparent;min-width:180px}
-.sc-emoji{font-size:28px}
-.sc-info{display:flex;flex-direction:column}
-.sc-name{font-size:14px;font-weight:700;opacity:.7}
-.sc-score{font-size:36px;font-weight:900;font-family:'Readex Pro',sans-serif;line-height:1}
-.sc-score.flash{animation:scoreFlash .4s ease}
-.sc-vs{font-size:20px;color:rgba(255,255,255,.08);font-weight:900;align-self:center}
+.scoreboard{display:flex;align-items:stretch;justify-content:center;gap:12px;padding:8px 0}
+.sc-card{display:flex;align-items:center;gap:12px;padding:12px 22px;border-radius:var(--r-lg);transition:all .3s var(--ease);background:var(--surface);border:1.5px solid transparent;min-width:170px;position:relative;overflow:hidden}
+.sc-card::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:inherit}
+.sc-card.glow::after{opacity:1}
+.sc-emo{font-size:26px;position:relative;z-index:1}
+.sc-info{display:flex;flex-direction:column;position:relative;z-index:1}
+.sc-nm{font-size:13px;font-weight:700;opacity:.5}
+.sc-pts{font-family:var(--font-display);font-size:34px;font-weight:700;line-height:1}
+.sc-pts.pop{animation:scorePop .4s var(--ease-bounce)}
+.sc-mid{font-family:var(--font-display);font-size:16px;color:rgba(255,255,255,.05);font-weight:700;align-self:center;letter-spacing:4px}
 
-/* ═══ QUESTION OVERLAY ═══ */
-.q-overlay{position:fixed;inset:0;background:rgba(3,5,15,.92);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:200;animation:fadeIn .2s ease}
-.q-modal{width:100%;max-width:660px;border-radius:var(--radius-lg);overflow:hidden;background:#0E1225;border:1px solid rgba(255,255,255,.06);box-shadow:0 32px 80px rgba(0,0,0,.6);animation:scaleIn .35s cubic-bezier(.16,1,.3,1)}
+/* ═══════ QUESTION OVERLAY ═══════ */
+.q-overlay{position:fixed;inset:0;background:rgba(2,4,12,.93);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:200;animation:fadeIn .15s ease}
+.q-modal{width:100%;max-width:680px;border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(170deg,#0C1024,#080C1A);border:1px solid rgba(255,255,255,.05);box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.03);animation:scaleIn .35s var(--ease-bounce)}
 
-.q-top{padding:16px 24px;display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800}
-.q-top-pts{margin-right:auto;background:rgba(0,0,0,.3);padding:4px 16px;border-radius:12px;font-size:16px;font-weight:900;font-family:'Readex Pro',sans-serif}
+.q-hdr{padding:16px 24px;display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:18px;font-weight:600;position:relative}
+.q-hdr::after{content:'';position:absolute;bottom:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.q-hdr-pts{margin-right:auto;background:rgba(0,0,0,.3);padding:4px 16px;border-radius:10px;font-size:15px;font-weight:700;border:1px solid rgba(255,255,255,.04)}
 
-.q-content{padding:28px 24px;display:flex;flex-direction:column;align-items:center}
+.q-body{padding:28px 24px;display:flex;flex-direction:column;align-items:center}
 
 /* Timer */
-.timer{display:flex;align-items:center;gap:14px;margin-bottom:28px}
-.timer-display{font-family:'Readex Pro',sans-serif;font-size:42px;font-weight:700;color:var(--gold);min-width:120px;text-align:center;letter-spacing:3px;font-variant-numeric:tabular-nums}
-.timer-display.on{animation:timerGlow 1.5s ease-in-out infinite}
-.timer-btn{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.1);transition:all .15s}
-.timer-btn:hover{background:rgba(255,255,255,.12)}
+.timer{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.tmr-display{font-family:var(--font-display);font-size:48px;font-weight:700;color:var(--gold);min-width:130px;text-align:center;letter-spacing:4px;font-variant-numeric:tabular-nums}
+.tmr-display.on{animation:timerPulse 1.5s ease-in-out infinite}
+.tmr-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.06);transition:all .2s}
+.tmr-btn:hover{background:rgba(255,255,255,.08);color:#fff}
 
-.q-text{font-size:24px;font-weight:700;text-align:center;line-height:1.8;margin-bottom:28px;max-width:560px}
+.q-text{font-size:24px;font-weight:700;text-align:center;line-height:1.9;margin-bottom:28px;max-width:580px}
 
-/* Answer area */
-.ans-area{width:100%;animation:revealSlide .4s cubic-bezier(.16,1,.3,1)}
-.ans-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:20px}
-.ans-label{font-size:11px;font-weight:800;color:var(--green);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
-.ans-text{font-size:22px;font-weight:800;color:var(--green);line-height:1.6}
-.ans-timer{text-align:center;font-size:13px;color:var(--dim);margin-bottom:14px;font-weight:600}
+/* Special displays */
+.nw-show{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:28px;animation:scaleIn .4s var(--ease-bounce)}
+.nw-img{width:300px;height:300px;object-fit:contain;border-radius:var(--r-lg);border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)}
+.nw-note{font-size:12px;color:rgba(255,255,255,.2);background:rgba(255,255,255,.03);padding:6px 14px;border-radius:8px}
 
-.team-btns{display:flex;gap:10px;flex-wrap:wrap}
-.btn-nobody{background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);padding:14px 20px;border-radius:var(--radius-sm);font-weight:700;font-size:14px;min-width:100px}
+.ph-show{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:28px;animation:scaleIn .4s var(--ease-bounce)}
+.ph-img{max-width:100%;max-height:360px;object-fit:contain;border-radius:var(--r-lg);border:1px solid rgba(255,255,255,.06)}
 
-/* Special category displays */
-.nowords-display{display:flex;flex-direction:column;align-items:center;gap:16px;margin-bottom:28px;animation:bounceIn .5s ease}
-.nowords-emoji{font-size:80px}
-.nowords-word{font-size:40px;font-weight:900;background:linear-gradient(135deg,#FF6B6B,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nowords-hint{font-size:14px;color:var(--dim);background:rgba(255,255,255,.05);padding:6px 16px;border-radius:var(--radius-sm)}
-.nowords-note{font-size:12px;color:rgba(255,255,255,.2);margin-top:4px}
+.lt-hint{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
+.lt-badge{font-family:var(--font-display);width:56px;height:56px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#0a0a0a;background:linear-gradient(135deg,var(--gold),#FFE066);box-shadow:0 4px 24px rgba(246,201,14,.2);animation:letterFloat 3s ease-in-out infinite}
+.lt-label{font-size:14px;color:var(--dim);font-weight:600}
 
-.letter-area{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
-.letter-badge{width:60px;height:60px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-family:'Readex Pro',sans-serif;font-size:34px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--gold),var(--gold2));animation:letterGlow 2.5s ease-in-out infinite}
-.letter-label{font-size:14px;color:var(--dim);font-weight:600}
+/* Answer */
+.ans-wrap{width:100%;animation:revealUp .35s var(--ease)}
+.ans-card{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.12);border-radius:var(--r);padding:18px 20px;text-align:center;margin-bottom:18px}
+.ans-lbl{font-size:10px;font-weight:800;color:var(--green);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
+.ans-val{font-size:22px;font-weight:800;color:var(--green);line-height:1.5}
+.ans-time{text-align:center;font-size:12px;color:var(--dim);margin-bottom:14px}
+.team-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-award{font-size:15px;padding:14px 20px;border-radius:var(--r);flex:1;min-width:120px;color:#fff;font-weight:800;transition:all .25s var(--ease);position:relative;overflow:hidden}
+.btn-award:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.btn-nobody{background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);padding:14px 18px;border-radius:var(--r);font-weight:700;font-size:13px;min-width:90px;border:1px solid rgba(255,255,255,.04)}
 
-.photo-display{display:flex;align-items:center;gap:16px;margin-bottom:28px;flex-wrap:wrap;justify-content:center;animation:bounceIn .5s ease}
-.photo-card{border-radius:var(--radius);overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;min-width:120px}
-.photo-card img{width:140px;height:140px;object-fit:cover;display:block}
-.photo-card-label{padding:8px;font-size:12px;font-weight:700;color:var(--dim);text-align:center}
-.photo-plus{font-family:'Readex Pro',sans-serif;font-size:32px;font-weight:700;color:var(--gold)}
-
-/* ═══ GAME OVER ═══ */
-.gameover{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 35%,#151830,var(--bg) 70%);padding:20px;position:relative}
-.gameover-card{text-align:center;animation:fadeUp .6s ease;max-width:500px;width:100%}
-.go-trophy{font-size:80px;margin-bottom:12px;animation:pulse 2s ease-in-out infinite}
-.go-title{font-family:'Readex Pro',sans-serif;font-size:44px;font-weight:700;margin-bottom:10px}
-.go-sub{font-size:16px;color:var(--dim);margin-bottom:32px}
+/* ═══════ GAME OVER ═══════ */
+.go-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;padding:20px;background:var(--bg)}
+.go-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(246,201,14,.03),transparent 60%)}
+.go-card{text-align:center;animation:fadeUp .6s var(--ease);max-width:520px;width:100%;position:relative;z-index:1}
+.go-trophy{font-size:80px;margin-bottom:12px;animation:pulse 2.5s ease-in-out infinite}
+.go-title{font-family:var(--font-display);font-size:46px;font-weight:700;margin-bottom:8px;line-height:1.2}
+.go-sub{font-size:15px;color:var(--dim);margin-bottom:36px}
 .go-scores{display:flex;align-items:center;justify-content:center;gap:32px;margin-bottom:36px}
-.go-team{display:flex;flex-direction:column;align-items:center;gap:8px}
-.go-team-emoji{font-size:36px}
-.go-team-name{font-size:18px;font-weight:800}
-.go-team-score{font-family:'Readex Pro',sans-serif;font-size:56px;font-weight:700}
-.go-vs{font-size:24px;color:rgba(255,255,255,.08);font-weight:900}
-.confetti-p{position:absolute;border-radius:2px}
+.go-team{display:flex;flex-direction:column;align-items:center;gap:6px}
+.go-emo{font-size:36px}
+.go-nm{font-size:17px;font-weight:800}
+.go-sc{font-family:var(--font-display);font-size:56px;font-weight:700;line-height:1}
+.go-vs{font-family:var(--font-display);font-size:20px;color:rgba(255,255,255,.06);font-weight:700}
+.confetti-p{position:absolute;border-radius:2px;will-change:transform}
 
-/* ═══ MODAL ═══ */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:300;padding:16px;animation:fadeIn .2s ease}
-.modal{width:100%;max-width:600px;max-height:90vh;overflow-y:auto;background:#121630;border:1px solid rgba(255,255,255,.06);border-radius:var(--radius-lg);padding:28px;animation:scaleIn .3s ease}
-.modal-title{font-size:20px;font-weight:800;margin-bottom:20px;text-align:center}
-.modal-row{margin-bottom:14px}
-.modal-label{font-size:12px;font-weight:700;color:var(--dim);margin-bottom:6px;display:block}
-.modal-input{width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;font-size:15px;font-weight:600}
-.modal-select{width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;font-size:14px;font-weight:600;appearance:none;-webkit-appearance:none}
-.modal-q-block{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px}
-.modal-q-pts{font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px}
-.modal-q-row{display:flex;gap:8px;margin-bottom:6px}
-.modal-q-row input,.modal-q-row textarea{flex:1}
-.modal-btns{display:flex;gap:10px;margin-top:16px}
+/* ═══════ MODAL ═══════ */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:300;padding:16px;animation:fadeIn .15s}
+.modal{width:100%;max-width:620px;max-height:88vh;overflow-y:auto;background:linear-gradient(170deg,#0E1228,#0A0E1E);border:1px solid rgba(255,255,255,.05);border-radius:var(--r-lg);padding:28px;animation:scaleIn .3s var(--ease-bounce)}
+.modal-title{font-family:var(--font-display);font-size:19px;font-weight:600;margin-bottom:20px;text-align:center}
+.m-row{margin-bottom:12px}
+.m-label{font-size:11px;font-weight:700;color:var(--dim);margin-bottom:5px;display:block;letter-spacing:1px}
+.m-input{width:100%;padding:10px 14px;border-radius:var(--r);border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);color:#fff;font-size:15px;font-weight:600;transition:all .2s}
+.m-select{width:100%;padding:10px 14px;border-radius:var(--r);border:1px solid rgba(255,255,255,.06);background:#0E1228;color:#fff;font-size:14px;font-weight:600}
+.m-3col{display:flex;gap:10px}
+.m-3col>div{flex:1}
+.m-qblock{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.03);border-radius:var(--r);padding:12px;margin-bottom:8px}
+.m-qpts{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.m-qrow{display:flex;gap:6px;margin-bottom:6px}
+.m-qrow input{flex:1}
+.m-emojigrid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin-top:6px;max-height:200px;overflow-y:auto;background:rgba(0,0,0,.2);border-radius:var(--r);padding:8px}
+.m-emo-btn{font-size:18px;width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:transparent;transition:all .1s;border:1.5px solid transparent}
+.m-emo-btn:hover{background:rgba(255,255,255,.08)}
+.m-emo-btn.sel{background:rgba(246,201,14,.1);border-color:var(--gold)}
+.m-btns{display:flex;gap:8px;margin-top:16px}
 
-/* Progress bar */
-.progress{height:3px;background:rgba(255,255,255,.04);border-radius:3px;margin:0 4px 10px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
-
-/* Responsive */
 @media(max-width:680px){
-  .setup-card{padding:28px 18px}
-  .logo-s,.logo-j{font-size:52px}
+  .setup-card{padding:28px 16px;border-radius:22px}
+  .logo-main{font-size:50px}
   .team-card{min-width:240px;padding:18px}
-  .q-cell-pts{font-size:18px}
-  .blk-center-nm{font-size:10px}
-  .sc-score{font-size:28px}
-  .sc-team{padding:10px 16px;min-width:140px}
+  .qc-pts{font-size:18px}
+  .blk-mid-nm{font-size:9px}
+  .sc-pts{font-size:26px}
+  .sc-card{padding:10px 14px;min-width:130px}
   .q-text{font-size:19px}
-  .timer-display{font-size:32px}
-  .go-title{font-size:32px}
-  .go-team-score{font-size:42px}
-  .nowords-word{font-size:30px}
-  .nowords-emoji{font-size:60px}
-  .step-title{font-size:19px}
-  .cat-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  .tmr-display{font-size:36px}
+  .go-title{font-size:34px}
+  .go-sc{font-size:44px}
+  .cat-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+  .nw-img{width:240px;height:240px}
 }
 </style>
 </head>
@@ -247,235 +255,139 @@ button:disabled{opacity:.3;cursor:not-allowed;filter:none}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <script type="text/babel">
-const {useState,useEffect,useRef,useCallback}=React;
+const {useState,useEffect,useRef}=React;
 
-/* ═══════════ COLOR PRESETS ═══════════ */
 const COLORS=[
-  {id:"red",name:"أحمر",c:"#E63946",light:"#FF6B6B"},
-  {id:"blue",name:"أزرق",c:"#3A86FF",light:"#60A5FA"},
-  {id:"green",name:"أخضر",c:"#2A9D8F",light:"#4ECDC4"},
-  {id:"purple",name:"بنفسجي",c:"#9B5DE5",light:"#C084FC"},
-  {id:"orange",name:"برتقالي",c:"#F77F00",light:"#FFAA33"},
-  {id:"pink",name:"وردي",c:"#FF006E",light:"#FF5C8A"},
-  {id:"gold",name:"ذهبي",c:"#D4A017",light:"#FFD700"},
-  {id:"teal",name:"سماوي",c:"#0891B2",light:"#22D3EE"},
+  {id:"red",c:"#E63946",l:"#FF6B6B"},{id:"blue",c:"#3A86FF",l:"#60A5FA"},
+  {id:"green",c:"#10B981",l:"#34D399"},{id:"purple",c:"#A855F7",l:"#C084FC"},
+  {id:"orange",c:"#F59E0B",l:"#FBBF24"},{id:"pink",c:"#EC4899",l:"#F472B6"},
+  {id:"teal",c:"#06B6D4",l:"#22D3EE"},{id:"lime",c:"#84CC16",l:"#A3E635"},
 ];
-const EMOJIS=["⚡","🔥","💪","🦅","🐺","🦁","🏆","⭐","🎯","🚀","💎","👑","🗡️","🛡️","🐉","🦈"];
+const TEAM_EMOJIS=["⚡","🔥","💪","🦅","🐺","🦁","🏆","⭐","🎯","🚀","💎","👑","🗡️","🛡️","🐉","🦈","🐻","🦊","🦇","🐍","🦂","🎭","🌪️","❄️"];
+const ICON_EMOJIS=["⚽","🏛️","🕌","🌍","🎵","🔬","💻","🍽️","🗺️","🦁","📜","✍️","✅","🎭","🔤","🤫","🧩","🚗","🎮","🎬","📚","🧠","💡","🎨","🏅","🎲","🌟","🔑","📸","🎤","✈️","🏖️","🏔️","🌸","🎸","🛸","⚗️","🔭","💊","🏗️","🎪","🎻","📡","🧬","💰","🏦","📊","🛒","🎁","❓"];
 
-/* ═══════════ BUILT-IN CATEGORIES ═══════════ */
-const BUILTIN_CATS=[
+const CATS=[
   {id:"sports",name:"رياضة",icon:"⚽",color:"#E63946",type:"regular",questions:[
-    {pts:200,q:"كم عدد لاعبي فريق كرة القدم داخل الملعب؟",a:"11 لاعباً"},
-    {pts:200,q:"في أي دولة أُقيمت كأس العالم 2022؟",a:"قطر"},
-    {pts:400,q:"من سجّل هدف السعودية الشهير ضد بلجيكا 1994؟",a:"سعيد العويران"},
-    {pts:400,q:"كم مرة فاز الهلال السعودي بدوري أبطال آسيا؟",a:"أربع مرات"},
-    {pts:600,q:"من هو اللاعب الوحيد الفائز بكأس العالم 3 مرات؟",a:"بيليه"},
-    {pts:600,q:"من هو هدّاف كأس العالم 2022؟",a:"كيليان مبابي (8 أهداف)"},
-  ]},
+    {pts:200,q:"كم لاعب في فريق كرة القدم؟",a:"11 لاعباً"},{pts:200,q:"أين أقيمت كأس العالم 2022؟",a:"قطر"},
+    {pts:400,q:"من سجّل هدف السعودية ضد بلجيكا 1994؟",a:"سعيد العويران"},{pts:400,q:"كم مرة فاز الهلال بآسيا؟",a:"4 مرات"},
+    {pts:600,q:"من الفائز بكأس العالم 3 مرات؟",a:"بيليه"},{pts:600,q:"هدّاف مونديال 2022؟",a:"مبابي (8 أهداف)"}]},
   {id:"history",name:"تاريخ",icon:"🏛️",color:"#8B6914",type:"regular",questions:[
-    {pts:200,q:"في أي عام تم توحيد المملكة العربية السعودية؟",a:"1932م"},
-    {pts:200,q:"من هو أول رئيس للولايات المتحدة؟",a:"جورج واشنطن"},
-    {pts:400,q:"ما المعركة التي انتصر فيها صلاح الدين على الصليبيين؟",a:"معركة حطين (1187م)"},
-    {pts:400,q:"في أي عام سقطت الدولة العثمانية؟",a:"1922م"},
-    {pts:600,q:"من فتح الأندلس؟",a:"طارق بن زياد"},
-    {pts:600,q:"ما أقدم حضارة معروفة في التاريخ؟",a:"الحضارة السومرية"},
-  ]},
+    {pts:200,q:"متى توحّدت السعودية؟",a:"1932م"},{pts:200,q:"أول رئيس أمريكي؟",a:"جورج واشنطن"},
+    {pts:400,q:"معركة صلاح الدين ضد الصليبيين؟",a:"حطين 1187م"},{pts:400,q:"سقوط الدولة العثمانية؟",a:"1922م"},
+    {pts:600,q:"فاتح الأندلس؟",a:"طارق بن زياد"},{pts:600,q:"أقدم حضارة معروفة؟",a:"السومرية"}]},
   {id:"islamic",name:"إسلامي",icon:"🕌",color:"#2A9D8F",type:"regular",questions:[
-    {pts:200,q:"كم عدد أركان الإسلام؟",a:"خمسة أركان"},
-    {pts:200,q:"ما أول سورة في القرآن الكريم؟",a:"سورة الفاتحة"},
-    {pts:400,q:"ما أطول سورة في القرآن؟",a:"سورة البقرة (286 آية)"},
-    {pts:400,q:"في أي سنة هجرية وقعت غزوة بدر؟",a:"2 هـ"},
-    {pts:600,q:"كم نبياً ذُكر في القرآن؟",a:"25 نبياً"},
-    {pts:600,q:"ما السورة الملقبة بقلب القرآن؟",a:"سورة يس"},
-  ]},
+    {pts:200,q:"كم أركان الإسلام؟",a:"خمسة"},{pts:200,q:"أول سورة في القرآن؟",a:"الفاتحة"},
+    {pts:400,q:"أطول سورة في القرآن؟",a:"البقرة (286 آية)"},{pts:400,q:"غزوة بدر أي سنة هجرية؟",a:"2 هـ"},
+    {pts:600,q:"كم نبياً ذُكر في القرآن؟",a:"25 نبياً"},{pts:600,q:"سورة قلب القرآن؟",a:"يس"}]},
   {id:"countries",name:"دول و عواصم",icon:"🌍",color:"#457B9D",type:"regular",questions:[
-    {pts:200,q:"ما عاصمة فرنسا؟",a:"باريس"},
-    {pts:200,q:"ما أكبر دولة عربية مساحةً؟",a:"الجزائر"},
-    {pts:400,q:"ما عاصمة أستراليا؟",a:"كانبيرا"},
-    {pts:400,q:"ما أصغر دولة في العالم؟",a:"الفاتيكان"},
-    {pts:600,q:"ما عاصمة ميانمار؟",a:"نايبيداو"},
-    {pts:600,q:"أي دولة تمتلك أكبر عدد جزر؟",a:"السويد"},
-  ]},
+    {pts:200,q:"عاصمة فرنسا؟",a:"باريس"},{pts:200,q:"أكبر دولة عربية مساحة؟",a:"الجزائر"},
+    {pts:400,q:"عاصمة أستراليا؟",a:"كانبيرا"},{pts:400,q:"أصغر دولة في العالم؟",a:"الفاتيكان"},
+    {pts:600,q:"عاصمة ميانمار؟",a:"نايبيداو"},{pts:600,q:"أكثر دولة جزر؟",a:"السويد"}]},
   {id:"gulf_art",name:"فن خليجي",icon:"🎵",color:"#9B2335",type:"regular",questions:[
-    {pts:200,q:"من هو 'فنان العرب'؟",a:"محمد عبده"},
-    {pts:200,q:"من أي دولة الفنانة أحلام؟",a:"الإمارات"},
-    {pts:400,q:"من صاحب أغنية 'يا ليل يا عين' الكويتي؟",a:"عبدالله الرويشد"},
-    {pts:400,q:"ما الإيقاع المشهور في أغاني السامري؟",a:"إيقاع الصفقة"},
-    {pts:600,q:"من كتب كلمات 'فوق هام السحب'؟",a:"الأمير خالد الفيصل"},
-    {pts:600,q:"ما هو فن المجرور؟",a:"فن شعبي حجازي إيقاعي"},
-  ]},
+    {pts:200,q:"من هو فنان العرب؟",a:"محمد عبده"},{pts:200,q:"جنسية الفنانة أحلام؟",a:"إماراتية"},
+    {pts:400,q:"صاحب 'يا ليل يا عين' الكويتي؟",a:"عبدالله الرويشد"},{pts:400,q:"إيقاع أغاني السامري؟",a:"الصفقة"},
+    {pts:600,q:"كاتب 'فوق هام السحب'؟",a:"خالد الفيصل"},{pts:600,q:"ما هو فن المجرور؟",a:"فن حجازي إيقاعي"}]},
   {id:"science",name:"علوم",icon:"🔬",color:"#6A4C93",type:"regular",questions:[
-    {pts:200,q:"ما الغاز الذي نتنفسه؟",a:"الأكسجين"},
-    {pts:200,q:"كم كوكباً في المجموعة الشمسية؟",a:"8 كواكب"},
-    {pts:400,q:"ما أصلب معدن طبيعي؟",a:"الألماس"},
-    {pts:400,q:"ما سرعة الضوء تقريباً؟",a:"300,000 كم/ث"},
-    {pts:600,q:"ما العنصر الأكثر وفرة في الكون؟",a:"الهيدروجين"},
-    {pts:600,q:"ما سبب ظاهرة المد والجزر؟",a:"جاذبية القمر"},
-  ]},
+    {pts:200,q:"الغاز الذي نتنفسه؟",a:"الأكسجين"},{pts:200,q:"كواكب المجموعة الشمسية؟",a:"8"},
+    {pts:400,q:"أصلب معدن طبيعي؟",a:"الألماس"},{pts:400,q:"سرعة الضوء تقريباً؟",a:"300,000 كم/ث"},
+    {pts:600,q:"أكثر عنصر في الكون؟",a:"الهيدروجين"},{pts:600,q:"سبب المد والجزر؟",a:"جاذبية القمر"}]},
   {id:"tech",name:"تقنية",icon:"💻",color:"#3A86FF",type:"regular",questions:[
-    {pts:200,q:"ما اختصار AI بالعربية؟",a:"الذكاء الاصطناعي"},
-    {pts:200,q:"من مؤسس مايكروسوفت؟",a:"بيل غيتس"},
-    {pts:400,q:"في أي سنة أُطلق أول iPhone؟",a:"2007"},
-    {pts:400,q:"ما لغة البرمجة التي طوّرها غيدو فان روسم؟",a:"بايثون"},
-    {pts:600,q:"ما البروتوكول المسؤول عن نقل صفحات الويب؟",a:"HTTP/HTTPS"},
-    {pts:600,q:"ما مفهوم البلوكتشين؟",a:"سجل رقمي لامركزي مشفّر"},
-  ]},
+    {pts:200,q:"AI بالعربية؟",a:"الذكاء الاصطناعي"},{pts:200,q:"مؤسس مايكروسوفت؟",a:"بيل غيتس"},
+    {pts:400,q:"سنة أول iPhone؟",a:"2007"},{pts:400,q:"لغة غيدو فان روسم؟",a:"بايثون"},
+    {pts:600,q:"بروتوكول نقل الويب؟",a:"HTTP/HTTPS"},{pts:600,q:"ما البلوكتشين؟",a:"سجل رقمي لامركزي"}]},
   {id:"food",name:"طبخ و مأكولات",icon:"🍽️",color:"#E07A5F",type:"regular",questions:[
-    {pts:200,q:"ما الأكلة السعودية الشهيرة من الأرز واللحم؟",a:"الكبسة"},
-    {pts:200,q:"من أي بلد نشأ الكشري؟",a:"مصر"},
-    {pts:400,q:"ما التوابل التي تعطي الكاري لونه الأصفر؟",a:"الكركم"},
-    {pts:400,q:"ما أغلى توابل في العالم؟",a:"الزعفران"},
-    {pts:600,q:"ما المشروب السعودي من القهوة والهيل؟",a:"القهوة العربية"},
-    {pts:600,q:"ما فاكهة ملكة الفواكه بجنوب شرق آسيا؟",a:"المانغوستين"},
-  ]},
+    {pts:200,q:"أكلة سعودية من الأرز واللحم؟",a:"الكبسة"},{pts:200,q:"بلد الكشري؟",a:"مصر"},
+    {pts:400,q:"توابل الكاري الصفراء؟",a:"الكركم"},{pts:400,q:"أغلى توابل؟",a:"الزعفران"},
+    {pts:600,q:"مشروب سعودي بالهيل؟",a:"القهوة العربية"},{pts:600,q:"ملكة الفواكه الآسيوية؟",a:"المانغوستين"}]},
   {id:"geography",name:"جغرافيا",icon:"🗺️",color:"#606C38",type:"regular",questions:[
-    {pts:200,q:"ما أطول نهر في العالم؟",a:"نهر النيل"},
-    {pts:200,q:"في أي قارة تقع مصر؟",a:"أفريقيا"},
-    {pts:400,q:"ما أعلى قمة في العالم؟",a:"إيفرست"},
-    {pts:400,q:"ما أكبر محيط في العالم؟",a:"المحيط الهادئ"},
-    {pts:600,q:"ما أعلى قمة في السعودية؟",a:"جبل السودة"},
-    {pts:600,q:"ما البحر الذي ليس له سواحل؟",a:"بحر سارغاسو"},
-  ]},
+    {pts:200,q:"أطول نهر؟",a:"النيل"},{pts:200,q:"قارة مصر؟",a:"أفريقيا"},
+    {pts:400,q:"أعلى قمة؟",a:"إيفرست"},{pts:400,q:"أكبر محيط؟",a:"الهادئ"},
+    {pts:600,q:"أعلى قمة بالسعودية؟",a:"جبل السودة"},{pts:600,q:"بحر بلا سواحل؟",a:"سارغاسو"}]},
   {id:"animals",name:"عالم الحيوان",icon:"🦁",color:"#BC6C25",type:"regular",questions:[
-    {pts:200,q:"ما أسرع حيوان بري؟",a:"الفهد (الشيتا)"},
-    {pts:200,q:"كم ذراعاً للأخطبوط؟",a:"8 أذرع"},
-    {pts:400,q:"ما الحيوان الذي لا يقفز؟",a:"الفيل"},
-    {pts:400,q:"ما أكبر حيوان على الأرض؟",a:"الحوت الأزرق"},
-    {pts:600,q:"كم قلباً للأخطبوط؟",a:"3 قلوب"},
-    {pts:600,q:"ما الحيوان صاحب أقوى عضّة؟",a:"تمساح المياه المالحة"},
-  ]},
+    {pts:200,q:"أسرع حيوان بري؟",a:"الفهد"},{pts:200,q:"أذرع الأخطبوط؟",a:"8"},
+    {pts:400,q:"حيوان لا يقفز؟",a:"الفيل"},{pts:400,q:"أكبر حيوان؟",a:"الحوت الأزرق"},
+    {pts:600,q:"قلوب الأخطبوط؟",a:"3"},{pts:600,q:"أقوى عضّة؟",a:"تمساح المياه المالحة"}]},
   {id:"proverbs",name:"أمثال و حكم",icon:"📜",color:"#A68A64",type:"regular",questions:[
-    {pts:200,q:"أكمل: 'اللي ما يعرف الصقر...'",a:"يشويه"},
-    {pts:200,q:"أكمل: 'الطيور على أشكالها...'",a:"تقع"},
-    {pts:400,q:"ما معنى 'يد واحدة ما تصفّق'؟",a:"النجاح يحتاج تعاون"},
-    {pts:400,q:"أكمل: 'إذا هبّت رياحك...'",a:"فاغتنمها"},
-    {pts:600,q:"أكمل: 'ما كل مرة...'",a:"تسلم الجرّة"},
-    {pts:600,q:"ما معنى 'اللي يبي العسل يصبر على قرص النحل'؟",a:"النجاح يتطلب صبراً"},
-  ]},
+    {pts:200,q:"'اللي ما يعرف الصقر...'",a:"يشويه"},{pts:200,q:"'الطيور على أشكالها...'",a:"تقع"},
+    {pts:400,q:"معنى 'يد واحدة ما تصفّق'؟",a:"النجاح يحتاج تعاون"},{pts:400,q:"'إذا هبّت رياحك...'",a:"فاغتنمها"},
+    {pts:600,q:"'ما كل مرة...'",a:"تسلم الجرّة"},{pts:600,q:"معنى 'يبي العسل يصبر...'؟",a:"النجاح يحتاج صبر"}]},
   {id:"arabic_lang",name:"لغة عربية",icon:"✍️",color:"#1D3557",type:"regular",questions:[
-    {pts:200,q:"كم حرفاً في اللغة العربية؟",a:"28 حرفاً"},
-    {pts:200,q:"ما جمع كلمة كتاب؟",a:"كُتُب"},
-    {pts:400,q:"ما المثنى من قلم؟",a:"قلمان / قلمين"},
-    {pts:400,q:"ما إعراب محمداً في رأيت محمداً؟",a:"مفعول به منصوب"},
-    {pts:600,q:"ما الفرق بين إنّ وأنّ؟",a:"إنّ أول الجملة — أنّ بعد فعل"},
-    {pts:600,q:"ما جمع أخطبوط فصحى؟",a:"أخاطب"},
-  ]},
+    {pts:200,q:"حروف العربية؟",a:"28"},{pts:200,q:"جمع كتاب؟",a:"كُتُب"},
+    {pts:400,q:"مثنى قلم؟",a:"قلمان"},{pts:400,q:"إعراب محمداً في 'رأيت محمداً'؟",a:"مفعول به"},
+    {pts:600,q:"الفرق بين إنّ وأنّ؟",a:"إنّ أول الجملة — أنّ بعد فعل"},{pts:600,q:"جمع أخطبوط فصحى؟",a:"أخاطب"}]},
   {id:"true_false",name:"صح ولا غلط",icon:"✅",color:"#38B000",type:"regular",questions:[
-    {pts:200,q:"صح أم غلط: الهند أكبر دولة سكاناً",a:"صح — تجاوزت الصين"},
-    {pts:200,q:"صح أم غلط: القمر يُصدر ضوءاً",a:"غلط — يعكس ضوء الشمس"},
-    {pts:400,q:"صح أم غلط: سور الصين يُرى من الفضاء",a:"غلط — خرافة"},
-    {pts:400,q:"صح أم غلط: النعامة تدفن رأسها في الرمل",a:"غلط — خرافة"},
-    {pts:600,q:"صح أم غلط: الماء النقي لا يوصل الكهرباء",a:"صح"},
-    {pts:600,q:"صح أم غلط: الزهرة يدور عكس الكواكب",a:"صح — دوران رجعي"},
-  ]},
+    {pts:200,q:"الهند أكبر سكاناً؟",a:"صح"},{pts:200,q:"القمر يُصدر ضوءاً؟",a:"غلط — يعكس ضوء الشمس"},
+    {pts:400,q:"سور الصين يُرى من الفضاء؟",a:"غلط"},{pts:400,q:"النعامة تدفن رأسها؟",a:"غلط"},
+    {pts:600,q:"الماء النقي لا يوصل الكهرباء؟",a:"صح"},{pts:600,q:"الزهرة يدور عكسياً؟",a:"صح"}]},
   {id:"who_am_i",name:"من أنا؟",icon:"🎭",color:"#9B5DE5",type:"regular",questions:[
-    {pts:200,q:"ملك سعودي لُقّب بملك الإنسانية",a:"الملك فيصل بن عبدالعزيز"},
-    {pts:200,q:"لاعب أرجنتيني فاز بكأس العالم 2022",a:"ميسي"},
-    {pts:400,q:"رحّالة مغربي جاب العالم بالقرن 14",a:"ابن بطوطة"},
-    {pts:400,q:"أسست تيسلا وسبيس إكس",a:"إيلون ماسك"},
-    {pts:600,q:"عالم فيزياء صاحب النظرية النسبية",a:"أينشتاين"},
-    {pts:600,q:"ملكة مصرية حكمت مع الرومان",a:"كليوباترا"},
-  ]},
+    {pts:200,q:"ملك سعودي — ملك الإنسانية",a:"الملك فيصل"},{pts:200,q:"أرجنتيني — مونديال 2022",a:"ميسي"},
+    {pts:400,q:"رحّالة مغربي — القرن 14",a:"ابن بطوطة"},{pts:400,q:"تيسلا + سبيس إكس",a:"إيلون ماسك"},
+    {pts:600,q:"النظرية النسبية",a:"أينشتاين"},{pts:600,q:"ملكة مصرية + الرومان",a:"كليوباترا"}]},
   {id:"letters",name:"حروف",icon:"🔤",color:"#D4A373",type:"letters",questions:[
-    {pts:200,q:"مدينة سعودية عروس البحر الأحمر",a:"جدة",letter:"ج"},
-    {pts:200,q:"فاكهة استوائية صفراء",a:"موز",letter:"م"},
-    {pts:400,q:"عالم مسلم لُقب بأبي الطب",a:"ابن سينا",letter:"ا"},
-    {pts:400,q:"أكبر صحراء في الجزيرة العربية",a:"الربع الخالي",letter:"ر"},
-    {pts:600,q:"مخترع المصباح الكهربائي",a:"توماس إديسون",letter:"ت"},
-    {pts:600,q:"عملة اليابان",a:"ين",letter:"ي"},
-  ]},
+    {pts:200,q:"عروس البحر الأحمر",a:"جدة",letter:"ج"},{pts:200,q:"فاكهة صفراء استوائية",a:"موز",letter:"م"},
+    {pts:400,q:"أبو الطب المسلم",a:"ابن سينا",letter:"ا"},{pts:400,q:"أكبر صحراء عربية",a:"الربع الخالي",letter:"ر"},
+    {pts:600,q:"مخترع المصباح",a:"إديسون",letter:"ت"},{pts:600,q:"عملة اليابان",a:"ين",letter:"ي"}]},
   {id:"no_words",name:"ولا كلمة",icon:"🤫",color:"#E76F51",type:"no_words",questions:[
-    {pts:200,word:"طيّار",emoji:"✈️👨‍✈️",hint:"يقود الطائرة"},
-    {pts:200,word:"طبّاخ",emoji:"👨‍🍳🍳",hint:"يطبخ الأكل"},
-    {pts:400,word:"غوّاص",emoji:"🤿🌊",hint:"ينزل تحت الماء"},
-    {pts:400,word:"مصوّر",emoji:"📸🎞️",hint:"يلتقط الصور"},
-    {pts:600,word:"رائد فضاء",emoji:"🧑‍🚀🚀",hint:"يسافر للفضاء"},
-    {pts:600,word:"ساحر",emoji:"🎩✨🐇",hint:"يقوم بخدع سحرية"},
-  ]},
+    {pts:200,image:"no-words/q1.png",a:"طيّار"},{pts:200,image:"no-words/q2.png",a:"طبّاخ"},
+    {pts:400,image:"no-words/q3.png",a:"غوّاص"},{pts:400,image:"no-words/q4.png",a:"مصوّر"},
+    {pts:600,image:"no-words/q5.png",a:"رائد فضاء"},{pts:600,image:"no-words/q6.png",a:"ساحر"}]},
   {id:"guess_photo",name:"خمن الصورة",icon:"🧩",color:"#264653",type:"guess_photo",questions:[
-    {pts:200,images:["img1a.jpg","img1b.jpg"],a:"الجواب 1"},
-    {pts:200,images:["img2a.jpg","img2b.jpg"],a:"الجواب 2"},
-    {pts:400,images:["img3a.jpg","img3b.jpg"],a:"الجواب 3"},
-    {pts:400,images:["img4a.jpg","img4b.jpg"],a:"الجواب 4"},
-    {pts:600,images:["img5a.jpg","img5b.jpg"],a:"الجواب 5"},
-    {pts:600,images:["img6a.jpg","img6b.jpg"],a:"الجواب 6"},
-  ]},
+    {pts:200,image:"guess/q1.png",a:"الجواب 1"},{pts:200,image:"guess/q2.png",a:"الجواب 2"},
+    {pts:400,image:"guess/q3.png",a:"الجواب 3"},{pts:400,image:"guess/q4.png",a:"الجواب 4"},
+    {pts:600,image:"guess/q5.png",a:"الجواب 5"},{pts:600,image:"guess/q6.png",a:"الجواب 6"}]},
 ];
 
-/* ═══════════ TIMER HOOK ═══════════ */
 function useTimer(){
-  const[s,setS]=useState(0);
-  const[on,setOn]=useState(false);
-  const ref=useRef(null);
-  useEffect(()=>{
-    if(on)ref.current=setInterval(()=>setS(p=>p+1),1000);
-    else clearInterval(ref.current);
-    return()=>clearInterval(ref.current);
-  },[on]);
-  const fmt=`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-  return{s,on,fmt,toggle:()=>setOn(p=>!p),reset:()=>{setS(0);setOn(false)},stop:()=>setOn(false)};
+  const[s,setS]=useState(0);const[on,setOn]=useState(false);const r=useRef(null);
+  useEffect(()=>{if(on)r.current=setInterval(()=>setS(p=>p+1),1000);else clearInterval(r.current);return()=>clearInterval(r.current)},[on]);
+  return{s,on,fmt:`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`,toggle:()=>setOn(p=>!p),reset:()=>{setS(0);setOn(false)},stop:()=>setOn(false)};
 }
 
-/* ═══════════ CONFETTI ═══════════ */
 function Confetti(){
-  const c=["#E63946","#FFD700","#2A9D8F","#3A86FF","#FF6B6B","#48BB78","#9B5DE5","#F77F00"];
+  const cols=["#E63946","#FFD700","#3A86FF","#10B981","#A855F7","#F59E0B","#EC4899","#06B6D4"];
+  const pcs=React.useMemo(()=>Array.from({length:80},(_,i)=>({i,l:Math.random()*100,d:Math.random()*3,dur:2+Math.random()*3,c:cols[~~(Math.random()*cols.length)],sz:4+Math.random()*8,rot:Math.random()*360})),[]);
   return<div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:999}}>
-    {Array.from({length:80},(_,i)=>{const cl=c[~~(Math.random()*c.length)],sz=5+Math.random()*10;
-    return<div key={i} className="confetti-p" style={{left:`${Math.random()*100}%`,top:"-20px",width:sz,height:sz*.55,background:cl,transform:`rotate(${Math.random()*360}deg)`,animation:`confettiFall ${2+Math.random()*3}s ease-in ${Math.random()*3}s forwards`}}/>})}
+    {pcs.map(p=><div key={p.i} className="confetti-p" style={{left:`${p.l}%`,top:"-16px",width:p.sz,height:p.sz*.5,background:p.c,transform:`rotate(${p.rot}deg)`,animation:`confetti ${p.dur}s ease-in ${p.d}s forwards`}}/>)}
   </div>;
 }
 
-/* ═══════════ CUSTOM CATEGORY MODAL ═══════════ */
-function CustomCatModal({onClose,onSave}){
+function CatModal({onClose,onSave}){
   const[name,setName]=useState("");
   const[icon,setIcon]=useState("❓");
+  const[showIcons,setShowIcons]=useState(false);
   const[color,setColor]=useState("#E63946");
   const[type,setType]=useState("regular");
-  const[qs,setQs]=useState(Array.from({length:6},(_,i)=>({pts:[200,200,400,400,600,600][i],q:"",a:"",letter:"",word:"",emoji:"",hint:"",images:""})));
-
-  const updateQ=(idx,field,val)=>{const n=[...qs];n[idx]={...n[idx],[field]:val};setQs(n)};
-
-  const save=()=>{
-    const cat={id:"custom_"+Date.now(),name,icon,color,type,questions:qs.map(q=>{
-      const base={pts:q.pts};
-      if(type==="regular")return{...base,q:q.q,a:q.a};
-      if(type==="letters")return{...base,q:q.q,a:q.a,letter:q.letter};
-      if(type==="no_words")return{...base,word:q.word,emoji:q.emoji,hint:q.hint};
-      if(type==="guess_photo")return{...base,images:q.images.split(",").map(s=>s.trim()),a:q.a};
-      return base;
-    })};
-    onSave(cat);
-  };
+  const[qs,setQs]=useState([200,200,400,400,600,600].map(p=>({pts:p,q:"",a:"",letter:"",image:""})));
+  const upQ=(i,f,v)=>{const n=[...qs];n[i]={...n[i],[f]:v};setQs(n)};
 
   const valid=name.trim()&&qs.every(q=>{
-    if(type==="regular")return q.q&&q.a;
-    if(type==="letters")return q.q&&q.a&&q.letter;
-    if(type==="no_words")return q.word&&q.emoji;
-    if(type==="guess_photo")return q.images&&q.a;
+    if(type==="regular"||type==="letters")return q.q&&q.a;
+    if(type==="no_words"||type==="guess_photo")return q.image&&q.a;
     return false;
   });
 
-  return<div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&onClose()}>
+  const save=()=>{
+    onSave({id:"c_"+Date.now(),name,icon,color,type,questions:qs.map(q=>{
+      if(type==="regular")return{pts:q.pts,q:q.q,a:q.a};
+      if(type==="letters")return{pts:q.pts,q:q.q,a:q.a,letter:q.letter};
+      if(type==="no_words")return{pts:q.pts,image:q.image,a:q.a};
+      if(type==="guess_photo")return{pts:q.pts,image:q.image,a:q.a};
+      return q;
+    })});
+  };
+
+  return<div className="modal-bg" onClick={e=>e.target===e.currentTarget&&onClose()}>
     <div className="modal">
       <div className="modal-title">➕ إضافة تصنيف جديد</div>
-
-      <div className="modal-row">
-        <label className="modal-label">اسم التصنيف</label>
-        <input className="modal-input" value={name} onChange={e=>setName(e.target.value)} placeholder="مثال: سيارات"/>
-      </div>
-
-      <div style={{display:"flex",gap:12,marginBottom:14}}>
-        <div style={{flex:1}}>
-          <label className="modal-label">الأيقونة (إيموجي)</label>
-          <input className="modal-input" value={icon} onChange={e=>setIcon(e.target.value)} style={{textAlign:"center",fontSize:24}}/>
+      <div className="m-row"><label className="m-label">اسم التصنيف</label><input className="m-input" value={name} onChange={e=>setName(e.target.value)} placeholder="مثال: سيارات"/></div>
+      <div className="m-3col">
+        <div><label className="m-label">الأيقونة</label>
+          <button onClick={()=>setShowIcons(!showIcons)} style={{width:"100%",padding:"10px",borderRadius:"var(--r)",border:"1px solid rgba(255,255,255,.06)",background:"rgba(255,255,255,.03)",color:"#fff",fontSize:28,cursor:"pointer",textAlign:"center"}}>{icon}</button>
+          {showIcons&&<div className="m-emojigrid">{ICON_EMOJIS.map(e=><button key={e} className={`m-emo-btn ${icon===e?"sel":""}`} onClick={()=>{setIcon(e);setShowIcons(false)}}>{e}</button>)}</div>}
         </div>
-        <div style={{flex:1}}>
-          <label className="modal-label">اللون</label>
-          <input type="color" value={color} onChange={e=>setColor(e.target.value)} style={{width:"100%",height:42,border:"none",borderRadius:8,cursor:"pointer",background:"transparent"}}/>
-        </div>
-        <div style={{flex:1}}>
-          <label className="modal-label">النوع</label>
-          <select className="modal-select" value={type} onChange={e=>setType(e.target.value)}>
+        <div><label className="m-label">اللون</label><input type="color" value={color} onChange={e=>setColor(e.target.value)} style={{width:"100%",height:44,border:"none",borderRadius:8,cursor:"pointer",background:"transparent"}}/></div>
+        <div><label className="m-label">النوع</label>
+          <select className="m-select" value={type} onChange={e=>setType(e.target.value)}>
             <option value="regular">سؤال وجواب</option>
             <option value="letters">حروف 🔤</option>
             <option value="no_words">ولا كلمة 🤫</option>
@@ -483,331 +395,195 @@ function CustomCatModal({onClose,onSave}){
           </select>
         </div>
       </div>
-
-      <label className="modal-label">الأسئلة (6 أسئلة)</label>
-      {qs.map((q,i)=><div key={i} className="modal-q-block">
-        <div className="modal-q-pts">{q.pts} نقطة</div>
-        {type==="regular"&&<><div className="modal-q-row"><input className="modal-input" placeholder="السؤال" value={q.q} onChange={e=>updateQ(i,"q",e.target.value)}/></div>
-          <div className="modal-q-row"><input className="modal-input" placeholder="الجواب" value={q.a} onChange={e=>updateQ(i,"a",e.target.value)}/></div></>}
-        {type==="letters"&&<><div className="modal-q-row"><input className="modal-input" placeholder="السؤال" value={q.q} onChange={e=>updateQ(i,"q",e.target.value)}/><input className="modal-input" placeholder="الحرف" value={q.letter} onChange={e=>updateQ(i,"letter",e.target.value)} style={{maxWidth:60,textAlign:"center"}}/></div>
-          <div className="modal-q-row"><input className="modal-input" placeholder="الجواب" value={q.a} onChange={e=>updateQ(i,"a",e.target.value)}/></div></>}
-        {type==="no_words"&&<><div className="modal-q-row"><input className="modal-input" placeholder="الكلمة" value={q.word} onChange={e=>updateQ(i,"word",e.target.value)}/><input className="modal-input" placeholder="إيموجي" value={q.emoji} onChange={e=>updateQ(i,"emoji",e.target.value)} style={{maxWidth:80}}/></div>
-          <div className="modal-q-row"><input className="modal-input" placeholder="تلميح" value={q.hint} onChange={e=>updateQ(i,"hint",e.target.value)}/></div></>}
-        {type==="guess_photo"&&<><div className="modal-q-row"><input className="modal-input" placeholder="أسماء الصور (مفصولة بفاصلة): img1.jpg, img2.jpg" value={q.images} onChange={e=>updateQ(i,"images",e.target.value)}/></div>
-          <div className="modal-q-row"><input className="modal-input" placeholder="الجواب" value={q.a} onChange={e=>updateQ(i,"a",e.target.value)}/></div></>}
-      </div>)}
-
-      <div className="modal-btns">
-        <button className="btn btn-gold" style={{flex:1}} disabled={!valid} onClick={save}>💾 حفظ التصنيف</button>
-        <button className="btn btn-ghost" onClick={onClose}>إلغاء</button>
+      <div style={{marginTop:14}}><label className="m-label">الأسئلة (6 أسئلة)</label>
+        {qs.map((q,i)=><div key={i} className="m-qblock">
+          <div className="m-qpts">{q.pts} نقطة</div>
+          {type==="regular"&&<><div className="m-qrow"><input className="m-input" placeholder="السؤال" value={q.q} onChange={e=>upQ(i,"q",e.target.value)}/></div><div className="m-qrow"><input className="m-input" placeholder="الجواب" value={q.a} onChange={e=>upQ(i,"a",e.target.value)}/></div></>}
+          {type==="letters"&&<><div className="m-qrow"><input className="m-input" placeholder="السؤال" value={q.q} onChange={e=>upQ(i,"q",e.target.value)}/><input className="m-input" placeholder="حرف" value={q.letter} onChange={e=>upQ(i,"letter",e.target.value)} style={{maxWidth:50,textAlign:"center",fontWeight:900}}/></div><div className="m-qrow"><input className="m-input" placeholder="الجواب" value={q.a} onChange={e=>upQ(i,"a",e.target.value)}/></div></>}
+          {(type==="no_words"||type==="guess_photo")&&<><div className="m-qrow"><input className="m-input" placeholder={type==="no_words"?"مسار الصورة: no-words/image.png":"مسار الصورة: guess/image.png"} value={q.image} onChange={e=>upQ(i,"image",e.target.value)}/></div><div className="m-qrow"><input className="m-input" placeholder="الجواب" value={q.a} onChange={e=>upQ(i,"a",e.target.value)}/></div></>}
+        </div>)}
       </div>
+      <div className="m-btns"><button className="btn btn-gold" style={{flex:1}} disabled={!valid} onClick={save}>💾 حفظ</button><button className="btn btn-ghost" onClick={onClose}>إلغاء</button></div>
     </div>
   </div>;
 }
 
-/* ═══════════ MAIN APP ═══════════ */
 function App(){
-  const[screen,setScreen]=useState("setup");
-  const[step,setStep]=useState(0); // 0=teams, 1=categories
-  // Teams
+  const[scr,setScr]=useState("setup");const[step,setStep]=useState(0);
   const[t1,setT1]=useState({name:"",color:COLORS[0],emoji:"⚡"});
   const[t2,setT2]=useState({name:"",color:COLORS[1],emoji:"🔥"});
-  // Categories
-  const[pool,setPool]=useState(BUILTIN_CATS);
-  const[sel,setSel]=useState([]);
-  const[showModal,setShowModal]=useState(false);
-  // Game
-  const[gc,setGc]=useState([]);
-  const[ans,setAns]=useState({}); // key -> {team:1|2|0, status}
-  const[s1,setS1]=useState(0);
-  const[s2,setS2]=useState(0);
-  const[scoreFlash,setScoreFlash]=useState(0);
-  // Question
-  const[aq,setAq]=useState(null);
-  const[showAns,setShowAns]=useState(false);
-  const timer=useTimer();
-  // Emoji pickers
-  const[showE1,setShowE1]=useState(false);
-  const[showE2,setShowE2]=useState(false);
+  const[pool,setPool]=useState(CATS);const[sel,setSel]=useState([]);const[showModal,setShowModal]=useState(false);
+  const[gc,setGc]=useState([]);const[ans,setAns]=useState({});
+  const[s1,setS1]=useState(0);const[s2,setS2]=useState(0);const[pop,setPop]=useState(0);
+  const[aq,setAq]=useState(null);const[sa,setSa]=useState(false);
+  const[e1Open,setE1Open]=useState(false);const[e2Open,setE2Open]=useState(false);
+  const tm=useTimer();
 
-  const togCat=id=>setSel(p=>{if(p.includes(id))return p.filter(c=>c!==id);if(p.length>=6)return p;return[...p,id]});
-
-  const startGame=()=>{setGc(pool.filter(c=>sel.includes(c.id)));setScreen("board")};
-
-  const openQ=(ci,qi)=>{const k=`${ci}-${qi}`;if(ans[k])return;setAq({ci,qi,k,cat:gc[ci],q:gc[ci].questions[qi]});setShowAns(false);timer.reset();timer.toggle();setScreen("question")};
-
-  const awardTeam=(team)=>{
+  const togCat=id=>setSel(p=>{if(p.includes(id))return p.filter(c=>c!==id);return p.length>=6?p:[...p,id]});
+  const startGame=()=>{setGc(pool.filter(c=>sel.includes(c.id)));setScr("board")};
+  const openQ=(ci,qi)=>{const k=`${ci}-${qi}`;if(ans[k])return;setAq({ci,qi,k,cat:gc[ci],q:gc[ci].questions[qi]});setSa(false);tm.reset();tm.toggle();setScr("question")};
+  
+  const award=(team)=>{
     const pts=aq.q.pts;
-    if(team===1){setS1(v=>v+pts);setScoreFlash(1)}
-    else if(team===2){setS2(v=>v+pts);setScoreFlash(2)}
-    setTimeout(()=>setScoreFlash(0),500);
-    const na={...ans,[aq.k]:{team,pts}};
-    setAns(na);
-    timer.stop();
-    if(Object.keys(na).length>=gc.length*6)setTimeout(()=>setScreen("gameover"),400);
-    else setScreen("board");
+    if(team===1){setS1(v=>v+pts);setPop(1)}else if(team===2){setS2(v=>v+pts);setPop(2)}
+    setTimeout(()=>setPop(0),500);
+    finish({team,pts});
   };
-
-  const noOneAnswered=()=>{
-    const na={...ans,[aq.k]:{team:0,pts:0}};
-    setAns(na);
-    timer.stop();
-    if(Object.keys(na).length>=gc.length*6)setTimeout(()=>setScreen("gameover"),400);
-    else setScreen("board");
-  };
-
-  const importJSON=()=>{
-    const inp=document.createElement("input");inp.type="file";inp.accept=".json";
-    inp.onchange=e=>{const f=e.target.files[0];if(!f)return;
-      const r=new FileReader();r.onload=ev=>{try{
-        const data=JSON.parse(ev.target.result);
-        const cats=data.categories||data;
-        if(Array.isArray(cats)){
-          const newCats=cats.map((c,i)=>({...c,id:c.id||"import_"+Date.now()+"_"+i}));
-          setPool(p=>[...p,...newCats]);
-        }
-      }catch(e){alert("خطأ في قراءة الملف")}};
-      r.readAsText(f);
-    };inp.click();
-  };
-
-  const resetAll=()=>{
-    setScreen("setup");setStep(0);setT1({name:"",color:COLORS[0],emoji:"⚡"});
-    setT2({name:"",color:COLORS[1],emoji:"🔥"});setSel([]);setGc([]);
-    setAns({});setS1(0);setS2(0);setAq(null);setShowAns(false);timer.reset();
-  };
-
-  const anN=Object.keys(ans).length;const totQ=gc.length*6;
+  const noOne=()=>finish({team:0,pts:0});
+  const finish=(res)=>{tm.stop();const na={...ans,[aq.k]:res};setAns(na);Object.keys(na).length>=gc.length*6?setTimeout(()=>setScr("gameover"),400):setScr("board")};
+  
+  const importJSON=()=>{const inp=document.createElement("input");inp.type="file";inp.accept=".json";inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);const c=d.categories||d;if(Array.isArray(c))setPool(p=>[...p,...c.map((x,i)=>({...x,id:x.id||"imp_"+Date.now()+"_"+i}))])}catch(e){alert("خطأ في الملف")}};r.readAsText(f)};inp.click()};
+  
+  const resetAll=()=>{setScr("setup");setStep(0);setT1({name:"",color:COLORS[0],emoji:"⚡"});setT2({name:"",color:COLORS[1],emoji:"🔥"});setSel([]);setGc([]);setAns({});setS1(0);setS2(0);setAq(null);setSa(false);tm.reset()};
 
   /* ═══ SETUP ═══ */
-  if(screen==="setup") return <div className="setup">
-    <div className="orb orb-1"/><div className="orb orb-2"/><div className="orb orb-3"/>
+  if(scr==="setup")return<div className="setup">
+    <div className="orb orb-1"/><div className="orb orb-2"/>
     <div className="setup-card">
-      <div className="logo"><div className="logo-main"><span className="logo-j">جيم</span><span className="logo-s">سين</span></div></div>
+      <div className="logo"><div className="logo-main"><span className="logo-sin">سين</span><span className="logo-jim">جيم</span></div></div>
       <div className="logo-sub">لعبة المعرفة والتحدي</div>
-
-      <div className="steps">
-        <div className={`step-dot ${step===0?"active":step>0?"done":""}`}/>
-        <div className={`step-dot ${step===1?"active":""}`}/>
-      </div>
+      <div className="steps"><div className={`step-pip ${step===0?"active":step>0?"done":""}`}/><div className={`step-pip ${step===1?"active":""}`}/></div>
 
       {step===0?<div className="fade-step" key="s0">
-        <div className="step-title">⚔️ إعداد الفريقين</div>
+        <div className="step-title">إعداد الفريقين</div>
         <div className="teams-row">
-          {/* Team 1 */}
-          <div className="team-card" style={{borderColor:t1.color.c+"40"}}>
+          <div className="team-card" style={{borderColor:t1.color.c+"30"}}>
             <div className="team-label">الفريق الأول</div>
-            <div className="team-emoji-pick" style={{borderColor:t1.color.c,background:t1.color.c+"15"}} onClick={()=>setShowE1(!showE1)}>{t1.emoji}</div>
-            {showE1&&<div className="emoji-grid">{EMOJIS.map(e=><button key={e} className={`emoji-opt ${t1.emoji===e?"sel":""}`} onClick={()=>{setT1({...t1,emoji:e});setShowE1(false)}}>{e}</button>)}</div>}
-            <input className="team-inp" placeholder="اسم الفريق" value={t1.name} onChange={e=>setT1({...t1,name:e.target.value})} dir="rtl" style={{borderColor:t1.color.c+"40"}}/>
-            <div className="color-row">
-              {COLORS.map(c=><div key={c.id} className={`color-dot ${t1.color.id===c.id?"sel":""}`} style={{background:c.c}} onClick={()=>setT1({...t1,color:c})}/>)}
-            </div>
+            <div className="team-emoji-btn" style={{borderColor:t1.color.c+"50",background:t1.color.c+"0A"}} onClick={()=>{setE1Open(!e1Open);setE2Open(false)}}>{t1.emoji}</div>
+            {e1Open&&<div className="emoji-dropdown">{TEAM_EMOJIS.map(e=><button key={e} className={`emoji-opt ${t1.emoji===e?"sel":""}`} onClick={()=>{setT1({...t1,emoji:e});setE1Open(false)}}>{e}</button>)}</div>}
+            <input className="team-inp" placeholder="اسم الفريق" value={t1.name} onChange={e=>setT1({...t1,name:e.target.value})} style={{borderColor:t1.color.c+"25"}}/>
+            <div className="color-row">{COLORS.map(c=><div key={c.id} className={`color-swatch ${t1.color.id===c.id?"sel":""}`} style={{background:c.c,color:c.c}} onClick={()=>setT1({...t1,color:c})}/>)}</div>
           </div>
-
-          <div className="vs-badge">VS</div>
-
-          {/* Team 2 */}
-          <div className="team-card" style={{borderColor:t2.color.c+"40"}}>
+          <div className="vs-pill">VS</div>
+          <div className="team-card" style={{borderColor:t2.color.c+"30"}}>
             <div className="team-label">الفريق الثاني</div>
-            <div className="team-emoji-pick" style={{borderColor:t2.color.c,background:t2.color.c+"15"}} onClick={()=>setShowE2(!showE2)}>{t2.emoji}</div>
-            {showE2&&<div className="emoji-grid">{EMOJIS.map(e=><button key={e} className={`emoji-opt ${t2.emoji===e?"sel":""}`} onClick={()=>{setT2({...t2,emoji:e});setShowE2(false)}}>{e}</button>)}</div>}
-            <input className="team-inp" placeholder="اسم الفريق" value={t2.name} onChange={e=>setT2({...t2,name:e.target.value})} dir="rtl" style={{borderColor:t2.color.c+"40"}}/>
-            <div className="color-row">
-              {COLORS.map(c=><div key={c.id} className={`color-dot ${t2.color.id===c.id?"sel":""}`} style={{background:c.c}} onClick={()=>setT2({...t2,color:c})}/>)}
-            </div>
+            <div className="team-emoji-btn" style={{borderColor:t2.color.c+"50",background:t2.color.c+"0A"}} onClick={()=>{setE2Open(!e2Open);setE1Open(false)}}>{t2.emoji}</div>
+            {e2Open&&<div className="emoji-dropdown">{TEAM_EMOJIS.map(e=><button key={e} className={`emoji-opt ${t2.emoji===e?"sel":""}`} onClick={()=>{setT2({...t2,emoji:e});setE2Open(false)}}>{e}</button>)}</div>}
+            <input className="team-inp" placeholder="اسم الفريق" value={t2.name} onChange={e=>setT2({...t2,name:e.target.value})} style={{borderColor:t2.color.c+"25"}}/>
+            <div className="color-row">{COLORS.map(c=><div key={c.id} className={`color-swatch ${t2.color.id===c.id?"sel":""}`} style={{background:c.c,color:c.c}} onClick={()=>setT2({...t2,color:c})}/>)}</div>
           </div>
         </div>
-
-        <button className="btn btn-gold btn-lg" disabled={!t1.name.trim()||!t2.name.trim()} onClick={()=>setStep(1)}>
-          التالي ← اختيار التصنيفات
-        </button>
+        <button className="btn btn-gold btn-lg" disabled={!t1.name.trim()||!t2.name.trim()} onClick={()=>setStep(1)}>التالي ← اختيار التصنيفات</button>
       </div>
 
       :<div className="fade-step" key="s1">
-        <button className="btn btn-ghost" style={{marginBottom:12,fontSize:13,padding:"6px 14px"}} onClick={()=>setStep(0)}>→ رجوع</button>
-        <div className="step-title">📚 اختر 6 تصنيفات <span style={{fontSize:14,fontWeight:700,background:"rgba(255,215,0,.1)",color:"var(--gold)",padding:"3px 14px",borderRadius:16,marginRight:8}}>{sel.length}/6</span></div>
-
-        <div className="cat-actions">
-          <button className="btn btn-ghost" style={{fontSize:13,padding:"8px 16px"}} onClick={()=>setShowModal(true)}>➕ إضافة تصنيف</button>
-          <button className="btn btn-ghost" style={{fontSize:13,padding:"8px 16px"}} onClick={importJSON}>📂 استيراد JSON</button>
+        <button className="btn btn-ghost" style={{marginBottom:10,fontSize:12,padding:"5px 12px"}} onClick={()=>setStep(0)}>→ رجوع</button>
+        <div className="step-title">اختر 6 تصنيفات <span style={{fontSize:13,background:"rgba(246,201,14,.08)",color:"var(--gold)",padding:"3px 12px",borderRadius:12,marginRight:8,fontWeight:700}}>{sel.length}/6</span></div>
+        <div className="cat-tools">
+          <button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={()=>setShowModal(true)}>➕ إضافة تصنيف</button>
+          <button className="btn btn-ghost" style={{fontSize:12,padding:"7px 14px"}} onClick={importJSON}>📂 استيراد JSON</button>
         </div>
-
         <div className="cat-grid">
-          {pool.map(c=>{const s=sel.includes(c.id);const full=sel.length>=6&&!s;
-            const tl={regular:null,no_words:"🤫 تمثيل",letters:"🔤 حروف",guess_photo:"🧩 خمّن الصورة"}[c.type];
-            return<button key={c.id} onClick={()=>!full&&togCat(c.id)} className={`cat-card ${s?"sel":""} ${full?"full":""}`} style={{color:c.color,"--cc":c.color}}>
-              {s&&<div className="cat-chk" style={{background:c.color}}>✓</div>}
-              <span className="cat-ic">{c.icon}</span>
-              <span className="cat-nm">{c.name}</span>
-              {tl&&<span className="cat-tp">{tl}</span>}
-              <style>{`.cat-card.sel[style*="${c.color}"]::before{background:${c.color}15}`}</style>
+          {pool.map(c=>{const s=sel.includes(c.id),full=sel.length>=6&&!s;
+            const tp={regular:null,no_words:"🤫 تمثيل",letters:"🔤 حروف",guess_photo:"🧩 صور"}[c.type];
+            return<button key={c.id} onClick={()=>!full&&togCat(c.id)} className={`cat-card ${s?"sel":""} ${full?"full":""}`} style={{color:c.color}}>
+              {s&&<div className="c-chk" style={{background:c.color}}>✓</div>}
+              <span className="c-ic">{c.icon}</span><span className="c-nm">{c.name}</span>
+              {tp&&<span className="c-tp">{tp}</span>}
+              <div className="c-glow" style={{background:c.color}}/>
             </button>})}
         </div>
-
         <button className="btn btn-gold btn-lg" disabled={sel.length!==6} onClick={startGame}>🎮 ابدأ اللعبة!</button>
-
-        {showModal&&<CustomCatModal onClose={()=>setShowModal(false)} onSave={cat=>{setPool(p=>[...p,cat]);setShowModal(false)}}/>}
+        {showModal&&<CatModal onClose={()=>setShowModal(false)} onSave={c=>{setPool(p=>[...p,c]);setShowModal(false)}}/>}
       </div>}
     </div>
   </div>;
 
   /* ═══ QUESTION ═══ */
-  if(screen==="question"&&aq){
-    const{cat,q}=aq;
-    const isNW=cat.type==="no_words",isLT=cat.type==="letters",isPH=cat.type==="guess_photo";
-
-    return<div className="q-overlay">
-      <div className="q-modal">
-        <div className="q-top" style={{background:cat.color}}>
-          <span>{cat.icon}</span><span>{cat.name}</span>
-          <span className="q-top-pts">{q.pts}</span>
+  if(scr==="question"&&aq){
+    const{cat,q}=aq;const isNW=cat.type==="no_words",isLT=cat.type==="letters",isPH=cat.type==="guess_photo";
+    return<div className="q-overlay"><div className="q-modal">
+      <div className="q-hdr" style={{background:`linear-gradient(135deg,${cat.color},${cat.color}CC)`}}><span>{cat.icon}</span><span>{cat.name}</span><span className="q-hdr-pts">{q.pts}</span></div>
+      <div className="q-body">
+        <div className="timer">
+          <button className="tmr-btn" onClick={tm.toggle}>{tm.on?"⏸":"▶"}</button>
+          <div className={`tmr-display ${tm.on?"on":""}`}>{tm.fmt}</div>
+          <button className="tmr-btn" onClick={tm.reset}>↻</button>
         </div>
-        <div className="q-content">
-          <div className="timer">
-            <button className="timer-btn" onClick={timer.toggle}>{timer.on?"⏸":"▶"}</button>
-            <div className={`timer-display ${timer.on?"on":""}`}>{timer.fmt}</div>
-            <button className="timer-btn" onClick={timer.reset}>↻</button>
+
+        {isNW&&!sa&&<div className="nw-show">
+          <img className="nw-img" src={`images/${q.image}`} alt="" onError={e=>{e.target.src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><rect fill='%23111' width='300' height='300'/><text x='150' y='160' text-anchor='middle' fill='%23555' font-size='14'>"+encodeURIComponent(q.image)+"</text></svg>"}}/>
+          <div className="nw-note">🤫 اعرض للاعب فقط — يشرح بدون كلام!</div>
+        </div>}
+
+        {isPH&&!sa&&<div className="ph-show">
+          <img className="ph-img" src={`images/${q.image}`} alt="" onError={e=>{e.target.src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='350'><rect fill='%23111' width='600' height='350'/><text x='300' y='180' text-anchor='middle' fill='%23555' font-size='14'>"+encodeURIComponent(q.image)+"</text></svg>"}}/>
+        </div>}
+
+        {isLT&&<><div className="lt-hint"><span className="lt-label">الجواب يبدأ بحرف</span><div className="lt-badge">{q.letter}</div></div><p className="q-text">{q.q}</p></>}
+
+        {!isNW&&!isLT&&!isPH&&<p className="q-text">{q.q}</p>}
+
+        {!sa?<button className="btn btn-gold" style={{fontSize:19,padding:"15px 40px"}} onClick={()=>{setSa(true);tm.stop()}}>🔍 كشف الإجابة</button>
+        :<div className="ans-wrap">
+          <div className="ans-card"><div className="ans-lbl">الإجابة</div><p className="ans-val">{q.a}</p></div>
+          <div className="ans-time">⏱️ {tm.fmt}</div>
+          <div className="team-btns">
+            <button className="btn-award" style={{background:`linear-gradient(135deg,${t1.color.c},${t1.color.l})`}} onClick={()=>award(1)}>✓ {t1.emoji} {t1.name}</button>
+            <button className="btn-award" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.l})`}} onClick={()=>award(2)}>✓ {t2.emoji} {t2.name}</button>
+            <button className="btn btn-nobody" onClick={noOne}>لا أحد</button>
           </div>
-
-          {isNW&&!showAns&&<div className="nowords-display">
-            <div className="nowords-emoji">{q.emoji}</div>
-            <div className="nowords-word">{q.word}</div>
-            <div className="nowords-hint">💡 {q.hint}</div>
-            <div className="nowords-note">اعرض للاعب فقط — يشرح بدون كلام!</div>
-          </div>}
-
-          {isLT&&<>
-            <div className="letter-area">
-              <span className="letter-label">الجواب يبدأ بحرف</span>
-              <div className="letter-badge">{q.letter}</div>
-            </div>
-            <p className="q-text">{q.q}</p>
-          </>}
-
-          {isPH&&!showAns&&<div className="photo-display">
-            {(q.images||[]).map((img,i)=><React.Fragment key={i}>
-              <div className="photo-card">
-                <img src={`images/${img}`} alt="" onError={e=>{e.target.style.display="none"}}/>
-                <div className="photo-card-label">{img}</div>
-              </div>
-              {i<(q.images||[]).length-1&&<div className="photo-plus">+</div>}
-            </React.Fragment>)}
-          </div>}
-
-          {!isNW&&!isLT&&!isPH&&<p className="q-text">{q.q}</p>}
-
-          {!showAns?<button className="btn btn-gold" style={{fontSize:20,padding:"16px 40px"}} onClick={()=>{setShowAns(true);timer.stop()}}>🔍 كشف الإجابة</button>
-          :<div className="ans-area">
-            <div className="ans-box">
-              <div className="ans-label">الإجابة</div>
-              <p className="ans-text">{isNW?q.word:q.a}</p>
-            </div>
-            <div className="ans-timer">⏱️ الوقت: {timer.fmt}</div>
-            <div className="team-btns">
-              <button className="btn btn-team" style={{background:`linear-gradient(135deg,${t1.color.c},${t1.color.light})`}} onClick={()=>awardTeam(1)}>✓ {t1.emoji} {t1.name}</button>
-              <button className="btn btn-team" style={{background:`linear-gradient(135deg,${t2.color.c},${t2.color.light})`}} onClick={()=>awardTeam(2)}>✓ {t2.emoji} {t2.name}</button>
-              <button className="btn-nobody btn" onClick={noOneAnswered}>لا أحد أجاب</button>
-            </div>
-          </div>}
-        </div>
+        </div>}
       </div>
-    </div>;
+    </div></div>;
   }
 
   /* ═══ GAMEOVER ═══ */
-  if(screen==="gameover"){
-    const winner=s1>s2?1:s2>s1?2:0;
-    const wt=winner===1?t1:winner===2?t2:null;
-    return<div className="gameover">
-      {winner!==0&&<Confetti/>}
-      <div className="gameover-card">
-        <div className="go-trophy">{winner?wt.emoji:"🤝"}</div>
-        <h1 className="go-title" style={winner?{background:`linear-gradient(135deg,${wt.color.c},${wt.color.light})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}:{color:"var(--gold)"}}>
-          {winner===1?`${t1.name} فازوا!`:winner===2?`${t2.name} فازوا!`:"تعادل!"}
-        </h1>
-        <div className="go-sub">{winner?`بفارق ${Math.abs(s1-s2)} نقطة`:"نتيجة متساوية!"}</div>
-        <div className="go-scores">
-          <div className="go-team">
-            <div className="go-team-emoji">{t1.emoji}</div>
-            <div className="go-team-name" style={{color:t1.color.c}}>{t1.name}</div>
-            <div className="go-team-score" style={{color:t1.color.c}}>{s1}</div>
-          </div>
-          <div className="go-vs">—</div>
-          <div className="go-team">
-            <div className="go-team-emoji">{t2.emoji}</div>
-            <div className="go-team-name" style={{color:t2.color.c}}>{t2.name}</div>
-            <div className="go-team-score" style={{color:t2.color.c}}>{s2}</div>
-          </div>
-        </div>
-        <button className="btn btn-gold btn-lg" style={{maxWidth:380,margin:"0 auto"}} onClick={resetAll}>🔄 لعبة جديدة</button>
+  if(scr==="gameover"){
+    const w=s1>s2?1:s2>s1?2:0;const wt=w===1?t1:w===2?t2:null;
+    return<div className="go-wrap">{w!==0&&<Confetti/>}<div className="go-card">
+      <div className="go-trophy">{wt?wt.emoji:"🤝"}</div>
+      <h1 className="go-title" style={wt?{background:`linear-gradient(135deg,${wt.color.c},${wt.color.l})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}:{color:"var(--gold)"}}>{w===1?`${t1.name} فازوا!`:w===2?`${t2.name} فازوا!`:"تعادل!"}</h1>
+      <div className="go-sub">{wt?`بفارق ${Math.abs(s1-s2)} نقطة`:"نتيجة متساوية!"}</div>
+      <div className="go-scores">
+        <div className="go-team"><div className="go-emo">{t1.emoji}</div><div className="go-nm" style={{color:t1.color.c}}>{t1.name}</div><div className="go-sc" style={{color:t1.color.c}}>{s1}</div></div>
+        <div className="go-vs">—</div>
+        <div className="go-team"><div className="go-emo">{t2.emoji}</div><div className="go-nm" style={{color:t2.color.c}}>{t2.name}</div><div className="go-sc" style={{color:t2.color.c}}>{s2}</div></div>
       </div>
-    </div>;
+      <button className="btn btn-gold btn-lg" style={{maxWidth:360,margin:"0 auto"}} onClick={resetAll}>🔄 لعبة جديدة</button>
+    </div></div>;
   }
 
   /* ═══ BOARD ═══ */
-  const rows=[[0,1],[2,3],[4,5]];
-  const getCellStyle=(ci,qi)=>{
-    const k=`${ci}-${qi}`;const a=ans[k];
-    if(!a)return{};
-    const tc=a.team===1?t1.color.c:a.team===2?t2.color.c:null;
-    if(tc)return{background:tc+"25",borderColor:tc+"30"};
-    return{background:"rgba(255,255,255,.02)",opacity:.35};
-  };
-  const getCellPtsClass=(ci,qi)=>{
-    const k=`${ci}-${qi}`;return ans[k]?"":"gold";
-  };
-  const getCellPtsColor=(ci,qi)=>{
-    const k=`${ci}-${qi}`;const a=ans[k];
-    if(!a)return{};
-    const tc=a.team===1?t1.color.light:a.team===2?t2.color.light:"rgba(255,255,255,.15)";
-    return{background:"none",WebkitBackgroundClip:"unset",WebkitTextFillColor:tc,color:tc};
-  };
+  const rows=[[0,1],[2,3],[4,5]];const anN=Object.keys(ans).length;const totQ=gc.length*6;
+  const cellStyle=(ci,qi)=>{const k=`${ci}-${qi}`;const a=ans[k];if(!a)return{};const tc=a.team===1?t1.color:a.team===2?t2.color:null;return tc?{background:`${tc.c}15`,boxShadow:`inset 0 0 20px ${tc.c}08`}:{opacity:.2}};
+  const cellPts=(ci,qi)=>{const k=`${ci}-${qi}`;const a=ans[k];if(!a)return{cls:"virgin",style:{}};const tc=a.team===1?t1.color.l:a.team===2?t2.color.l:"rgba(255,255,255,.1)";return{cls:"team-colored",style:{color:tc}}};
 
   return<div className="board">
     <div className="board-hdr">
-      <div className="board-logo">سين جيم</div>
+      <div className="b-logo"><span className="bls">سين</span> <span className="blj">جيم</span></div>
       <div style={{flex:1}}/>
-      <button className="btn btn-ghost" style={{fontSize:12,padding:"6px 14px"}} onClick={()=>setScreen("gameover")}>🏁 إنهاء اللعبة</button>
+      <button className="btn btn-ghost" style={{fontSize:11,padding:"5px 12px"}} onClick={()=>setScr("gameover")}>🏁 إنهاء</button>
     </div>
-
-    <div className="progress"><div className="progress-fill" style={{width:`${totQ?(anN/totQ)*100:0}%`}}/></div>
+    <div className="progress"><div className="progress-bar" style={{width:`${totQ?(anN/totQ)*100:0}%`}}/></div>
 
     <div className="board-grid">
-      {gc.map((cat,ci)=><div key={cat.id} className="cat-block" style={{borderColor:cat.color+"20"}}>
-        {rows.map(([li],ri)=>{const k=`${ci}-${li}`;const done=!!ans[k];
-          return<button key={`l${ri}`} className={`q-cell ${done?"answered":""}`} style={{gridColumn:1,gridRow:ri+1,...getCellStyle(ci,li)}} onClick={()=>openQ(ci,li)} disabled={done}>
-            <span className={`q-cell-pts ${getCellPtsClass(ci,li)}`} style={getCellPtsColor(ci,li)}>{cat.questions[li].pts}</span>
+      {gc.map((cat,ci)=><div key={cat.id} className="cat-blk" style={{animationDelay:`${ci*.06}s`,borderColor:cat.color+"12"}}>
+        {rows.map(([li],ri)=>{const k=`${ci}-${li}`;const d=!!ans[k];const cp=cellPts(ci,li);
+          return<button key={`l${ri}`} className={`qc ${d?"done":""}`} style={{gridColumn:1,gridRow:ri+1,...cellStyle(ci,li)}} onClick={()=>openQ(ci,li)} disabled={d}>
+            <span className={`qc-pts ${cp.cls}`} style={cp.style}>{cat.questions[li].pts}</span>
           </button>})}
-
-        <div className="blk-center" style={{background:cat.color+"10"}}>
-          <span className="blk-center-ic">{cat.icon}</span>
-          <span className="blk-center-nm">{cat.name}</span>
-          {cat.type!=="regular"&&<span className="blk-center-tp">{{no_words:"تمثيل",letters:"حروف",guess_photo:"صور"}[cat.type]}</span>}
+        <div className="blk-mid" style={{background:cat.color+"08"}}>
+          <span className="blk-mid-ic">{cat.icon}</span>
+          <span className="blk-mid-nm">{cat.name}</span>
+          {cat.type!=="regular"&&<span className="blk-mid-tp">{{no_words:"تمثيل",letters:"حروف",guess_photo:"صور"}[cat.type]}</span>}
         </div>
-
-        {rows.map(([,ri2],ri)=>{const k=`${ci}-${ri2}`;const done=!!ans[k];
-          return<button key={`r${ri}`} className={`q-cell ${done?"answered":""}`} style={{gridColumn:3,gridRow:ri+1,...getCellStyle(ci,ri2)}} onClick={()=>openQ(ci,ri2)} disabled={done}>
-            <span className={`q-cell-pts ${getCellPtsClass(ci,ri2)}`} style={getCellPtsColor(ci,ri2)}>{cat.questions[ri2].pts}</span>
+        {rows.map(([,ri2],ri)=>{const k=`${ci}-${ri2}`;const d=!!ans[k];const cp=cellPts(ci,ri2);
+          return<button key={`r${ri}`} className={`qc ${d?"done":""}`} style={{gridColumn:3,gridRow:ri+1,...cellStyle(ci,ri2)}} onClick={()=>openQ(ci,ri2)} disabled={d}>
+            <span className={`qc-pts ${cp.cls}`} style={cp.style}>{cat.questions[ri2].pts}</span>
           </button>})}
       </div>)}
     </div>
 
     <div className="scoreboard">
-      <div className="sc-team" style={{borderColor:t1.color.c,background:t1.color.c+"08"}}>
-        <div className="sc-emoji">{t1.emoji}</div>
-        <div className="sc-info">
-          <div className="sc-name">{t1.name}</div>
-          <div className={`sc-score ${scoreFlash===1?"flash":""}`} style={{color:t1.color.c}}>{s1}</div>
-        </div>
+      <div className="sc-card" style={{borderColor:t1.color.c+"40",background:t1.color.c+"06"}}>
+        <div className="sc-emo">{t1.emoji}</div>
+        <div className="sc-info"><div className="sc-nm">{t1.name}</div><div className={`sc-pts ${pop===1?"pop":""}`} style={{color:t1.color.c}}>{s1}</div></div>
       </div>
-      <div className="sc-vs">VS</div>
-      <div className="sc-team" style={{borderColor:t2.color.c,background:t2.color.c+"08"}}>
-        <div className="sc-emoji">{t2.emoji}</div>
-        <div className="sc-info">
-          <div className="sc-name">{t2.name}</div>
-          <div className={`sc-score ${scoreFlash===2?"flash":""}`} style={{color:t2.color.c}}>{s2}</div>
-        </div>
+      <div className="sc-mid">VS</div>
+      <div className="sc-card" style={{borderColor:t2.color.c+"40",background:t2.color.c+"06"}}>
+        <div className="sc-emo">{t2.emoji}</div>
+        <div className="sc-info"><div className="sc-nm">{t2.name}</div><div className={`sc-pts ${pop===2?"pop":""}`} style={{color:t2.color.c}}>{s2}</div></div>
       </div>
     </div>
   </div>;
